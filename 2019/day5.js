@@ -4,7 +4,6 @@ const day3States = [3,225,1,225,6,6,1100,1,238,225,104,0,1101,37,34,224,101,-71,
 // const day3States = [3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99]
 const INPUT = 5
 
-// 13294380
 const compDayStates = arr => {
   let i = 0
   let done = false
@@ -23,71 +22,23 @@ const compDayStates = arr => {
   const prt = v => { console.log('Output', v) }
 
   do {
-
     const op = arr[i]
     const bp = op % 100
     const f1 = (op / 100) % 10 | 0
     const f2 = (op / 1000) % 10 | 0
-
     console.log('OP', f2, f1, bp)
-    switch (op) {
-      case 1:
-      case 101:
-      case 1001:
-      case 1101:
-        sto(3, val(1, f1) + val(2, f2)); 
-        inc(4); 
-        break
-      case 2:
-      case 102:
-      case 1002:
-      case 1102:
-        sto(3, val(1, f1) * val(2, f2)); 
-        inc(4); 
-        break
-      case 3: 
-        sto(1, INPUT); 
-        inc(2); 
-        break
-      case 4: 
-      case 104:
-        prt(val(1, f1)); 
-        inc(2); 
-        break
-      case 5:
-      case 105:
-      case 1005:
-      case 1105:
-        val(1, f1) ? inc(val(2, f2),1) : inc(3); 
-        break
-      case 6: 
-      case 106:
-      case 1006:
-      case 1106:
-        !val(1, f1) ? inc(val(2, f2), true) : inc(3); 
-        break
-      case 7:
-      case 107:
-      case 1007:
-      case 1107:
-        sto(3, val(1,f1) < val(2, f2) ? 1 : 0); 
-        inc(4); 
-        break
-      case 8:
-      case 108:
-      case 1008:
-      case 1108:
-      case 8: 
-        sto(3, val(1, f1) === val(2, f2) ? 1 : 0); 
-        inc(4); 
-        break
+    switch (bp) {
+      case 1: sto(3, val(1, f1) + val(2, f2)); inc(4); break
+      case 2: sto(3, val(1, f1) * val(2, f2)); inc(4); break
+      case 3: sto(1, INPUT); inc(2); break
+      case 4: prt(val(1, f1)); inc(2); break
+      case 5: val(1, f1) ? inc(val(2, f2),1) : inc(3); break
+      case 6: !val(1, f1) ? inc(val(2, f2), true) : inc(3); break
+      case 7: sto(3, val(1,f1) < val(2, f2) ? 1 : 0); inc(4); break
+      case 8: sto(3, val(1, f1) === val(2, f2) ? 1 : 0); inc(4); break
       default:
-      case 99:
-        done = true
-        break;
+      case 99: done = true; break;
     }
-
-    // done = (i >= arr.length) || arr[i] === 99
   } while (!done)
   return arr
 }
