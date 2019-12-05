@@ -16,74 +16,33 @@ const compDayStates = arr => {
     arr[arr[i + dif]] = v
   }
 
+  const inc = (dif, flag) => { 
+    i = !flag ? i + dif : dif
+  }
+  
+  const prt = v => { console.log('Output', v) }
+
   do {
     const op = arr[i]
     console.log('OP', op)
     switch (op) {
-      case 1:
-        sto(3, val(1) + val(2))
-        i = i + 4
-        break
-      case 2:
-        sto(3, val(1) * val(2))
-        i = i + 4
-        break
-      case 3:
-        sto(1, INPUT)
-        i = i + 2
-        break
-      case 4: 
-        console.log('output', val(1))
-        i = i + 2
-        break
-      case 5:
-        i = val(1) ? val(2) : i + 3
-        break
-      case 6:
-        i = !val(1) ? val(2) : i + 3
-        break
-      case 7:
-        sto(3, val(1) < val(2) ? 1 : 0)
-        i = i + 4
-        break;  
-      case 8:
-        sto(3, val(1) === val(2) ? 1 : 0)
-        i = i + 4
-        break;  
-      case 101:
-        sto(3, val(1, true) + val(2))
-        i = i + 4
-        break;
-      case 102:
-        sto(3, val(1, true) * val(2))
-        i = i + 4
-        break;
-      case 104: 
-        console.log('output', val(1, true))
-        i = i + 2
-        break;
-      case 105:
-        i = val(1, true) ? val(2) : i + 3
-        break
-      case 106:
-        i = !val(1, true) ? val(2) : i + 3
-        break
-      case 107:
-        sto(3, val(1, true) < val(2) ? 1 : 0)
-        i = i + 4
-        break;  
-      case 108:
-        sto(3, val(1, true) === val(2) ? 1 : 0)
-        i = i + 4
-        break;  
-      case 1001:
-        sto(3, val(1) + val(2, true))
-        i = i + 4
-        break;
-      case 1002:
-        sto(3, val(1) * val(2, true))
-        i = i + 4
-        break;
+        case 1: sto(3, val(1) + val(2)); inc(4); break
+        case 2: sto(3, val(1) * val(2)); inc(4); break
+        case 3: sto(1, INPUT); inc(2); break
+        case 4: prt(val(1)); inc(2); break
+        case 5: val(1) ? inc(val(2),1) : inc(3); break
+        case 6: !val(1) ? inc(val(2),1) : inc(3); break
+        case 7: sto(3, val(1) < val(2) ? 1 : 0); inc(4); break
+        case 8: sto(3, val(1) === val(2) ? 1 : 0); inc(4); break
+      case 101: sto(3, val(1,1) + val(2)); inc(4); break
+      case 102: sto(3, val(1,1) * val(2)); inc(4); break
+      case 104: prt(val(1,1)); inc(2); break
+      case 105: val(1,1) ? inc(val(2), 1) : inc(3); break
+      case 106: !val(1,1) ? inc(val(2), 1) : inc(3); break
+      case 107: sto(3, val(1,1) < val(2) ? 1 : 0); inc(4); break
+      case 108: sto(3, val(1,1) === val(2) ? 1 : 0); inc(4); break
+     case 1001: sto(3, val(1) + val(2,1)); inc(4); break
+     case 1002: sto(3, val(1) * val(2,1)); inc(4); break
       case 1005:
         i = val(1) ? val(2, true) : i + 3
         break
