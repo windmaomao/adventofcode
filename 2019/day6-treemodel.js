@@ -42,29 +42,25 @@ root.walk(n => {
   totalDist += n.model.dist
 })
 
-// const you = root.first(n => n.model.name === 'YOU')
 console.log('Day 6-1:', totalDist)
 
 const findNode = (node, name) => node.first(n => n.model.name === name)
 
-// find lca
-let lca
-root.walk(c => {
-  const YOU = findNode(c, 'YOU')
-  const SAN = findNode(c, 'SAN')
-  if (YOU && SAN) {
-  } else {
-    if (YOU || SAN) {
-      lca = c.parent
-      return false
-    }
-  }
-})
+const findLCA = () => {
+  const you = findNode(root, 'YOU')
+  const san = findNode(root, 'SAN')
+  const yp = you.getPath(), sp = san.getPath()
 
-const you = findNode(lca, 'YOU')
-const san = findNode(lca, 'SAN')
+  let i = 0
+  while (
+    i < yp.length && i < sp.length && 
+    yp[i + 1] === sp[i+1]
+  ) {i++}
 
-console.log('Day 6-2:',
-  you.model.level - lca.model.level - 1 +
-  san.model.level - lca.model.level - 1
-)
+  const lca = yp[i]
+  const _l = n => n.model.level - lca.model.level - 1
+
+  return _l(you) + _l(san)
+}
+
+console.log('Day 6-2:', findLCA())
