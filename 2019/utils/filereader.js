@@ -1,5 +1,5 @@
 exports.readFile = (
-  fn, separator = '\n', toNumber = true
+  fn, toNumber = false, separator = '\n', 
 ) => require('fs')
   .readFileSync(__dirname + fn, 'utf-8')
   .split(separator)

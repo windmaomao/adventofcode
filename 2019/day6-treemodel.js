@@ -1,5 +1,6 @@
+const filereader = require('./utils/filereader.js')
+const data = filereader.readFile('/day6.data')
 const TreeModel = require('./utils/treemodel.js')
-const data = require('./utils/data6.js')
 const tree = new TreeModel()
 
 // preprocess the data
