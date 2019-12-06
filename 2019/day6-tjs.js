@@ -41,10 +41,13 @@ t.bfs(root, (n, par) => {
 
 console.log('Day 6-1:', totalDist)
 
+const findName = name => n => n.name === name
+const findNode = (node, name) => t.find(node, findName(name))
+
 let lca
 t.dfs(root, (c, par, ctrl) => {
-  const YOU = t.find(c, n => n.name === 'YOU')
-  const SAN = t.find(c, n => n.name === 'SAN')
+  const YOU = findNode(c, 'YOU')
+  const SAN = findNode(c, 'SAN')
 
   if (YOU && SAN) {
   } else {
@@ -55,8 +58,8 @@ t.dfs(root, (c, par, ctrl) => {
   }
 })
 
-const you = t.find(lca, n => n.name === 'YOU')
-const san = t.find(lca, n => n.name === 'SAN')
+const you = findNode(lca, 'YOU')
+const san = findNode(lca, 'SAN')
 
 console.log('Day 6-2:', 
   you.level - lca.level - 1 + 
