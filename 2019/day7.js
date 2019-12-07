@@ -20,19 +20,22 @@ const thrusts2 = permute([9, 8, 7, 6, 5]).map(signals => {
   const datas = new Array(5).fill(_data())
   const ps = new Array(5).fill(0)
 
-  const process = (acc, signal, i) => {
+  let thrust = { value: 0, found: false }
+  while (!thrust.found) thrust = signals.reduce((acc, signal, i) => {
     if (acc.found) return acc
 
     const res = intcode(
       datas[i], signal,
       { once: true, i: ps[i], prev: acc.value }
     )
-    if (res) { [ps[i], acc.value] = res } else acc.found = true
-    return acc
-  }
+    
+    if (res) { 
+      [ps[i], acc.value] = res 
+    } else 
+      acc.found = true
 
-  let thrust = { value: 0, found: false }
-  while (!thrust.found) thrust = signals.reduce(process, thrust)
+    return acc
+  }, thrust)
 
   return thrust.value
 }, 0)
