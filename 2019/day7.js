@@ -77,13 +77,10 @@ function permute(permutation) {
 }
 
 const SIG = permute([0, 1, 2, 3, 4])
-const thrust = SIG.reduce((large, signals) => {
-  const v = signals.reduce((acc, s) => {
+const thrusts = SIG.map(signals => {
+  return signals.reduce((acc, s) => {
     return compDayStates([...data], s, acc)
   }, 0)
-  console.log(signals, v)
-  if (v > large) large = v
-  return large
-}, 0)
+})
 
-console.log('Day 7/1:', thrust)
+console.log('Day 7/1:', Math.max(...thrusts))
