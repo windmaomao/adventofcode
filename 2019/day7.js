@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader.js')
-// const data = filereader.readFile('/day7.data', ',', true)
+const data = filereader.readFile('/day7.data', ',', true)
 
 const compDayStates = (arr, phase, prev) => {
   const INPUT = [phase, prev]
@@ -21,7 +21,7 @@ const compDayStates = (arr, phase, prev) => {
 
   const prt = v => { 
     output = v
-    console.log('Output', v) 
+    // console.log('Output', v) 
   }
 
   do {
@@ -34,7 +34,7 @@ const compDayStates = (arr, phase, prev) => {
       case 1: sto(3, val(1, f1) + val(2, f2)); inc(4); break
       case 2: sto(3, val(1, f1) * val(2, f2)); inc(4); break
       case 3: 
-        console.log('Input', j, INPUT[j])
+        // console.log('Input', j, INPUT[j])
         sto(1, INPUT[j]); j++; inc(2); 
         break
       case 4: prt(val(1, f1)); inc(2); break
@@ -49,16 +49,9 @@ const compDayStates = (arr, phase, prev) => {
   return output
 }
 
-const data = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]
-// const signals = [4,3,2,1,0]
-
+// const data = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]
 // const data = [3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23,
 //   101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0]
-// const signals = [0, 1, 2, 3, 4]
-
-// console.log('Day 7/1:', signals.reduce((acc, s) => {
-//   return compDayStates([...data], s, acc)
-// }, 0))
 
 function permute(permutation) {
   var length = permutation.length,
