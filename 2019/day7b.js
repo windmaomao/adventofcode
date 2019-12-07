@@ -1,8 +1,7 @@
 const filereader = require('./utils/filereader.js')
 // const data = filereader.readFile('/day7.data', ',', true)
 
-const compDayStates = (arr, signal, prev) => {
-  const INPUT = [0, 0]
+const compDayStates = (arr, phase, prev) => {
   let i = 0
   let first = true
   let output = prev
@@ -35,13 +34,14 @@ const compDayStates = (arr, signal, prev) => {
       case 2: sto(3, val(1, f1) * val(2, f2)); inc(4); break
       case 3:
         if (first) {
-          sto(1, signal); inc(2);
-          console.log('I', 's', signal)
+          sto(1, phase); 
           first = false
+          console.log('I', phase)
         } else {
-          sto(1, output); inc(2);
-          console.log('I', 'o', output)
+          sto(1, output);
+          console.log('I', output)
         }
+        inc(2);
         break
       case 4: prt(val(1, f1)); inc(2); break
       case 5: val(1, f1) ? inc(val(2, f2), 1) : inc(3); break
@@ -65,6 +65,42 @@ const v = signals.reduce((acc, s) => {
   return compDayStates([...data], s, acc)
 }, 0)
 
-console.log(signals, v)
+console.log(v)
+
+// function permute(permutation) {
+//   var length = permutation.length,
+//     result = [permutation.slice()],
+//     c = new Array(length).fill(0),
+//     i = 1, k, p;
+
+//   while (i < length) {
+//     if (c[i] < i) {
+//       k = i % 2 && c[i];
+//       p = permutation[i];
+//       permutation[i] = permutation[k];
+//       permutation[k] = p;
+//       ++c[i];
+//       i = 1;
+//       result.push(permutation.slice());
+//     } else {
+//       c[i] = 0;
+//       ++i;
+//     }
+//   }
+//   return result;
+// }
+
+// const SIG = permute([9, 8, 7, 6, 5])
+// const thrust = SIG.reduce((large, signals) => {
+//   const v = signals.reduce((acc, s) => {
+//     return compDayStates([...data], s, acc)
+//   }, 0)
+//   console.log(signals, v)
+//   if (v > large) large = v
+//   return large
+// }, 0)
 
 // console.log('Day 7/2:', thrust)
+
+
+// 17585945 amswer too high
