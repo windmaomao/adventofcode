@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader.js')
-// const data = filereader.readFile('/day7.data', ',', true)
+const data = filereader.readFile('/day7.data', ',', true)
 
 const compDayStates = (arr, phase, prev, i) => {
   let output = prev
@@ -58,82 +58,65 @@ const compDayStates = (arr, phase, prev, i) => {
 // const data = [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26, 27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5]
 // const signals = [9, 8, 7, 6, 5]
 
-const data = [3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54, -5, 54, 1105, 1, 12, 1, 53, 54, 53, 1008, 54, 0, 55, 1001, 55, 1, 55, 2, 53, 55, 53, 4, 53, 1001, 56, -1, 56, 1005, 56, 6, 99, 0, 0, 0, 0, 10]
-const signals = [9, 7, 8, 5, 6]
+// const data = [3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54, -5, 54, 1105, 1, 12, 1, 53, 54, 53, 1008, 54, 0, 55, 1001, 55, 1, 55, 2, 53, 55, 53, 4, 53, 1001, 56, -1, 56, 1005, 56, 6, 99, 0, 0, 0, 0, 10]
+// const signals = [9, 7, 8, 5, 6]
 
 const _d = () => ([...data])
-const datas = [_d(), _d(), _d(), _d(), _d()]
-const ps = [0, 0, 0, 0, 0]
 
-const process = (acc, s, i) => {
-  if (acc[1]) return acc
+function permute(permutation) {
+  var length = permutation.length,
+    result = [permutation.slice()],
+    c = new Array(length).fill(0),
+    i = 1, k, p;
 
-  const res = compDayStates(datas[i], s, acc[0], ps[i])
-  if (res) {
-    ps[i] = res[0]
-    acc[0] = res[1]
-    // console.log(i, acc)
-  } else {
-    acc[1] = true
-    // console.log('DONE')
+  while (i < length) {
+    if (c[i] < i) {
+      k = i % 2 && c[i];
+      p = permutation[i];
+      permutation[i] = permutation[k];
+      permutation[k] = p;
+      ++c[i];
+      i = 1;
+      result.push(permutation.slice());
+    } else {
+      c[i] = 0;
+      ++i;
+    }
   }
-  return acc
+  return result;
 }
 
-let v = [0, false]
-while (!v[1]) {
-  v = signals.reduce(process, v)
-}
-console.log(v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
-// v = signals.reduce(process, v)
+const SIG = permute([9, 8, 7, 6, 5])
+const thrust = SIG.reduce((large, signals) => {
+  const datas = [_d(), _d(), _d(), _d(), _d()]
+  const ps = [0, 0, 0, 0, 0]
 
-// console.log(v)
+  const process = (acc, s, i) => {
+    if (acc[1]) return acc
 
-// function permute(permutation) {
-//   var length = permutation.length,
-//     result = [permutation.slice()],
-//     c = new Array(length).fill(0),
-//     i = 1, k, p;
+    const res = compDayStates(datas[i], s, acc[0], ps[i])
+    if (res) {
+      ps[i] = res[0]
+      acc[0] = res[1]
+      // console.log(i, acc)
+    } else {
+      acc[1] = true
+      // console.log('DONE')
+    }
+    return acc
+  }  
 
-//   while (i < length) {
-//     if (c[i] < i) {
-//       k = i % 2 && c[i];
-//       p = permutation[i];
-//       permutation[i] = permutation[k];
-//       permutation[k] = p;
-//       ++c[i];
-//       i = 1;
-//       result.push(permutation.slice());
-//     } else {
-//       c[i] = 0;
-//       ++i;
-//     }
-//   }
-//   return result;
-// }
+  let v = [0, false]
+  while (!v[1]) {
+    v = signals.reduce(process, v)
+  }
 
-// const SIG = permute([9, 8, 7, 6, 5])
-// const thrust = SIG.reduce((large, signals) => {
-//   const v = signals.reduce((acc, s) => {
-//     return compDayStates([...data], s, acc)
-//   }, 0)
-//   console.log(signals, v)
-//   if (v > large) large = v
-//   return large
-// }, 0)
+  console.log(signals, v[0])
+  if (v[0] > large) large = v[0]
+  return large
+}, 0)
 
-// console.log('Day 7/2:', thrust)
-
+console.log('Day 7/2:', thrust)
 
 // 17585945 amswer too high
+14260332
