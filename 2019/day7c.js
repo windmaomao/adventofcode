@@ -52,34 +52,48 @@ const compDayStates = (arr, phase, prev, i) => {
       case 99: done = true; break;
     }
   } while (!done)
-  console.log('DONE -1')
   return false
 }
 
-const data = [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26, 27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5]
-const signals = [9, 8, 7, 6, 5]
+// const data = [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26, 27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5]
+// const signals = [9, 8, 7, 6, 5]
 
-// const data = [3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54, -5, 54, 1105, 1, 12, 1, 53, 54, 53, 1008, 54, 0, 55, 1001, 55, 1, 55, 2, 53, 55, 53, 4, 53, 1001, 56, -1, 56, 1005, 56, 6, 99, 0, 0, 0, 0, 10]
-// const signals = [9,8,7,6,5]
+const data = [3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54, -5, 54, 1105, 1, 12, 1, 53, 54, 53, 1008, 54, 0, 55, 1001, 55, 1, 55, 2, 53, 55, 53, 4, 53, 1001, 56, -1, 56, 1005, 56, 6, 99, 0, 0, 0, 0, 10]
+const signals = [9, 7, 8, 5, 6]
 
 const _d = () => ([...data])
 const datas = [_d(), _d(), _d(), _d(), _d()]
 const ps = [0, 0, 0, 0, 0]
 
 const process = (acc, s, i) => {
-  const res = compDayStates(datas[i], s, acc, ps[i])
-  ps[i] = res[0]
-  acc = res[1]
-  console.log(i, acc)
+  if (acc[1]) return acc
+
+  const res = compDayStates(datas[i], s, acc[0], ps[i])
+  if (res) {
+    ps[i] = res[0]
+    acc[0] = res[1]
+    // console.log(i, acc)
+  } else {
+    acc[1] = true
+    // console.log('DONE')
+  }
   return acc
 }
 
-let v = signals.reduce(process, 0)
-v = signals.reduce(process, v)
-v = signals.reduce(process, v)
-v = signals.reduce(process, v)
-v = signals.reduce(process, v)
-v = signals.reduce(process, v)
+let v = [0, false]
+while (!v[1]) {
+  v = signals.reduce(process, v)
+}
+console.log(v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
+// v = signals.reduce(process, v)
 // v = signals.reduce(process, v)
 // v = signals.reduce(process, v)
 // v = signals.reduce(process, v)
