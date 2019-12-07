@@ -39,25 +39,18 @@ const thrusts = SIG.map(signals => {
   const datas = new Array(5).fill(_d())
   const ps = new Array(5).fill(0)
 
-  const process = (acc, s, i) => {
-    if (acc[1]) return acc
+  const process = (acc, signal, i) => {
+    if (acc.found) return acc
 
-    const res = compDayStates(datas[i], s, acc[0], ps[i])
-    if (res) { 
-      ps[i] = res[0]
-      acc[0] = res[1]
-      // console.log(i, acc)
-    } else {
-      acc[1] = true
-      // console.log('DONE')
-    }
+    const res = compDayStates(datas[i], signal, acc.value, ps[i])
+    if (res) { [ps[i], acc.value] = res } else acc.found = true
     return acc
   }  
 
-  let v = [0, false]
-  while (!v[1]) { v = signals.reduce(process, v) }
+  let thrust = { value: 0, found: false }
+  while (!thrust.found) thrust = signals.reduce(process, thrust)
 
-  return v[0]
+  return thrust.value
 }, 0)
 
 console.log('Day 7/2:', Math.max(...thrusts))
