@@ -1,28 +1,16 @@
 const filereader = require('./utils/filereader.js')
 const data = filereader.readFile('/day7.data', ',', true)
+const permute = require('./utils/permute.js')
 
 const compDayStates = (arr, phase, prev) => {
-  const INPUT = [phase, prev]
-  let i = 0
-  let j = 0
   let done = false
-  let output
+  let output = prev
+  let i = 0
 
-  const val = (dif, flag) => !flag ?
-    arr[arr[i + dif]] : arr[i + dif]
-
-  const sto = (dif, v, flag) => {
-    arr[arr[i + dif]] = v
-  }
-
-  const inc = (dif, flag) => {
-    i = !flag ? i + dif : dif
-  }
-
-  const prt = v => { 
-    output = v
-    // console.log('Output', v) 
-  }
+  const val = (dif, flag) => !flag ? arr[arr[i + dif]] : arr[i + dif]
+  const sto = (dif, v) => { arr[arr[i + dif]] = v }
+  const inc = (dif, flag) => { i = !flag ? i + dif : dif }
+  const prt = v => { output = v; }
 
   do {
     const op = arr[i]
@@ -33,10 +21,7 @@ const compDayStates = (arr, phase, prev) => {
     switch (bp) {
       case 1: sto(3, val(1, f1) + val(2, f2)); inc(4); break
       case 2: sto(3, val(1, f1) * val(2, f2)); inc(4); break
-      case 3: 
-        // console.log('Input', j, INPUT[j])
-        sto(1, INPUT[j]); j++; inc(2); 
-        break
+      case 3: sto(1, i === 0 ? phase : output); inc(2); break
       case 4: prt(val(1, f1)); inc(2); break
       case 5: val(1, f1) ? inc(val(2, f2), 1) : inc(3); break
       case 6: !val(1, f1) ? inc(val(2, f2), true) : inc(3); break
@@ -49,33 +34,6 @@ const compDayStates = (arr, phase, prev) => {
   return output
 }
 
-// const data = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]
-// const data = [3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23,
-//   101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0]
-
-function permute(permutation) {
-  var length = permutation.length,
-    result = [permutation.slice()],
-    c = new Array(length).fill(0),
-    i = 1, k, p;
-
-  while (i < length) {
-    if (c[i] < i) {
-      k = i % 2 && c[i];
-      p = permutation[i];
-      permutation[i] = permutation[k];
-      permutation[k] = p;
-      ++c[i];
-      i = 1;
-      result.push(permutation.slice());
-    } else {
-      c[i] = 0;
-      ++i;
-    }
-  }
-  return result;
-}
-
 const SIG = permute([0, 1, 2, 3, 4])
 const thrusts = SIG.map(signals => {
   return signals.reduce((acc, s) => {
@@ -84,3 +42,8 @@ const thrusts = SIG.map(signals => {
 })
 
 console.log('Day 7/1:', Math.max(...thrusts))
+
+
+// const data = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]
+// const data = [3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23,
+//   101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0]

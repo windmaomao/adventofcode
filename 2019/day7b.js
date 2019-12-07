@@ -1,5 +1,6 @@
 const filereader = require('./utils/filereader.js')
 const data = filereader.readFile('/day7.data', ',', true)
+const permute = require('./utils/permute.js')
 
 const compDayStates = (arr, phase, prev, i) => {
   let output = prev
@@ -32,32 +33,9 @@ const compDayStates = (arr, phase, prev, i) => {
   return false
 }
 
-function permute(permutation) {
-  var length = permutation.length,
-    result = [permutation.slice()],
-    c = new Array(length).fill(0),
-    i = 1, k, p;
-
-  while (i < length) {
-    if (c[i] < i) {
-      k = i % 2 && c[i];
-      p = permutation[i];
-      permutation[i] = permutation[k];
-      permutation[k] = p;
-      ++c[i];
-      i = 1;
-      result.push(permutation.slice());
-    } else {
-      c[i] = 0;
-      ++i;
-    }
-  }
-  return result;
-}
-
 const _d = () => ([...data])
 const SIG = permute([9, 8, 7, 6, 5])
-const thrust = SIG.reduce((large, signals) => {
+const thrusts = SIG.map(signals => {
   const datas = new Array(5).fill(_d())
   const ps = new Array(5).fill(0)
 
@@ -77,16 +55,12 @@ const thrust = SIG.reduce((large, signals) => {
   }  
 
   let v = [0, false]
-  while (!v[1]) {
-    v = signals.reduce(process, v)
-  }
+  while (!v[1]) { v = signals.reduce(process, v) }
 
-  // console.log(signals, v[0])
-  if (v[0] > large) large = v[0]
-  return large
+  return v[0]
 }, 0)
 
-console.log('Day 7/2:', thrust)
+console.log('Day 7/2:', Math.max(...thrusts))
 
 // 17585945 amswer too high
 // 14260332
