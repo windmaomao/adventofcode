@@ -1,7 +1,8 @@
-const filereader = require('./utils/filereader.js')
+const filereader = require('./utils/filereader')
 const data = filereader.readFile('/day7.data', ',', true)
-const permute = require('./utils/permute.js')
-const intcode = require('./day7_intcode.js')
+const permute = require('./utils/permute')
+const intcode = require('./day7_intcode')
+const transform = require('./utils/transform')
 
 const _data = () => ([...data])
 const thrusts = permute([0, 1, 2, 3, 4])
@@ -21,21 +22,23 @@ const thrusts2 = permute([9, 8, 7, 6, 5]).map(signals => {
   const ps = new Array(5).fill(0)
 
   let thrust = { value: 0, found: false }
-  while (!thrust.found) thrust = signals.reduce((acc, signal, i) => {
-    if (acc.found) return acc
+  while (!thrust.found) {
+    thrust = signals.reduce((acc, signal, i) => {
+      if (acc.found) return acc
 
-    const res = intcode(
-      datas[i], signal,
-      { once: true, i: ps[i], prev: acc.value }
-    )
-    
-    if (res) { 
-      [ps[i], acc.value] = res 
-    } else 
-      acc.found = true
+      const res = intcode(
+        datas[i], signal,
+        { once: true, i: ps[i], prev: acc.value }
+      )
+      
+      if (res) { 
+        [ps[i], acc.value] = res 
+      } else 
+        acc.found = true
 
-    return acc
-  }, thrust)
+      return acc
+    }, thrust)
+  }
 
   return thrust.value
 }, 0)
