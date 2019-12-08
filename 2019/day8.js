@@ -3,6 +3,7 @@ const [data] = filereader.readFile('/day8.data')
 const chunk = require('./utils/chunk')
 const count = require('./utils/count')
 const indexOf = require('./utils/indexOf')
+const transform = require('./utils/transform')
 
 const width = 25, 
       height = 6, 
@@ -17,6 +18,16 @@ const s2 = pics.map(arr => count(arr, '2'))
 
 console.log('Day 9/1:', s1[lowId] * s2[lowId])
 
+const pixes = Array(size).fill(0)
+const pixProcessed = pixes.map((_, pixId) => {
+  return transform(pics, (acc, pic) => {
+    if (pic[pixId] === '2') return false
+    return pic[pixId]
+  }, '0')
+})
+const pixRows = chunk(pixProcessed, width).map(arr => arr.join(''))
+
+console.log(pixRows)
 
 // const size = 25*6
 // const chunkTotal = str.length / size
