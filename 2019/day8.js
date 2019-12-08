@@ -20,14 +20,14 @@ console.log('Day 9/1:', s1[lowId] * s2[lowId])
 
 const pixes = Array(size).fill(0)
 const pixProcessed = pixes.map((_, pixId) => {
-  return transform(pics, (acc, pic) => {
-    if (pic[pixId] === '2') return false
+  return transform(pics, (acc, pic, config) => {
+    if (pic[pixId] !== '2') config.stop = true 
     return pic[pixId]
   }, '0')
 })
 const pixRows = chunk(pixProcessed, width).map(arr => arr.join(''))
 
-console.log(pixRows)
+console.log('Day 9/2:', pixRows)
 
 // const size = 25*6
 // const chunkTotal = str.length / size
