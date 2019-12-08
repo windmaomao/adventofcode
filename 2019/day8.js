@@ -20,7 +20,7 @@ console.log('Day 9/1:', s1[lowId] * s2[lowId])
 
 const pixes = Array(size).fill(0)
 const pixProcessed = pixes.map((_, pixId) => {
-  return transform(pics, (acc, pic, config) => {
+  return transform(pics, (config, _, pic) => {
     if (pic[pixId] !== '2') config.stop = true 
     return pic[pixId]
   }, '0')
