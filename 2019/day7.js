@@ -21,26 +21,28 @@ const thrusts2 = permute([9, 8, 7, 6, 5]).map(signals => {
   const datas = new Array(5).fill(_data())
   const ps = new Array(5).fill(0)
 
-  let thrust = { value: 0, found: false }
-  while (!thrust.found) {
-    thrust = signals.reduce((acc, signal, i) => {
-      if (acc.found) return acc
-
+  let thrust = 0, found = false
+  while (!found) {
+    let config = {}
+    thrust = transform(signals, (_, acc, signal, i) => {
       const res = intcode(
         datas[i], signal,
-        { once: true, i: ps[i], prev: acc.value }
+        { once: true, i: ps[i], prev: acc }
       )
       
       if (res) { 
-        [ps[i], acc.value] = res 
-      } else 
-        acc.found = true
+        [ps[i], acc] = res 
+      } else {
+        _.stop = true
+      }
 
       return acc
-    }, thrust)
+    }, thrust, config)
+
+    if (config.stop) found = true
   }
 
-  return thrust.value
+  return thrust
 }, 0)
 
 console.log('Day 7/2:', Math.max(...thrusts2))

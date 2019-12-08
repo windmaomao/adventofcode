@@ -1,8 +1,7 @@
-const transform = (arr, reduce, init) => {
+const transform = (arr, reduce, init, config = {}) => {
   const result = arr.reduce((acc, item, i, arr) => {
     if (acc.found) return acc
 
-    const config = {}
     acc.value = reduce(config, acc.value, item, i, arr)
 
     if (config.stop) {
@@ -12,7 +11,7 @@ const transform = (arr, reduce, init) => {
     return acc
   }, { value: init, found: false })
 
-  return result.found ? result.value : false
+  return result.value
 }
 
 module.exports = transform
