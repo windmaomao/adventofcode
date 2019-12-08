@@ -21,26 +21,26 @@ const thrusts2 = permute([9, 8, 7, 6, 5]).map(signals => {
   const datas = new Array(5).fill(_data())
   const ps = new Array(5).fill(0)
 
-  let thrust = 0, found = false
-  while (!found) {
-    let config = {}
-    thrust = transform(signals, (_, acc, signal, i) => {
+  let thrust = 0, config
+  do {
+    
+    config = {}
+    thrust = transform(signals, (_config, acc, signal, i) => {
       const res = intcode(
         datas[i], signal,
         { once: true, i: ps[i], prev: acc }
       )
       
-      if (res) { 
+      if (res) {
         [ps[i], acc] = res 
       } else {
-        _.stop = true
+        _config.stop = true
       }
 
       return acc
     }, thrust, config)
 
-    if (config.stop) found = true
-  }
+  } while (!config.stop)
 
   return thrust
 }, 0)
