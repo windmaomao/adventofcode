@@ -4,7 +4,7 @@ const data = filereader.readFile('/day9.data', ',', true)
 // const data = [1102, 34915192, 34915192, 7, 4, 7, 99, 0]
 // const data = [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99]
 
-const INPUT = 1
+const INPUT = 2
 
 const compDayStates = arr => {
   let i = 0
@@ -42,7 +42,7 @@ const compDayStates = arr => {
 
   const rel = (dif) => {
     relative += dif
-    console.log('Relative', relative)
+    // console.log('Relative', relative)
   }
 
   do {
@@ -50,8 +50,8 @@ const compDayStates = arr => {
     const bp = op % 100
     const f1 = (op / 100) % 10 | 0
     const f2 = (op / 1000) % 10 | 0
-    const f3 = (op / 1000) % 10 | 0
-    console.log('OP', f2, f1, bp, arr.length)
+    const f3 = (op / 10000) % 10 | 0
+    // console.log('OP', f2, f1, bp, arr.length)
     switch (bp) {
       case 1: sto(3, val(1, f1) + val(2, f2), f3); inc(4); break
       case 2: sto(3, val(1, f1) * val(2, f2), f3); inc(4); break
@@ -71,8 +71,4 @@ const compDayStates = arr => {
 
 const day91States = [...data]
 
-console.log('Day 9/1:', compDayStates(day91States))
-
-//203
-//2216958116
-//21107
+// console.log('Day 9/1:', compDayStates(day91States))
