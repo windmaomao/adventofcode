@@ -1,15 +1,20 @@
-const filereader = require('./utils/filereader.js')
+const filereader = require('./utils/filereader')
 const data = filereader.readFile('/day3.data')
+const indexOf = require('./utils/indexOf')
+
+const _dist = p => Math.abs(p.x) + Math.abs(p.y)
 
 const lines = data.map(line => {
-  const parts = line.split(',')
+  let step = 0
   const o = { x: 0, y: 0 }
+  const parts = line.split(',')
 
   return parts.reduce((acc, ins) => {
     const char = ins[0]
     const num = parseInt(ins.substring(1))
     const next = (dx, dy) => {
-      o.x += dx; o.y += dy; acc.push({...o})
+      step++; o.x += dx; o.y += dy; 
+      acc.push({...o, dist: _dist(o), step})
     }
     for (let i = 1; i <= num; i++) {
       switch (char) {
@@ -23,22 +28,28 @@ const lines = data.map(line => {
   }, [])
 })
 
-console.log(lines[0].length, lines[1].length)
 
-let prev = { x: 0, y: 0 }, filter = { x: [], y: [] }
-const intersect = (arr1, arr2) => {
-  arr1.filter(a1 => {
-    // console.log(a1)
-    if (a1.x != prev.x) filter.x = arr2.filter(a2 => a2.x == a1.x)
-    if (a1.y != prev.y) filter.y = arr2.filter(a2 => a2.y == a1.y)
-
-    const found = filter.x.filter(b1 => {
-      return filter.y.filter(b2 => {
-        b1.x == b2.x && b1.y == b2.y
-      })
-    })
-    // console.log(found)
+const lineMaps = lines.map(line => {
+  const m = new Map()
+  line.forEach((p, i) => {
+    const key = p.x + ',' + p.y
+    if (!m.has(key)) m.set(key, i)
   })
+  return m
+})
+
+let intersects = [], dists = [], steps = []
+for (var [key, i] of lineMaps[0].entries()) {
+  const j = lineMaps[1].get(key)
+  if (j) {
+    const p1 = lines[0][i], p2 = lines[1][j]
+    if (p1.x != 0 || p2.y != 0) {
+      intersects.push(p1)
+      dists.push(p1.dist)
+      steps.push(p1.step + p2.step)
+    }
+  }
 }
 
-console.log(intersect(lines[0], lines[1]))
+console.log('Day 3/1:', dists[indexOf(dists)])
+console.log('Day 3/2:', steps[indexOf(steps)])
