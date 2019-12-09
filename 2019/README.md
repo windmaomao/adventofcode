@@ -51,9 +51,9 @@ Day 2 problem is the warm up part for the long series of Intcode program. I wake
 
 ## Day 3
 
-Started the test after work at 3pm, finished under 1.5hours. The question isn't easy and I solved with some math skill, a bit more complicated. I spend a bit more time on second part, lesson learned
+Started the test after work at 3pm, finished within 1.5 hours. The question could be easy using Map but I solved with some math skill, a bit more complicated. I spend a bit more time on second part, lesson learned
 
-- No need to rush to part II if the solution isn't solid 
+- Hashmap can be used to speed up the matching process
 - Store values first and then compute/collect later
 
 ## Day 4

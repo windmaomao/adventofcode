@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader.js')
-const modules = filereader.readFile('/day1.data')
+const modules = filereader.readFile('day1.data')
 
 const fuelCalc = mass => Math.floor(mass / 3) - 2
 
