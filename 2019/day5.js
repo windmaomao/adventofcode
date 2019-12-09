@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader.js')
-const day3States = filereader.readFile('/day5.data', ',', true)
+const day3States = filereader.readFile('day5.data', ',', true)
 
 const INPUT = 5
 

@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader.js')
-const lines = filereader.readFile('/day3.data')
+const lines = filereader.readFile('day3.data')
 
 const getPosArr = line => {
   const parts = line.split(',')
