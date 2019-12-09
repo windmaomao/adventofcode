@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const data = filereader.readFile('/day9.data', ',', true)
+const data = filereader.readFile('day9.data', ',', true)
 const intcode = require('./day9_intcode')
 
 console.log('Day 9/1:', intcode([...data], 1, { verbose: false }))

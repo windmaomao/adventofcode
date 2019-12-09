@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const data = filereader.readFile('/day7.data', ',', true)
+const data = filereader.readFile('day7.data', ',', true)
 const permute = require('./utils/permute')
 const intcode = require('./day7_intcode')
 const transform = require('./utils/transform')

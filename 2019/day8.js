@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const [data] = filereader.readFile('/day8.data')
+const [data] = filereader.readFile('day8.data')
 const chunk = require('./utils/chunk')
 const count = require('./utils/count')
 const indexOf = require('./utils/indexOf')

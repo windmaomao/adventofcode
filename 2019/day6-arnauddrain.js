@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader.js')
-const orbits = filereader.readFile('/day6.data')
+const orbits = filereader.readFile('day6.data')
 
 const planets = {}
 orbits.forEach((orbit) => {
