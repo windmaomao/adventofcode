@@ -16,34 +16,36 @@ Day       Time   Rank  Score       Time   Rank  Score
 
 Quote: 
 
-- Number of lines does matter
-- Think fast and write tight with utils function
-- No perfect solution at the moment, no need to dwell on
-- No need to rush to part II if the solution isn't solid 
+- Ranking depends mostly on first three days
+- Number of lines does matter, aim small
+- Write tight using utils function
+- No perfect solution at the moment
+- No need to rush to part II if things is not clear enough
 - Store values first and then compute/collect later
-- Don't reinvent simple algorith, choose simple version first
-- Brutal force with computer might not be bad idea
-- You might need to get up early for rewards
-- Old work matters, clean the code after done
-- Brutal force can only used for small dataset
+- Don't reinvent simple algorith, choose easy to implement 
+- Use brutal force with computer for cheap operation
+- Get up early for higher ranking consistently
+- Old work matters, please clean the code after done
+- Infrastructure framework is required to speed up work
 - Custom recursive algorithm can be be very effective
 - Need to rely on test cases very precisely
-- Old work is useful starting point for new work
+- Old work is vital starting point for new work
 - No need to get perfect solution, move on to next step quickly
 - Handy utility functions will come very useful when it's needed
-- Pay attention to question details, read slow
-- Print out key step and make them clear and clean
+- Pay attention to question details, read major part carefully
+- Print out key step and make them clean for debugging
 
 ## Day 1
 
-Coming back from the thanks-giving trip at night, I was curious to know what is Advent Code at around 5:40pm. I joined with my github account, and finished within half a hour. My skillset is pretty rough, spend half time in setting up the infrastracture code, ex. copy and paste data. I'm really shocked by how fast others finish the question. After some study, I found
+Coming back from the thanks-giving trip at night, I was curious to know what is Advent Code at around 5:40pm. I joined with my github account, and finished within half a hour. My skillset is pretty rough, spend half time in setting up the infrastracture code, ex. copy and paste data. I'm really shocked by how fast others finish the question. After some study, later I found
 
+- Ranking depends on mostly first few days
 - Number of lines does matter
 - Think fast and write tight with utils function
 
 ## Day 2
 
-Waked up in the middle of night at 3am, I was excited to checkout the question. It was pretty interesting to read and work on, although I'm sure it might be a bit difficult for non-english speaking audience. I finished in about an hour, and was very shocked by how much time I spent on unnecceary thinking and work.
+Day 2 problem is the warm up part for the long series of Intcode program. I waked up in the middle of night at 3am, I was excited to checkout the question. It was pretty interesting to read and work on, although I'm sure it might be a bit difficult for non-english speaking audience. I finished in about an hour, and was very shocked by how much time I spent on unnecceary thinking and work.
 
 - No perfect solution at the moment, no need to dwell on
 

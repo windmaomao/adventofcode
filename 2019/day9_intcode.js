@@ -54,7 +54,7 @@ const intcode = (arr, signal, ops) => {
       case 7: sto(3, val(1, f1) < val(2, f2) ? 1 : 0, f3); inc(4); break
       case 8: sto(3, val(1, f1) === val(2, f2) ? 1 : 0, f3); inc(4); break
       case 9: rel(val(1, f1)); inc(2); break
-      default:
+      default: console.log('Wrong code', bp)
       case 99: done = true; break;
     }
   } while (!done)
