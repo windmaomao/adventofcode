@@ -11,9 +11,12 @@ const compDayStates = arr => {
   let done = false
   let relative = 0
 
+  const _v = (arr, pos) => pos < arr.length ? arr[pos] : 0
+
   const val = (dif, flag) => !flag ?
-    arr[arr[i + dif]] : (flag == 1 ? 
-      arr[i + dif] : arr[i + dif + relative])
+    _v(arr, _v(arr, i + dif)) : (flag == 1 ? 
+      _v(arr, i + dif) : 
+      _v(arr, i + dif + relative))
 
   const sto = (dif, v, flag) => {
     arr[arr[i + dif]] = v
@@ -24,7 +27,7 @@ const compDayStates = arr => {
   }
 
   const prt = v => { 
-    if (v === 99) done = true 
+    // if (v === 99) done = true 
     console.log('Output', v) 
   }
 
@@ -38,7 +41,7 @@ const compDayStates = arr => {
     const bp = op % 100
     const f1 = (op / 100) % 10 | 0
     const f2 = (op / 1000) % 10 | 0
-    console.log('OP', f2, f1, bp)
+    console.log('OP', f2, f1, bp, arr.length)
     switch (bp) {
       case 1: sto(3, val(1, f1) + val(2, f2)); inc(4); break
       case 2: sto(3, val(1, f1) * val(2, f2)); inc(4); break
@@ -59,3 +62,5 @@ const compDayStates = arr => {
 const day91States = [...data]
 
 console.log('Day 9/1:', compDayStates(day91States))
+
+//203
