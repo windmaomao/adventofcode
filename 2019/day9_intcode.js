@@ -4,7 +4,7 @@ const defaultOptions = {
   once: false,
   i: 0,
   prev: 0,
-  output: true,
+  output: false,
   verbose: false
 }
 
@@ -58,7 +58,7 @@ const intcode = (arr, signal, ops) => {
       case 99: done = true; break;
     }
   } while (!done)
-  return true
+  return output
 }
 
 module.exports = intcode
