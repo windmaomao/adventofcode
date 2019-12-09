@@ -4,7 +4,7 @@ const data = filereader.readFile('/day9.data', ',', true)
 // const data = [1102, 34915192, 34915192, 7, 4, 7, 99, 0]
 // const data = [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99]
 
-const INPUT = 2
+let INPUT = 1
 
 const compDayStates = arr => {
   let i = 0
@@ -66,9 +66,9 @@ const compDayStates = arr => {
       case 99: done = true; break;
     }
   } while (!done)
-  return arr
+  return true
 }
 
-const day91States = [...data]
-
-// console.log('Day 9/1:', compDayStates(day91States))
+console.log('Day 9/1:', compDayStates([...data]))
+INPUT = 2
+console.log('Day 9/2:', compDayStates([...data]))
