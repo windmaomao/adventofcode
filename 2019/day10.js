@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day10a.data')
+const raw = filereader.readFile('day10.data')
 const indexOf = require('./utils/indexOf')
 
 const grid = raw.map(row => row.split(''))
@@ -20,22 +20,9 @@ for (let i=0; i < size; i++) {
   }
 }
 
-// const count = asteroids.length
-// const angles = [
-//   [1, 0], 
-//   [1, 1], [2, 1], [3, 1], [4, 1],
-//           [1, 2], [1, 3], [1, 4]
-// ]
-
 const inside = index => {
   return (index >= 0) && index < size
 }
-
-// angles = [
-//   [-5, 1], [-4, 1], [-3, 1], [-2, 1], [-1, 1], [2, 1], [3, 1], [4, 1], [5, 1],
-//   [-5, -1], [-4, -1], [-3, -1], [-2, -1], [-1, -1], [2, -1], [3, -1], [4, -1], [5, -1],
-//   [1, -5], [-4, 1], [-3, 1], [-2, 1], [-1, 1], [2, 1], [3, 1], [4, 1], [5, 1],
-// ]
 
 function gcd_two_numbers(x, y) {
   if ((typeof x !== 'number') || (typeof y !== 'number'))
@@ -50,21 +37,17 @@ function gcd_two_numbers(x, y) {
   return x;
 }
 
-const angles = [], angleMax = 4
+const angles = [], angleMax = size - 1
 const add = (n) => {
   if (gcd_two_numbers(n[0], n[1]) <= 1) 
     angles.push(n)
 }
 for (let i = -angleMax; i<=angleMax; i++) {
-  add([1, i])
-  add([-1, i])
-  add([i, 1])
-  add([i, -1])
-  if (Math.abs(i) > 2) {
-    add([2, i])
-    add([-2, i])
-    add([i, 2])
-    add([i, -2])
+  for (let j = 1; j<=angleMax; j++) {
+    add([j, i])
+    add([-j, i])
+    add([i, j])
+    add([i, -j])
   }
 }
 
@@ -89,4 +72,5 @@ const detects = asteroids.map(a => {
   }, []).sort()
 })
 
-console.log('Day 10/1:', indexOf(detects.map(v => v.length), 'max'))
+const maxId = indexOf(detects.map(v => v.length), 'max')
+console.log('Day 10/1:', asteroids[maxId], detects[maxId])
