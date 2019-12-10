@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const data = filereader.readFile('/day3.data')
+const data = filereader.readFile('day3.data')
 const genPoints = require('./day3_genPoints')
 const indexOf = require('./utils/indexOf')
 
