@@ -17,10 +17,10 @@ const transform = (arr, reduce, init, config = {}) => {
 module.exports = transform
 
 
-const a = [0, 1, 1, 3, 1]
+// const a = [0, 1, 1, 3, 1]
 
-console.log(transform(a, (config, acc, v) => {
-  if (v === 3) { config.stop = true }
-  if (v === 1) return ++acc
-  return acc
-}, 0))
+// console.log(transform(a, (config, acc, v) => {
+//   if (v === 3) { config.stop = true }
+//   if (v === 1) return ++acc
+//   return acc
+// }, 0))
