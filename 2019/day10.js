@@ -73,4 +73,44 @@ const detects = asteroids.map(a => {
 })
 
 const maxId = indexOf(detects.map(v => v.length), 'max')
-console.log('Day 10/1:', asteroids[maxId], detects[maxId])
+const c = asteroids[maxId]
+const targets = detects[maxId]
+console.log('Day 10/1:', c, targets)
+
+const radials = targets.map(targetId => {
+  const t = asteroids[targetId]
+  let radial = Math.atan2(1, 0) - Math.atan2(c.y - t.y, t.x - c.x)
+  if (radial < 0) { radial += 2 * Math.PI; }
+  const angle = radial * 180 / Math.PI
+  // console.log(targetId, t.x, t.y, t.x - c.x, c.y - t.y, angle)
+  return angle
+})
+
+console.log('Day 10/2:')
+
+let killed = 0
+do {
+  killed++
+  const minIndex = indexOf(radials)
+  const targetId = targets[minIndex]
+  const ast = asteroids[targetId]
+  console.log(killed, ast.x, ast.y, radials[minIndex])  
+  radials[minIndex] = 1000000000
+} while (killed < radials.length)
+
+// console.log(asteroids[83])
+
+// 3509 answer too high
+
+
+
+
+
+
+// const pos = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1],[0,1]]
+// const radials = pos.map(p => {
+//   let radial = - Math.atan2(p[1], p[0]) + Math.atan2(1, 0)
+//   if (radial < 0) { radial += 2 * Math.PI; }
+//   return radial * 180 / Math.PI
+// })
+// console.log(radials)
