@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day10.data')
+const raw = filereader.readFile('day10a.data')
 const indexOf = require('./utils/indexOf')
 
 const size = raw.length
@@ -43,10 +43,31 @@ const contacts = asteroids.map(c => {
 
 console.log('Day 10/1:', contacts[indexOf(contacts, 'max')])
 
+const vaporize = (centerIndex) => {
+  const c = asteroids[centerIndex]
+  
+  const radials = asteroids.map(t => {
+    if (c === t) return -1
+    return _radial(c, t)
+  })  
+
+  const sweeps = new Array(360).fill(0).reduce((list, _, deg) => {
+    const inRange = radials.reduce((acc, r, i) => {
+      if (r >= deg && r < deg + 1) acc.push(i)
+      return acc
+    }, [])
+    return list.concat(inRange)
+  }, [])
+
+  console.log(sweeps)
+}
+
+vaporize(8)
+
 // const output = grid.map(row => row.join('')).join('\n')
 
-// Case A, 8
-//
+// Case A, best position 8
+// Sweep order 516792340
 // .0..1
 // .....
 // 23456
