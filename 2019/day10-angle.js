@@ -56,7 +56,17 @@ const vaporize = (centerIndex) => {
       if (r >= deg && r < deg + 1) acc.push(i)
       return acc
     }, [])
-    return list.concat(inRange)
+    if (inRange.length) {
+      const dists = inRange.map(i => {
+        const t = asteroids[i]
+        return (t.x - c.x) * (t.x - c.x) +
+          (t.y - c.y) * (t.y - c.y)
+      })
+      const selected = inRange[indexOf(dists)]
+      list.push(selected)
+      radials[selected] = -1
+    }
+    return list
   }, [])
 
   console.log(sweeps)
