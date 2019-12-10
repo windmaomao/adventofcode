@@ -3,6 +3,7 @@
 ```
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
+ 10   04:18:23   3801      0   05:41:17   2452      0
   9   01:45:38   2096      0   01:47:26   2067      0
   8   01:21:21   3168      0   01:38:31   2859      0
   7   00:40:14   1484      0   02:45:02   1763      0
@@ -102,3 +103,10 @@ This time, it ommitted some details and asked you figure them out. For instance,
 
 - Pay attention to question details, read slow
 - Print out key step and make them clear and clean
+
+## Day 10
+
+Waked up at 2am, and found the question a bit difficult to finish quickly. It took me pretty long to finish it, the lesson learned
+
+- Vital parameter is the mostly effective way, try derive one early one
+- Debug on middle result early and print out often
