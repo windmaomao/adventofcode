@@ -2,28 +2,21 @@ const filereader = require('./utils/filereader')
 const raw = filereader.readFile('day11.data', ',', true)
 const intcode = require('./day11_intcode')
 
-// The robot needs to be able to move around on the grid of square panels on the side of your ship, detect the color of its current panel, and paint its current panel black or white. (All of the panels are currently black.)
-
-const nextDir = (d, turn) => {
-  if (d === 'n' && turn === 0) return 'w'
-  if (d === 'n' && turn === 1) return 'e'
-  if (d === 'w' && turn === 0) return 's'
-  if (d === 'w' && turn === 1) return 'n'
-  if (d === 's' && turn === 0) return 'e'
-  if (d === 's' && turn === 1) return 'w'
-  if (d === 'e' && turn === 0) return 'n'
-  if (d === 'e' && turn === 1) return 's'
-  console.log('WRONG', d, turn)
+const nextMap = {
+  'n0': 'w', 'n1': 'e',
+  'w0': 's', 'w1': 'n',
+  's0': 'e', 's1': 'w',
+  'e0': 'n', 'e1': 's',
+}
+const dirMap = {
+  'n': { x: 0, y: 1 },
+  'e': { x: 1, y: 0 },
+  's': { x: 0, y: -1 },
+  'w': { x: -1, y: 0 },
 }
 
-const dirPos = d => {
-  if (d === 'n') return {x: 0, y: 1}
-  if (d === 'e') return { x: 1, y: 0 }
-  if (d === 's') return { x: 0, y: -1 }
-  if (d === 'w') return { x: -1, y: 0 }
-  console.log('WRONG')
-}
-
+const nextDir = (d, turn) => nextMap[`${d}${turn}`]
+const dirPos = d => dirMap[d]
 const nextPos = (p, dir) => {
   const dp = dirPos(dir)
   return {x: p.x + dp.x, y: p.y + dp.y}
