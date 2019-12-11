@@ -17,7 +17,6 @@ const intcode = (arr, signal, ops) => {
   let done = false
   let relative = 0
   let output = signal
-  const stream = []
 
   const _v = (arr, pos) => pos < arr.length ? (
     arr[pos] === undefined ? 0 : arr[pos]
@@ -64,12 +63,12 @@ const intcode = (arr, signal, ops) => {
     }
   } while (!done)
 
-  return stream
+  return output
 }
 
 //10448 not right
 
-const insts = intcode(raw, 0, { output: false})
+const insts = intcode(raw, 0, { output: false, once: true})
 const pairs = chunk(insts, 2)
 
 const nextDir = (d, turn) => {
@@ -81,7 +80,7 @@ const nextDir = (d, turn) => {
   if (d === 's' && turn === 1) return 'w'
   if (d === 'e' && turn === 0) return 'n'
   if (d === 'e' && turn === 1) return 's'
-  console.log('WRONG')
+  console.log('WRONG', d, turn)
 }
 
 const dirPos = d => {
@@ -98,15 +97,30 @@ const nextPos = (p, dir) => {
 }
 
 let p = {x: 0, y: 0}, dir = 'n'
-pairs.reduce((acc, ins) => {
-  // paint ins[0] at p
-  acc.push(p)
-  // turn 
-  dir = nextDir(dir, ins[1])
-  // move
-  p = nextPos(p, dir)
-  console.log(dir, p)
+const painted = pairs.reduce((acc, ins) => {
+  if (ins[1] <= 1) {
+    // paint ins[0] at p
+    acc.push(p)
+    // console.log(p)
+    // turn 
+    dir = nextDir(dir, ins[1])
+    // console.log(dir)
+    // move
+    p = nextPos(p, dir)
+  }
   return acc
 }, [])
 
+const map = new Map();
+for (const pos of painted) {
+  const key = pos.x + ',' + pos.y
+  if (!map.has(key)) {
+    map.set(key, true)
+  }
+}
+
+console.log(map.size)
+
 // 0 black., 1 white; 0# left, 1 right
+
+// That's not the right answer. Curiously, it's the right answer for someone else; you might be logged in to the wrong account or just unlucky.In any case, you need to be using your puzzle input.If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.Please wait one minute before trying again. (You guessed 2093.)[Return to Day 11]
