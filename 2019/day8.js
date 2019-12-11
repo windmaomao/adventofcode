@@ -27,7 +27,8 @@ const pixProcessed = pixes.map((_, pixId) => {
 })
 const pixRows = chunk(pixProcessed, width).map(arr => arr.join(''))
 
-console.log('Day 8/2:', pixRows)
+console.log('Day 8/2:')
+console.log(pixRows.join('\n'))
 
 // const size = 25*6
 // const chunkTotal = str.length / size

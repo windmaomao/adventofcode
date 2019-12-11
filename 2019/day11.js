@@ -1,6 +1,7 @@
 const filereader = require('./utils/filereader')
 const raw = filereader.readFile('day11.data', ',', true)
 const intcode = require('./day11_intcode')
+const plot = require('./utils/plot')
 
 const nextMap = {
   'n0': 'w', 'n1': 'e',
@@ -26,9 +27,7 @@ const nextPos = (p, dir) => {
 
 const paintBoard = (data, mode) => {
   let print = false, once = true, i = 0, relative = 0, done = false
-  let res, p = { x: 16, y: 9 }, dir = 'n', map = new Map()
-  const max = { x: 100, y: 100 }
-  const arr = new Array(max.y).fill(0).map(item => new Array(max.x).fill(' '))
+  let res, p = { x: 0, y: 0 }, dir = 'n', map = new Map()
   while (!done) {
     const key = p.x + ',' + p.y
     if (mode === 0) {
@@ -48,7 +47,7 @@ const paintBoard = (data, mode) => {
     done = res.done
     if (!done) {
       map.set(key, code0)
-      arr[p.y][p.x] = code0 ? '*' : ' '
+      // arr[p.y][p.x] = code0 ? '*' : ' '
       // console.log(p.x, p.y, painted, paint, map.size)
       // turn 
       dir = nextDir(dir, code1)
@@ -57,13 +56,25 @@ const paintBoard = (data, mode) => {
       p = nextPos(p, dir)
     }
   }
-  return {map, arr}
+  return map
 }
 
 const day111 = paintBoard([...raw], 0)
-console.log('Day 11/1:', day111.map.size)
+console.log('Day 11/1:', day111.size)
 const day112 = paintBoard([...raw], 1)
-const picture = day112.arr.map(row => row.join('')).reverse().join('\n')
-console.log(picture)
+
+const dots = []
+for (const [k, v] of day112.entries()) {
+  if (v) {
+    const parts = k.split(',')
+    dots.push({ 
+      x: parseInt(parts[0]), 
+      y: parseInt(parts[1])
+    })
+  }
+}
+const picture = plot(dots, '*', ' ')
+console.log('Day 11/2:', picture.bound)
+console.log(picture.drawing)
 
 // 0 black., 1 white; 0# left, 1 right
