@@ -17,6 +17,7 @@ const intcode = (arr, signal, ops) => {
   let done = false
   let relative = 0
   let output = signal
+  let stream = []
 
   const _v = (arr, pos) => pos < arr.length ? (
     arr[pos] === undefined ? 0 : arr[pos]
@@ -52,7 +53,10 @@ const intcode = (arr, signal, ops) => {
       case 1: sto(3, val(1, f1) + val(2, f2), f3); inc(4); break
       case 2: sto(3, val(1, f1) * val(2, f2), f3); inc(4); break
       case 3: sto(1, output, f1); inc(2); break
-      case 4: prt(val(1, f1)); inc(2); break
+      case 4: 
+        prt(val(1, f1)); inc(2); 
+        if (stream.length===2) done = true
+      break
       case 5: val(1, f1) ? inc(val(2, f2), 1) : inc(3); break
       case 6: !val(1, f1) ? inc(val(2, f2), true) : inc(3); break
       case 7: sto(3, val(1, f1) < val(2, f2) ? 1 : 0, f3); inc(4); break
@@ -63,13 +67,12 @@ const intcode = (arr, signal, ops) => {
     }
   } while (!done)
 
-  return output
+  return stream
 }
 
 //10448 not right
 
-const insts = intcode(raw, 0, { output: false, once: true})
-const pairs = chunk(insts, 2)
+// The robot needs to be able to move around on the grid of square panels on the side of your ship, detect the color of its current panel, and paint its current panel black or white. (All of the panels are currently black.)
 
 const nextDir = (d, turn) => {
   if (d === 'n' && turn === 0) return 'w'
@@ -96,30 +99,25 @@ const nextPos = (p, dir) => {
   return {x: p.x + dp.x, y: p.y + dp.y}
 }
 
-let p = {x: 0, y: 0}, dir = 'n'
-const painted = pairs.reduce((acc, ins) => {
+let p = {x: 0, y: 0}, dir = 'n', acc =[], map = new Map(), key, paint = 0
+do {
+  key = p.x + ',' + p.y
+  const painted = map.has(key) ? map.get(key) : 0
+  const ins = intcode(raw, painted, { once: true })
+  console.log(ins)
   if (ins[1] <= 1) {
-    // paint ins[0] at p
+    // paint 
     acc.push(p)
-    // console.log(p)
+    paint = ins[0]
+    map.set(key, paint)
+    console.log(p.x, p.y, painted, paint, map.size)
     // turn 
     dir = nextDir(dir, ins[1])
-    // console.log(dir)
+    console.log(dir)
     // move
     p = nextPos(p, dir)
   }
-  return acc
-}, [])
-
-const map = new Map();
-for (const pos of painted) {
-  const key = pos.x + ',' + pos.y
-  if (!map.has(key)) {
-    map.set(key, true)
-  }
-}
-
-console.log(map.size)
+} while (ins[1] > 1)
 
 // 0 black., 1 white; 0# left, 1 right
 
