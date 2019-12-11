@@ -104,9 +104,9 @@ const arr = new Array(max.y).fill(0).map(item => new Array(max.x).fill(' '))
 do {
   key = p.x + ',' + p.y
   painted = map.get(key) || 1
-  res = intcode(raw, 1, { once: true, i, relative, output: true, verbose: true })
+  res = intcode(raw, 1, { once: true, i, relative })
   i = res[0]; ins[0] = res[1]; relative = res[2]
-  res = intcode(raw, ins[0], { once: true, i, relative, output: true, verbose: true })
+  res = intcode(raw, ins[0], { once: true, i, relative })
   i = res[0]; ins[1] = res[1]; relative = res[2]
   // console.log(ins[0], ins[1], i)
   if (ins[1] <= 1) {
@@ -116,7 +116,7 @@ do {
     acc.push(p)
     paint = ins[0]
     map.set(key, paint)
-    arr[p.y][p.x] = !paint ? '*' : ' '
+    arr[p.y][p.x] = paint ? '*' : ' '
     // console.log(p.x, p.y, painted, paint, map.size)
     // turn 
     dir = nextDir(dir, ins[1])
