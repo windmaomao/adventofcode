@@ -16,7 +16,7 @@ const lowId = indexOf(s0)
 const s1 = pics.map(arr => count(arr, '1'))
 const s2 = pics.map(arr => count(arr, '2'))
 
-console.log('Day 9/1:', s1[lowId] * s2[lowId])
+console.log('Day 8/1:', s1[lowId] * s2[lowId])
 
 const pixes = Array(size).fill(0)
 const pixProcessed = pixes.map((_, pixId) => {
@@ -27,7 +27,7 @@ const pixProcessed = pixes.map((_, pixId) => {
 })
 const pixRows = chunk(pixProcessed, width).map(arr => arr.join(''))
 
-console.log('Day 9/2:', pixRows)
+console.log('Day 8/2:', pixRows)
 
 // const size = 25*6
 // const chunkTotal = str.length / size
