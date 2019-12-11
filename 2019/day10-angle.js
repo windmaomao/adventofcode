@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day10e.data')
+const raw = filereader.readFile('day10.data')
 const indexOf = require('./utils/indexOf')
 
 const PLOT = 0
@@ -58,6 +58,7 @@ const vaporize = (c) => {
   const TOTAL = Math.round(360.0/FRACT)
   let sweeps = [], count = 0
   do {
+    console.log('SWEEP')
     sweeps = new Array(TOTAL).fill(0).reduce((list, _, deg) => {
       const inRange = radials.reduce((acc, r, i) => {
         if (r >= FRACT* deg && r < FRACT*(deg + 1)) acc.push(i)
