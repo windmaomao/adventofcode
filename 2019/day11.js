@@ -16,9 +16,8 @@ const dirMap = {
 }
 
 const nextDir = (d, turn) => nextMap[`${d}${turn}`]
-const dirPos = d => dirMap[d]
 const nextPos = (p, dir) => {
-  const dp = dirPos(dir)
+  const dp = dirMap[dir]
   return {x: p.x + dp.x, y: p.y + dp.y}
 }
 
@@ -40,7 +39,7 @@ while (!done) {
     paint = ins[0]
     map.set(key, paint)
     arr[p.y][p.x] = paint ? '*' : ' '
-    // console.log(p.x, p.y, painted, paint, map.size)
+    console.log(p.x, p.y, painted, paint, map.size)
     // turn 
     dir = nextDir(dir, ins[1])
     // console.log(dir)
