@@ -21,18 +21,18 @@ const nextPos = (p, dir) => {
   return {x: p.x + dp.x, y: p.y + dp.y}
 }
 
-let INIT = 1, print = false, once = true, i = 0, relative = 0, done = false, res
+let INIT = 0, print = false, once = true, i = 0, relative = 0, done = false, res
 let p = {x: 16, y: 9}, dir = 'n', acc =[], map = new Map(), key, paint = 0, ins = [0, 0]
-const max = { x: 100, y: 60 }
+const max = { x: 100, y: 100 }
 const arr = new Array(max.y).fill(0).map(item => new Array(max.x).fill(' '))
 while (!done) {
   key = p.x + ',' + p.y
   painted = map.get(key) || INIT
-  res = intcode(raw, { once, print, output: INIT, i, relative })
+  res = intcode(raw, { once, print, output: painted, i, relative })
   i = res.i; ins[0] = res.output; relative = res.relative
   res = intcode(raw, { once, print, output: ins[0], i, relative })
   i = res.i; ins[1] = res.output; relative = res.relative
-  // console.log(ins[0], ins[1], i)
+  console.log(ins[0], ins[1], i)
   done = res.done
   if (!done) {
     acc.push(p)

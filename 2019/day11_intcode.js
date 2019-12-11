@@ -43,6 +43,7 @@ const intcode = (arr, ops) => {
 
   const sav = () => {
     if (!options.once) return false
+    done = output === 99
     const op2 = Object.assign({}, options, { i, output, relative, done })
     options.print && console.log(op2)
     return op2
