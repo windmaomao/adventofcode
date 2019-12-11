@@ -22,32 +22,28 @@ const nextPos = (p, dir) => {
 }
 
 const paintBoard = (data, INIT) => {
-  let print = false, once = true, i = 0, relative = 0, done = false, res
-  let p = { x: 16, y: 9 }, dir = 'n', acc = [], map = new Map(), key, paint = 0, ins = [0, 0]
+  let print = false, once = true, i = 0, relative = 0, done = false
+  let res, p = { x: 16, y: 9 }, dir = 'n', map = new Map()
   const max = { x: 100, y: 100 }
   const arr = new Array(max.y).fill(0).map(item => new Array(max.x).fill(' '))
   while (!done) {
-    key = p.x + ',' + p.y
+    const key = p.x + ',' + p.y
     painted = map.get(key) || INIT
     res = intcode(data, { once, print, output: painted, i, relative })
-    i = res.i; ins[0] = res.output; relative = res.relative
-    res = intcode(data, { once, print, output: ins[0], i, relative })
-    i = res.i; ins[1] = res.output; relative = res.relative
+    i = res.i; code0 = res.output; relative = res.relative
+    res = intcode(data, { once, print, output: code0, i, relative })
+    i = res.i; code1 = res.output; relative = res.relative
     // console.log(ins[0], ins[1], i)
     done = res.done
     if (!done) {
-      acc.push(p)
-      paint = ins[0]
-      map.set(key, paint)
-      arr[p.y][p.x] = paint ? '*' : ' '
+      map.set(key, code0)
+      arr[p.y][p.x] = code0 ? '*' : ' '
       // console.log(p.x, p.y, painted, paint, map.size)
       // turn 
-      dir = nextDir(dir, ins[1])
+      dir = nextDir(dir, code1)
       // console.log(dir)
       // move
       p = nextPos(p, dir)
-    } else {
-      done = true
     }
   }
   return {map, arr}
@@ -55,8 +51,8 @@ const paintBoard = (data, INIT) => {
 
 const day111 = paintBoard([...raw], 0)
 console.log('Day 11/1:', day111.map.size)
-const day112 = paintBoard([...raw], 1)
-const picture = day112.arr.map(row => row.join('')).reverse().join('\n')
-console.log(picture)
+// const day112 = paintBoard([...raw], 1)
+// const picture = day112.arr.map(row => row.join('')).reverse().join('\n')
+// console.log(picture)
 
 // 0 black., 1 white; 0# left, 1 right
