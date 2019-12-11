@@ -2,11 +2,12 @@
 
 ## Types
 
-R - Recursive, I - Intcode, C - Counting
+C - Counting, H - Hashmap, I - Intcode
 
                   1 1 1 1 1 1 1 1
 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
-R I C C I R I C I C
+C I H C I H I C I H
+    C     C       C
 
 ## Stats
 
