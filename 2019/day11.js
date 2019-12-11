@@ -21,6 +21,9 @@ const nextPos = (p, dir) => {
   return {x: p.x + dp.x, y: p.y + dp.y}
 }
 
+// Mode 0 - no relative, check painted before move
+// Mode 1 - relative, assume white background before
+
 const paintBoard = (data, INIT) => {
   let print = false, once = true, i = 0, relative = 0, done = false
   let res, p = { x: 16, y: 9 }, dir = 'n', map = new Map()
@@ -29,9 +32,9 @@ const paintBoard = (data, INIT) => {
   while (!done) {
     const key = p.x + ',' + p.y
     painted = map.get(key) || INIT
-    res = intcode(data, { once, print, output: painted, i, relative })
+    res = intcode(data, { once, print, output: painted, i, relative: !INIT ? 0 : relative})
     i = res.i; code0 = res.output; relative = res.relative
-    res = intcode(data, { once, print, output: code0, i, relative })
+    res = intcode(data, { once, print, output: code0, i, relative: !INIT ? 0 : relative})
     i = res.i; code1 = res.output; relative = res.relative
     // console.log(ins[0], ins[1], i)
     done = res.done
