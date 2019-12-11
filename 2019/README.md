@@ -6,14 +6,16 @@ C - Counting, H - Hashmap, I - Intcode
 
                   1 1 1 1 1 1 1 1
 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
-C I H C I H I C I H
-    C     C       C
+C I H C I H I C I H I
+    C     C       C H
+                    C 
 
 ## Stats
 
 ```
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
+ 11   01:25:46   1996      0   02:41:58   2537      0
  10   04:18:23   3801      0   05:41:17   2452      0
   9   01:45:38   2096      0   01:47:26   2067      0
   8   01:21:21   3168      0   01:38:31   2859      0
@@ -121,3 +123,10 @@ Waked up at 2am, and found the question a bit difficult to finish quickly. It to
 
 - Vital parameter is the mostly effective way, try derive one early one
 - Debug on middle result early and print out often
+
+## Day 11
+
+Fully prepared for it, however ended with long time spent on debugging for second part, lesson learned
+
+- Refactor your code, make sure interface is precise 
+- When not working, debug it through

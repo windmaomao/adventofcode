@@ -7,6 +7,7 @@ const defaultOptions = {
   once: false,
   i: 0,
   prev: 0,
+  relative: 0,
   output: false,
   verbose: false
 }
@@ -15,7 +16,7 @@ const intcode = (arr, signal, ops) => {
   const options = Object.assign({}, defaultOptions, ops)
   let i = options.i 
   let done = false
-  let relative = 0
+  let relative = options.relative
   let output = signal
 
   const _v = (arr, pos) => pos < arr.length ? (
@@ -53,14 +54,14 @@ const intcode = (arr, signal, ops) => {
       case 3: sto(1, output, f1); inc(2); break
       case 4: 
         prt(val(1, f1)); inc(2); 
-        if (options.once) return [i, output]; 
+        if (options.once) return [i, output, relative]; 
       break
       case 5: val(1, f1) ? inc(val(2, f2), 1) : inc(3); break
       case 6: !val(1, f1) ? inc(val(2, f2), true) : inc(3); break
       case 7: sto(3, val(1, f1) < val(2, f2) ? 1 : 0, f3); inc(4); break
       case 8: sto(3, val(1, f1) === val(2, f2) ? 1 : 0, f3); inc(4); break
       case 9: rel(val(1, f1)); inc(2); break
-      default: console.log('Wrong code', bp)
+      default: console.log('Wrong code', bp); return 99;
       case 99: done = true; break;
     }
   } while (!done)
@@ -97,21 +98,26 @@ const nextPos = (p, dir) => {
   return {x: p.x + dp.x, y: p.y + dp.y}
 }
 
-let p = {x: 0, y: 0}, dir = 'n', acc =[], map = new Map(), key, paint = 0, done = false, i=0, ins = [0, 0], painted = 0, res
+let p = {x: 16, y: 9}, dir = 'n', acc =[], map = new Map(), key, paint = 0, done = false, i=0, ins = [0, 0], painted = 0, res, first = true, relative = 0
+const max = { x: 100, y: 60 }
+const arr = new Array(max.y).fill(0).map(item => new Array(max.x).fill(' '))
 do {
   key = p.x + ',' + p.y
-  painted = map.get(key) || 0
-  res = intcode(raw, painted, { once: true, i })
-  i = res[0]; ins[0] = res[1]
-  res = intcode(raw, painted, { once: true, i })
-  i = res[0]; ins[1] = res[1]
+  painted = map.get(key) || 1
+  res = intcode(raw, 1, { once: true, i, relative, output: true, verbose: true })
+  i = res[0]; ins[0] = res[1]; relative = res[2]
+  res = intcode(raw, ins[0], { once: true, i, relative, output: true, verbose: true })
+  i = res[0]; ins[1] = res[1]; relative = res[2]
   // console.log(ins[0], ins[1], i)
   if (ins[1] <= 1) {
     // paint 
+    // if (p.x > max.x) { max.x = p.x }
+    // if (p.y > max.y) { max.y = p.y }
     acc.push(p)
     paint = ins[0]
     map.set(key, paint)
-    console.log(p.x, p.y, painted, paint, map.size)
+    arr[p.y][p.x] = !paint ? '*' : ' '
+    // console.log(p.x, p.y, painted, paint, map.size)
     // turn 
     dir = nextDir(dir, ins[1])
     // console.log(dir)
@@ -123,6 +129,8 @@ do {
 } while (!done)
 
 console.log(map.size)
+const picture = arr.map(row => row.join('')).reverse().join('\n')
+console.log(picture)
 
 // 0 black., 1 white; 0# left, 1 right
 
