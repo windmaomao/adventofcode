@@ -13,11 +13,10 @@ const defaultOptions = {
 
 const intcode = (arr, signal, ops) => {
   const options = Object.assign({}, defaultOptions, ops)
-  let i = 0
+  let i = options.i 
   let done = false
   let relative = 0
   let output = signal
-  let stream = []
 
   const _v = (arr, pos) => pos < arr.length ? (
     arr[pos] === undefined ? 0 : arr[pos]
@@ -36,7 +35,6 @@ const intcode = (arr, signal, ops) => {
   const prt = v => {
     output = v;
     options.output && console.log('Output', v)
-    stream.push(v)
   }
 
   const rel = dif => {
@@ -55,7 +53,7 @@ const intcode = (arr, signal, ops) => {
       case 3: sto(1, output, f1); inc(2); break
       case 4: 
         prt(val(1, f1)); inc(2); 
-        if (stream.length===2) done = true
+        if (options.once) return [i, output]; 
       break
       case 5: val(1, f1) ? inc(val(2, f2), 1) : inc(3); break
       case 6: !val(1, f1) ? inc(val(2, f2), true) : inc(3); break
@@ -67,7 +65,7 @@ const intcode = (arr, signal, ops) => {
     }
   } while (!done)
 
-  return stream
+  return 99
 }
 
 //10448 not right
@@ -99,12 +97,15 @@ const nextPos = (p, dir) => {
   return {x: p.x + dp.x, y: p.y + dp.y}
 }
 
-let p = {x: 0, y: 0}, dir = 'n', acc =[], map = new Map(), key, paint = 0
+let p = {x: 0, y: 0}, dir = 'n', acc =[], map = new Map(), key, paint = 0, done = false, i=0, ins = [0, 0], painted = 0, res
 do {
   key = p.x + ',' + p.y
-  const painted = map.has(key) ? map.get(key) : 0
-  const ins = intcode(raw, painted, { once: true })
-  console.log(ins)
+  painted = map.get(key) || 0
+  res = intcode(raw, painted, { once: true, i })
+  i = res[0]; ins[0] = res[1]
+  res = intcode(raw, painted, { once: true, i })
+  i = res[0]; ins[1] = res[1]
+  // console.log(ins[0], ins[1], i)
   if (ins[1] <= 1) {
     // paint 
     acc.push(p)
@@ -113,11 +114,15 @@ do {
     console.log(p.x, p.y, painted, paint, map.size)
     // turn 
     dir = nextDir(dir, ins[1])
-    console.log(dir)
+    // console.log(dir)
     // move
     p = nextPos(p, dir)
+  } else {
+    done = true
   }
-} while (ins[1] > 1)
+} while (!done)
+
+console.log(map.size)
 
 // 0 black., 1 white; 0# left, 1 right
 
