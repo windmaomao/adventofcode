@@ -7,19 +7,19 @@ const filereader = require('./utils/filereader')
 //   { p: { x: 13, y: -3, z: 0 }, v: { x: 0, y: 0, z: 0 }}
 // ]
 
-// const items = [
-//   { p: [16,-8,13], v: [0,0,0] },
-//   { p: [4,10,10],  v: [0,0,0] },
-//   { p: [17,-5,6],  v: [0,0,0] },
-//   { p: [13,-3,0],  v: [0,0,0] }
-// ]
-
 const items = [
-  { p: [-1, 0, 2], v: [0, 0, 0] },
-  { p: [2, -10, -7], v: [0, 0, 0] },
-  { p: [4, -8, 8], v: [0, 0, 0] },
-  { p: [3, 5, -1], v: [0, 0, 0] }
+  { p: [16, -8, 13], v: [0, 0, 0], e: 0 },
+  { p: [4, 10, 10], v: [0, 0, 0], e: 0 },
+  { p: [17, -5, 6], v: [0, 0, 0], e: 0 },
+  { p: [13, -3, 0], v: [0, 0, 0], e: 0 }
 ]
+
+// const items = [
+//   { p: [-1, 0, 2], v: [0, 0, 0], e: 0 },
+//   { p: [2, -10, -7], v: [0, 0, 0], e: 0 },
+//   { p: [4, -8, 8], v: [0, 0, 0], e: 0 },
+//   { p: [3, 5, -1], v: [0, 0, 0], e: 0 }
+// ]
 
 const _zero = () => ([0,0,0])
 
@@ -41,10 +41,16 @@ const _plus = (p1, p2) => ([
   p2[2] + p1[2],
 ])
 
-let done = false, step = 1
+const _sum = p => (
+  Math.abs(p[0]) + 
+  Math.abs(p[1]) + 
+  Math.abs(p[2])
+)
 
-while (step < 11) {
-  console.log('STEP', step)
+let done = false, step = 0, total = 1000
+
+while (step < total) {
+  console.log('STEP', step + 1)
   const v = new Array(4).fill(_zero())
   items.forEach((i, ii) => {
     items.forEach((j, jj) => {
@@ -56,15 +62,20 @@ while (step < 11) {
     })
   })
   items.forEach((i, ii) => {
-    console.log(v[ii])
+    // console.log(v[ii])
     i.v = _plus(i.v, v[ii])
     i.p = _plus(i.p, i.v)
-  })
-  items.forEach((i, ii) => {
-    console.log(i.p)
   })
 
   step++
 }
 
-console.log('Day 12/1:', true)
+items.forEach((i, ii) => {
+  console.log(i.p)
+  i.e = _sum(i.p) * _sum(i.v)
+  console.log(i.e)
+})
+
+const energy = items.reduce((acc, i) => acc + i.e, 0)
+
+console.log('Day 12/1:', energy)
