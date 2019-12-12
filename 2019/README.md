@@ -2,14 +2,15 @@
 
 ## Types
 
-C - Count, H - Hashmap, I - Intcode, P - Position
+H - Hashmap, I - Intcode, P - Position, R - Recursive, F - Filter
 
                   1 1 1 1 1 1 1 1
 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
-C C C C C C C C C C C C
+    F F     F F F F F 
     H     H       H H 
   I     I   I   I   I
     P         P   P P 
+R         R           
 
 ## Stats
 
