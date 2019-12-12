@@ -1,16 +1,16 @@
-const items = [
-  { p: [16, -8, 13], v: [0, 0, 0], e: 0 },
-  { p: [4, 10, 10], v: [0, 0, 0], e: 0 },
-  { p: [17, -5, 6], v: [0, 0, 0], e: 0 },
-  { p: [13, -3, 0], v: [0, 0, 0], e: 0 }
-]
-
 // const items = [
-//   { p: [-1, 0, 2], v: [0, 0, 0], e: 0 },
-//   { p: [2, -10, -7], v: [0, 0, 0], e: 0 },
-//   { p: [4, -8, 8], v: [0, 0, 0], e: 0 },
-//   { p: [3, 5, -1], v: [0, 0, 0], e: 0 }
+//   { p: [16, -8, 13], v: [0, 0, 0], e: 0 },
+//   { p: [4, 10, 10], v: [0, 0, 0], e: 0 },
+//   { p: [17, -5, 6], v: [0, 0, 0], e: 0 },
+//   { p: [13, -3, 0], v: [0, 0, 0], e: 0 }
 // ]
+
+const items = [
+  { p: [-1, 0, 2], v: [0, 0, 0], e: 0 },
+  { p: [2, -10, -7], v: [0, 0, 0], e: 0 },
+  { p: [4, -8, 8], v: [0, 0, 0], e: 0 },
+  { p: [3, 5, -1], v: [0, 0, 0], e: 0 }
+]
 
 items.forEach(i => {
   i['po'] = [...(i.p)]
@@ -74,38 +74,22 @@ while (!done) {
     v[ii] = _plus(v[ii], sign)
     v[jj] = _minus(v[jj], sign)
   })
-  // items.forEach((i, ii) => {
-  //   items.forEach((j, jj) => {
-  //     if (ii < jj) {
-  //       const sign = _sign(_minus(items[jj].p, items[ii].p))
-  //       v[ii] = _plus(v[ii], sign)
-  //       v[jj] = _minus(v[jj], sign)
-  //       // const sign = _sign(_minus(j.p, i.p))
-  //       // v[ii] = _plus(v[ii], sign)
-  //     }
-  //   })
-  // })
 
   items.forEach((i, ii) => {
     i.v = _plus(i.v, v[ii])
+    // console.log(i.v)
     i.p = _plus(i.p, i.v)
   })
 
   done = _total() == initial
   if (done) {
-    console.log('Match', step)
+    console.log('Match', step + 1)
     done = items.reduce((acc, i) => acc && _same(i.p, i.po), true)
   }
 
   if (step % 10000000 == 0) console.log('Step', step)
-
   step++
 }
 
 console.log('Day 12/1:', _total())
-
-items.forEach((i) => {
-  console.log(i.p)
-})
-
 console.log('Day 12/2:', step)
