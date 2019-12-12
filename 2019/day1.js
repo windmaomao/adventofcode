@@ -9,13 +9,8 @@ console.log('Day 1/1 - Fuel:', modules
 )
 
 const totalFuelCalc = mass => {
-  let fuel = 0
   let current = fuelCalc(mass)
-  while (current > 0) {
-    fuel += current
-    current = fuelCalc(current)
-  }
-  return fuel
+  return current < 0 ? 0 : current + totalFuelCalc(current)
 }
 
 console.log('Day 1/2 - Fuel:', modules
