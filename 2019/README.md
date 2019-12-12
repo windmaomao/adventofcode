@@ -2,21 +2,23 @@
 
 ## Types
 
-H - Hashmap, I - Intcode, P - Position, R - Recursive, F - Filter
+H - Hashmap, I - Intcode, P - Position, R - Recursive, F - Filter, M - Math
 
                   1 1 1 1 1 1 1 1
 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
-    F F     F F F F F 
-    H     H       H H 
-  I     I   I   I   I
-    P         P   P P 
-R         R           
+    F F     F F F F F   
+    H     H       H H   
+  I     I   I   I   I   
+    P         P   P P P 
+    M             M   M 
+R         R             
 
 ## Stats
 
 ```
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
+ 12   00:41:04   1409      0   03:09:37   1579      0
  11   01:25:46   1996      0   02:41:58   2537      0
  10   04:18:23   3801      0   05:41:17   2452      0
   9   01:45:38   2096      0   01:47:26   2067      0
