@@ -4,14 +4,14 @@
 
 H - Hashmap, I - Intcode, P - Position, R - Recursive, F - Filter, M - Math
 
-                  1 1 1 1 1 1 1 1
-1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
-    F F     F F F F F   
-    H     H       H H   
-  I     I   I   I   I   
-    P         P   P P P 
-    M             M   M 
-R         R             
+         1111111111222222
+1234567890123456789012345
+  FF  FFFFF              
+  H  H   HH              
+ I  I I I I              
+  P    P PPP             
+  M      M M             
+R    R                  
 
 ## Stats
 
