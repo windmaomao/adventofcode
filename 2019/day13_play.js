@@ -4,7 +4,7 @@ const tile = [' ', '|', 'B', '_', 'o']
 const play = (data, board) => {
   let {
     done, once, print, output, i, relative,
-    score, pos, ball, bar, auto
+    score, pos, ball, bar
   } = board
 
   while (!done) {
@@ -24,9 +24,6 @@ const play = (data, board) => {
     if (tileId === 4) {
       return { once, print, output, i, relative, score, pos, ball, bar }
     }
-    // if (auto) {
-    //   output = Math.sign(ball.x - bar.x)
-    // }
 
     done = res.done
   }
