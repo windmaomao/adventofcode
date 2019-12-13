@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "nodemon --exec babel-node 2019/index.js",
+    "2015": "nodemon --exec babel-node 2015/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
