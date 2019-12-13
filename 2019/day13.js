@@ -4,12 +4,11 @@ const intcode = require('./day11_intcode')
 const debug = require('debug')('day13:')
 
 const tile = [' ', '|', 'B', '_', 'o']
-const play = (data, board, input) => {
-  let { done } = board
-  // let count = 0, score = 0, pos = []
-  // let print = false, once = true, i = 0, relative = 0, done = false, output = 0
-  // let data = raw
-  let { once, print, output, i, relative, score, pos, ball, bar } = board
+const play = (data, board) => {
+  let { 
+    done, once, print, output, i, relative, 
+    score, pos, ball, bar 
+  } = board
 
   while (!done) {
     let res, x, y, tileId
@@ -25,31 +24,15 @@ const play = (data, board, input) => {
       return { once, print, output, i, relative, score, pos, ball, bar }
     }
 
-    // debug(x, y, tileId)
     pos[y][x] = tile[tileId]
-
-    if (tileId === 4) {
-      ball.x = x; ball.y = y
-      // debug('ball', ball)
-    }
-
-    if (tileId === 3) {
-      bar.x = x; bar.y = y
-      // debug('bar', ball)
-    }
+    if (tileId === 4) { ball.x = x; ball.y = y }
+    if (tileId === 3) { bar.x = x; bar.y = y }
 
     output = Math.sign(ball.x - bar.x)
-
-    // if (tileId >= 3) {
-    //   return { once, print, output, i, relative, score, pos, ball, bar }
-    // }
-
-
     done = res.done
   }
-  return { score, pos, count }
+  return { once, print, output, i, relative, score, pos, ball, bar }
 }
-
 
 // debug('Count', count)
 raw[0] = 2
