@@ -1,9 +1,12 @@
 let n = 20151125 
 let i = 1, j = 1, done = false
 
+const arr = []
+
 while (!done) {
 
   // console.log(i, j, n)
+  arr.push(n)
 
   if (i>1) {
     i--; j++
