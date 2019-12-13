@@ -119,16 +119,29 @@ raw[0] = 2
 const pos = new Array(21).fill(0).map(row => new Array(44).fill(' '))
 let board = { once: true, print: false, output: 0, i: 0, relative: 0, score: 0, done: false, pos }
 
-const move = (action) => {
-  board = play(raw, board, action)
-  const picture = pos.map(row => row.join('')).join('\n')
-  debug(picture)
-  debug('score', board.score)
-}
 
-const moves = [0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+const z = (n,v) => new Array(n).fill(v)
+const moves = [0, 
+  ...z(2, -1), 
+  ...z(6, 0), // 8 
+  ...z(4, 0), // 85, 77
+  ...z(12, -1), 
+  ...z(1, 0), // 158, 73
+  ...z(12, -1),
+  ...z(1, 0), // 228, 70,
+  ...z(12, -1),
+  ...z(4, 0), // 309, 81
+]
 
+let scores = [], prev= 0
 moves.forEach((m, i) => { 
-  move(m)
-  debug('move', i)
+  board = play(raw, board, m)
+  if (board.score > prev) {
+    prev = board.score
+    scores.push(prev)
+  }
 })
+const picture = pos.map(row => row.join('')).join('\n')
+debug(picture)
+debug('score', scores)
+
