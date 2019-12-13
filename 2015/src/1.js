@@ -1,4 +1,4 @@
-import raw from './input'
+import input from './utils/input'
 
 const _m = { '(': 1, ')': -1 }
 const floor = arr => arr.reduce((acc, a, i) => {
@@ -8,8 +8,8 @@ const floor = arr => arr.reduce((acc, a, i) => {
 }, 0)
 
 const day1 = () => {
-  console.log(floor(raw.split('')))
-  // console.log(raw.split('').length)
+  const raw = input('1', '')
+  console.log(floor(raw)) 
 }
 
 export default day1
