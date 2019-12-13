@@ -8,7 +8,7 @@ Vishal Chauhan, AVP, Pune, Automation Test, sent
 Xamfoo, Singapore
 Tibor Eszenyi, Zurich, Software Developer, sent(replied) 6am
 Mike Leneweit, Singapore, Security Execution, Zuhlke Group ?
-Big-Manitu 
+Big-Manitu Manikandan Kumar, Security Execution, Singapore
 Malte Hartwig, Singapore, Security Execution, Zuhlke Group, Advanced Software Engineer
 Fang Jin, Morrisville, AVP, Employee Compliance, Frontend developer, 12pm
 Kamil Pokladowski, AVP, Sales Service, Zurich, IT Project Manager/BA
