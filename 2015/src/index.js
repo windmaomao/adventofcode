@@ -1,8 +1,3 @@
-const readfile = require('./utils/readfile')
-const raw = require('./1/input') 
+import day from './1' 
 
-console.log(raw)
-const a = 2
-const b = [1,2]
-const [c] = b
-console.log(c)
+day()
