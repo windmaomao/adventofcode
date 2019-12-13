@@ -1,4 +1,4 @@
-import input from './utils/input'
+import { input } from './utils'
 
 const _m = { '(': 1, ')': -1 }
 const floor = arr => arr.reduce((acc, a, i) => {
