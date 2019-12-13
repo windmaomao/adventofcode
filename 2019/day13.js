@@ -1,6 +1,6 @@
 const filereader = require('./utils/filereader')
 const raw = filereader.readFile('day13.data', ',', true)
-const play = require('./day13_play')
+const intcode = require('./day13_intcode')
 const debug = require('debug')('day13:')
 
 const initBoard = () => {
@@ -10,6 +10,36 @@ const initBoard = () => {
     output: 0, i: 0, relative: 0, score: 0, done: false,
     pos, bar: { x: 0, y: 0 }, ball: { x: 0, y: 0 }
   }
+}
+
+const tile = [' ', '|', 'B', '_', 'o']
+const stepBoard = (data, board) => {
+  let {
+    done, once, print, output, i, relative,
+    score, pos, ball, bar
+  } = board
+
+  while (!done) {
+    let res, x, y, tileId
+    res = intcode(data, { once, print, output, i, relative })
+    i = res.i; x = res.output; relative = res.relative
+    res = intcode(data, { once, print, output, i, relative })
+    i = res.i; y = res.output; relative = res.relative
+    res = intcode(data, { once, print, output, i, relative })
+    i = res.i; tileId = res.output; relative = res.relative
+
+    if (x == -1 && y == 0) { score = tileId }
+    if (tileId === 4) { ball.x = x; ball.y = y }
+    if (tileId === 3) { bar.x = x; bar.y = y }
+    if (y > 0) pos[y][x] = tile[tileId]
+
+    if (tileId === 4) {
+      return { once, print, output, i, relative, score, pos, ball, bar }
+    }
+
+    done = res.done
+  }
+  return { once, print, output, i, relative, score, pos, ball, bar }
 }
 
 const plotBoard = (board) => {
@@ -30,7 +60,7 @@ const countBoard = (board, symbol) => {
 const raw1 = [...raw]
 const runBoard = (data) => {
   let board = initBoard()
-  board = play(data, board)
+  board = stepBoard(data, board)
   return board
 }
 
@@ -47,7 +77,7 @@ const runBoard2 = (data) => {
   ]
 
   moves.forEach(m => {
-    board = play(data, board)
+    board = stepBoard(data, board)
     board.output = m
   })
 
@@ -63,7 +93,7 @@ const runBoard2b = (data) => {
   let board = initBoard()
 
   do {
-    board = play(data, board)
+    board = stepBoard(data, board)
     board.output = Math.sign(board.ball.x - board.bar.x)
   } while (countBoard(board, 'B') > 0)
 
