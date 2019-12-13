@@ -16,13 +16,17 @@ const play = (data, board) => {
     res = intcode(data, { once, print, output, i, relative })
     i = res.i; tileId = res.output; relative = res.relative
 
+    if (x == -1 && y == 0) { score = tileId }
     if (tileId === 4) { ball.x = x; ball.y = y }
     if (tileId === 3) { bar.x = x; bar.y = y }
     if (y > 0) pos[y][x] = tile[tileId]
 
-    if (auto) {
-      output = Math.sign(ball.x - bar.x)
+    if (tileId === 4) {
+      return { once, print, output, i, relative, score, pos, ball, bar }
     }
+    // if (auto) {
+    //   output = Math.sign(ball.x - bar.x)
+    // }
 
     done = res.done
   }
