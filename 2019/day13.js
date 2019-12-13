@@ -2,8 +2,6 @@ const filereader = require('./utils/filereader')
 const raw = filereader.readFile('day13.data', ',', true)
 const debug = require('debug')('day13:')
 
-// print(raw) 
-
 const digits = require('./utils/digits')
 
 const defaultOptions = {
@@ -80,77 +78,57 @@ const intcode = (arr, ops) => {
   return sav()
 }
 
-// raw[0] = 2
-let count = 0, score = 0, pos = []
-let print = false, once = true, i = 0, relative = 0, done = false, output = 0
-let data = raw
-
-while (!done) {
-  let res, x, y, tileId
-  res = intcode(data, { once, print, output, i, relative })
-  i = res.i; x = res.output; relative = res.relative
-  res = intcode(data, { once, print, output, i, relative })
-  i = res.i; y = res.output; relative = res.relative
-  res = intcode(data, { once, print, output, i, relative })
-  i = res.i; tileId = res.output; relative = res.relative
-
-  if (x == -1 && y == 0) {
-    score = tileId
-  }
-
-  pos.push({ x, y, tileId })
-  // if (tileId == 2) count++ 
-
-
-  done = res.done
-}
-
-
-const MIN = -100000
-const MAX = 1000000
-
-const _init = () => ({ min: MAX, max: MIN })
 const tile = [' ', '|', 'B', '_', 'o']
+const play = (data, board, input) => {
+  let { done } = board
+  // let count = 0, score = 0, pos = []
+  // let print = false, once = true, i = 0, relative = 0, done = false, output = 0
+  // let data = raw
+  let { once, print, output, i, relative, score, pos } = board
 
-function plot(arr, FILL = '*', BLANK = ' ') {
-  const bound = arr.reduce((acc, p) => {
-    if (p.x < acc.x.min) acc.x.min = p.x
-    if (p.y < acc.y.min) acc.y.min = p.y
-    if (p.x > acc.x.max) acc.x.max = p.x
-    if (p.y > acc.y.max) acc.y.max = p.y
-    return acc
-  }, { x: _init(), y: _init() })
+  while (!done) {
+    let res, x, y, tileId
+    res = intcode(data, { once, print, output: input, i, relative })
+    i = res.i; x = res.output; relative = res.relative
+    res = intcode(data, { once, print, output, i, relative })
+    i = res.i; y = res.output; relative = res.relative
+    res = intcode(data, { once, print, output, i, relative })
+    i = res.i; tileId = res.output; relative = res.relative
 
-  const dx = -bound.x.min, dy = -bound.y.min
-  const xc = bound.x.max - bound.x.min + 1
-  const yc = bound.y.max - bound.y.min + 1
+    if (x == -1 && y == 0) {
+      score = tileId
+      return { once, print, output, i, relative, score, pos }
+    }
 
-  const pic = new Array(yc).fill(BLANK).map(_ => (
-    new Array(xc).fill(BLANK)
-  ))
+    // debug(x, y, tileId)
+    pos[y][x] = tile[tileId]
 
-  arr.forEach(p => {
-    const x = p.x + dx, y = p.y + dy
-    pic[y][x] = tile[p.tileId]
-  })
+    if (tileId >= 3) {
+      return { once, print, output, i, relative, score, pos }
+    }
 
-  const drawing = pic.map(row => row.join('')).join('\n')
 
-  return { pic, bound, drawing }
+    done = res.done
+  }
+  return { score, pos, count }
 }
+
 
 // debug('Count', count)
+raw[0] = 2
+const pos = new Array(21).fill(0).map(row => new Array(44).fill(' '))
+let board = { once: true, print: false, output: 0, i: 0, relative: 0, score: 0, done: false, pos }
 
-const picture = plot(pos)
-debug(picture.drawing)
+const move = (action) => {
+  board = play(raw, board, action)
+  const picture = pos.map(row => row.join('')).join('\n')
+  debug(picture)
+  debug('score', board.score)
+}
 
+const moves = [0, -1, -1]
 
-// 1 1 1 1 1 1 1 1 1 1 1 1 1  (0)
-// 1 0 0 0 0 0 0 0 0 0 0 0 1  (1)
-// 1 0 0 2 2 2 2 0 2 2 2 0 1
-// 1 0 2 2 0 0 2 0 0 0 2 0 1  (14)
-// 1 0 0 0 0 0 0 0 0 0 0 0 1  (15) 
-// 1        4               1  (16) 5 balls
-// 1 0 0 0 0 0 0 0 0 0 0 0 1
-// 1           3           1  (19) (22) 
-// 
+moves.forEach((m, i) => { 
+  move(m)
+  debug('move', i)
+})
