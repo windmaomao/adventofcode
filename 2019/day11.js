@@ -2,6 +2,7 @@ const filereader = require('./utils/filereader')
 const raw = filereader.readFile('day11.data', ',', true)
 const intcode = require('./day11_intcode')
 const plot = require('./utils/plot')
+const print = require('debug')('day11:')
 
 const nextMap = {
   'n0': 'w', 'n1': 'e',
@@ -28,6 +29,7 @@ const nextPos = (p, dir) => {
 const paintBoard = (data, mode) => {
   let print = false, once = true, i = 0, relative = 0, done = false
   let res, p = { x: 0, y: 0 }, dir = 'n', map = new Map()
+  let painted, code0, code1
   while (!done) {
     const key = p.x + ',' + p.y
     if (mode === 0) {
@@ -60,7 +62,7 @@ const paintBoard = (data, mode) => {
 }
 
 const day111 = paintBoard([...raw], 0)
-console.log('Day 11/1:', day111.size)
+print('Part 1:', day111.size)
 const day112 = paintBoard([...raw], 1)
 
 const dots = []
@@ -74,7 +76,7 @@ for (const [k, v] of day112.entries()) {
   }
 }
 const picture = plot(dots, '*', ' ')
-console.log('Day 11/2:', picture.bound)
-console.log(picture.drawing)
+print('Part 2:', picture.bound)
+print(picture.drawing)
 
 // 0 black., 1 white; 0# left, 1 right

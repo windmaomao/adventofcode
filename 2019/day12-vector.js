@@ -36,7 +36,7 @@ const raw = [
 
 const steps = raw.map(simulate)
 const total = lcm(lcm(steps[0], steps[1]), steps[2])
-print(total)
+print('Part 2:', total)
 
 // 113028, 231614, 102356
 // console.log(2*2*3*9419*115807*25589)
