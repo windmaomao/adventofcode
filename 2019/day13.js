@@ -84,11 +84,11 @@ const play = (data, board, input) => {
   // let count = 0, score = 0, pos = []
   // let print = false, once = true, i = 0, relative = 0, done = false, output = 0
   // let data = raw
-  let { once, print, output, i, relative, score, pos } = board
+  let { once, print, output, i, relative, score, pos, ball, bar } = board
 
   while (!done) {
     let res, x, y, tileId
-    res = intcode(data, { once, print, output: input, i, relative })
+    res = intcode(data, { once, print, output, i, relative })
     i = res.i; x = res.output; relative = res.relative
     res = intcode(data, { once, print, output, i, relative })
     i = res.i; y = res.output; relative = res.relative
@@ -97,15 +97,27 @@ const play = (data, board, input) => {
 
     if (x == -1 && y == 0) {
       score = tileId
-      return { once, print, output, i, relative, score, pos }
+      return { once, print, output, i, relative, score, pos, ball, bar }
     }
 
     // debug(x, y, tileId)
     pos[y][x] = tile[tileId]
 
-    if (tileId >= 3) {
-      return { once, print, output, i, relative, score, pos }
+    if (tileId === 4) {
+      ball.x = x; ball.y = y
+      // debug('ball', ball)
     }
+
+    if (tileId === 3) {
+      bar.x = x; bar.y = y
+      // debug('bar', ball)
+    }
+
+    output = Math.sign(ball.x - bar.x)
+
+    // if (tileId >= 3) {
+    //   return { once, print, output, i, relative, score, pos, ball, bar }
+    // }
 
 
     done = res.done
@@ -117,40 +129,51 @@ const play = (data, board, input) => {
 // debug('Count', count)
 raw[0] = 2
 const pos = new Array(21).fill(0).map(row => new Array(44).fill(' '))
-let board = { once: true, print: false, output: 0, i: 0, relative: 0, score: 0, done: false, pos }
+let board = { 
+  once: true, print: false, output: 0, i: 0, relative: 0, score: 0, done: false, pos,
+  bar: { x: 0, y: 0 }, ball: { x: 0, y: 0 }
+}
 
+// const z = (n,v) => new Array(n).fill(v)
+// const moves = [0, 
+//   ...z(2, -1), 
+//   ...z(6, 0), // 8 
+//   ...z(4, 0), // 85, 77
+//   ...z(12, -1), 
+//   ...z(1, 0), // 158, 73
+//   ...z(12, -1),
+//   ...z(1, 0), // 228, 70,
+//   ...z(12, -1),
+//   ...z(25, 0), // 309, 81
+//   ...z(17, 1),
+//   ...z(4, 0)
+// ]
 
-const z = (n,v) => new Array(n).fill(v)
-const moves = [0, 
-  ...z(2, -1), 
-  ...z(6, 0), // 8 
-  ...z(4, 0), // 85, 77
-  ...z(12, -1), 
-  ...z(1, 0), // 158, 73
-  ...z(12, -1),
-  ...z(1, 0), // 228, 70,
-  ...z(12, -1),
-  ...z(25, 0), // 309, 81
-  ...z(17, 1),
-  ...z(4, 0)
-]
+const moves = new Array(327).fill(0)
 
 let scores = [], prev= 0
 moves.forEach((m, i) => { 
-  board = play(raw, board, m)
+  board = play(raw, board)
   if (board.score > prev) {
     prev = board.score
     scores.push(prev)
   }
+  // debug(scores)
 })
-const picture = pos.map(row => row.join('')).join('\n')
-debug(picture)
-debug('score', scores)
 
-// const ddd = [38, 88, 10, 23, 95, 5, 66, 68, 72, 42, 94, 94, 51, 73, 3, 5, 35, 8, 28, 4, 20, 74, 32, 40, 20, 51, 17, 3, 62, 28, 59, 43, 10, 7, 52, 70, 82, 8, 52, 70, 50, 45, 79, 98, 65, 78, 20, 73, 64, 64, 87, 2, 11, 69, 28, 70, 37, 73, 3, 29, 57, 32, 15, 87, 42, 66, 1, 57, 26, 31, 23, 56, 51, 45, 50, 31, 10, 8, 74, 29, 73, 70, 72, 18, 74, 97, 88, 80, 46, 10, 20, 8, 97, 80, 54, 47, 64, 12, 48, 87, 14, 94, 49, 52, 30, 20, 21, 9, 98, 30, 51, 11, 30, 32, 78, 21, 72, 55, 38, 79, 74, 35, 93, 31, 40, 66, 86, 27, 12, 34, 80, 45, 44, 23, 4, 35, 35, 58, 6, 17, 47, 57, 30, 82, 65, 16, 82, 76, 63, 75, 76, 85, 86, 69, 29, 92, 79, 9, 14, 46, 76, 37, 66, 61, 15, 97, 7, 4, 23, 91, 8, 81, 81, 15, 59, 3, 29, 47, 24, 81, 85, 63, 10, 87, 9, 10, 87, 15, 25, 25, 62, 17, 30, 21, 87, 38, 92, 65, 88, 13, 23, 21, 75, 44, 89, 9, 86, 58, 81, 25, 75, 93, 46, 52, 44, 13, 70, 32, 71, 82, 7, 11, 54, 71, 11, 69, 3, 31, 7, 26, 23, 65, 10, 15, 10, 82, 33, 28, 67, 33, 65, 7, 70, 23, 92, 83, 53, 6, 35, 44, 65, 95, 23, 53, 13, 25, 90, 69, 7, 89, 34, 26, 91, 81, 84, 45, 61, 78, 87, 51, 98, 38, 5, 59, 29, 12, 5, 53, 78, 88, 4, 93, 56, 97, 65, 37, 22, 3, 52, 80, 1, 18, 43, 93, 20, 97, 65, 81, 84, 35, 6, 58, 16, 31, 86, 72, 47, 18, 27, 22, 97, 85, 52, 43, 95, 16, 12, 10, 44, 49, 24, 86, 28, 55, 19, 22]
+const length = scores.length
 
+debug(scores[length - 1])
 
-// 8  77   73   70  81  24   9   91
+// const picture = pos.map(row => row.join('')).join('\n')
+// debug(picture)
+// debug('score', scores)
+
+// const ddd = [76, 15, 12, 20, 17, 35, 34, 85, 94, 21, 61, 77, 95, 65, 26, 54, 97, 28, 64, 78, 13, 60, 7, 20, 13, 39, 26, 86, 92, 16, 31, 89, 45, 57, 59, 94, 4, 79, 83, 27, 94, 86, 44, 96, 79, 56, 56, 68, 94, 84, 79, 17, 16, 43, 86, 35, 76, 47, 16, 20, 71, 88, 82, 7, 12, 17, 8, 63, 61, 88, 40, 93, 14, 85, 9, 34, 70, 27, 27, 58, 71, 69, 88, 14, 72, 51, 33, 43, 15, 44, 84, 29, 35, 18, 82, 14, 45, 98, 10, 35, 62, 74, 16, 44, 7, 51, 38, 50, 31, 82, 72, 21, 94, 21, 53, 73, 40, 24, 93, 96, 6, 64, 19, 57, 51, 56, 53, 57, 58, 68, 78, 9, 79, 87, 52, 62, 36, 17, 80, 30, 42, 65, 96, 3, 55, 56, 95, 89, 42, 33, 23, 30, 90, 47, 18, 68, 94, 51, 26, 52, 23, 32, 13, 3, 93, 91, 44, 1, 30, 86, 93, 8, 69, 72, 2, 53, 33, 23, 58, 48, 69, 74, 24, 6, 33, 85, 96, 38, 83, 51, 61, 96, 79, 25, 14, 78, 83, 41, 85, 32, 94, 95, 67, 87, 53, 47, 81, 14, 56, 88, 37, 95, 54, 83, 84, 41, 35, 75, 33, 77, 24, 32, 62, 10, 5, 91, 82, 63, 21, 81, 71, 5, 89, 4, 64, 87, 32, 59, 22, 3, 98, 79, 70, 79, 5, 52, 26, 70, 19, 95, 23, 45, 77, 79, 60, 89, 89, 88, 45, 5, 50, 31, 47, 14, 76, 22, 9, 48, 71, 4, 15, 38, 82, 61, 62, 59, 68, 50, 81, 71, 57, 47, 41, 9, 63, 77, 49, 91, 25, 2, 14, 88, 60, 43, 44, 7, 14, 51, 93, 44, 45, 75, 19, 49, 34, 41, 19, 48, 25, 34, 32, 88, 29, 51, 88, 71, 79, 76, 7, 81, 73, 90, 42, 78, 43, 50]
+
+// debug(ddd.length)
+// 8  77   73   70  81  24   9   91    53  14
 // debug(ddd.reduce((acc, i) => acc+ i, 0))
 
-// 15445,
+// 16895, too high
+// 15988, good
