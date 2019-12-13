@@ -126,7 +126,7 @@ const move = (action) => {
   debug('score', board.score)
 }
 
-const moves = [0, -1, -1]
+const moves = [0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 moves.forEach((m, i) => { 
   move(m)
