@@ -1,5 +1,6 @@
 const lcm = require('./utils/lcm')
-const debug = require('debug')('advent')
+const print = require('debug')('day12:print')
+const debug = require('debug')('day12:debug')
 
 const a = Math.sign
 const simulate = p => {
@@ -26,6 +27,7 @@ const raw = [
 
 const steps = raw.map(simulate)
 const total = lcm(lcm(steps[0], steps[1]), steps[2])
+print(total)
 debug(total) 
 
 // 113028, 231614, 102356
