@@ -1,11 +1,11 @@
 {
-  "name": "2015",
+  "name": "advent",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node 2019/index.js",
     "2015": "nodemon --exec babel-node 2015/index.js",
+    "start": "DEBUG=advent nodemon --exec babel-node 2019/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,5 +16,8 @@
     "@babel/node": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
     "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "debug": "^4.1.1"
   }
 }
