@@ -80,11 +80,13 @@ const intcode = (arr, ops) => {
   return sav()
 }
 
-let count = 0, res, x, y, tileId
+// raw[0] = 2
+let count = 0, score = 0, pos = []
 let print = false, once = true, i = 0, relative = 0, done = false, output = 0
 let data = raw
 
 while (!done) {
+  let res, x, y, tileId
   res = intcode(data, { once, print, output, i, relative })
   i = res.i; x = res.output; relative = res.relative
   res = intcode(data, { once, print, output, i, relative })
@@ -92,10 +94,63 @@ while (!done) {
   res = intcode(data, { once, print, output, i, relative })
   i = res.i; tileId = res.output; relative = res.relative
 
-  debug(x, y, tileId)
-  if (tileId == 2) count++
+  if (x == -1 && y == 0) {
+    score = tileId
+  }
+
+  pos.push({ x, y, tileId })
+  // if (tileId == 2) count++ 
+
 
   done = res.done
 }
 
-debug('Count', count)
+
+const MIN = -100000
+const MAX = 1000000
+
+const _init = () => ({ min: MAX, max: MIN })
+const tile = [' ', '|', 'B', '_', 'o']
+
+function plot(arr, FILL = '*', BLANK = ' ') {
+  const bound = arr.reduce((acc, p) => {
+    if (p.x < acc.x.min) acc.x.min = p.x
+    if (p.y < acc.y.min) acc.y.min = p.y
+    if (p.x > acc.x.max) acc.x.max = p.x
+    if (p.y > acc.y.max) acc.y.max = p.y
+    return acc
+  }, { x: _init(), y: _init() })
+
+  const dx = -bound.x.min, dy = -bound.y.min
+  const xc = bound.x.max - bound.x.min + 1
+  const yc = bound.y.max - bound.y.min + 1
+
+  const pic = new Array(yc).fill(BLANK).map(_ => (
+    new Array(xc).fill(BLANK)
+  ))
+
+  arr.forEach(p => {
+    const x = p.x + dx, y = p.y + dy
+    pic[y][x] = tile[p.tileId]
+  })
+
+  const drawing = pic.map(row => row.join('')).join('\n')
+
+  return { pic, bound, drawing }
+}
+
+// debug('Count', count)
+
+const picture = plot(pos)
+debug(picture.drawing)
+
+
+// 1 1 1 1 1 1 1 1 1 1 1 1 1  (0)
+// 1 0 0 0 0 0 0 0 0 0 0 0 1  (1)
+// 1 0 0 2 2 2 2 0 2 2 2 0 1
+// 1 0 2 2 0 0 2 0 0 0 2 0 1  (14)
+// 1 0 0 0 0 0 0 0 0 0 0 0 1  (15) 
+// 1        4               1  (16) 5 balls
+// 1 0 0 0 0 0 0 0 0 0 0 0 1
+// 1           3           1  (19) (22) 
+// 
