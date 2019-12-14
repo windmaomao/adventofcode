@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day14e.data', '\n')
+const raw = filereader.readFile('day14.data', '\n')
 const debug = require('debug')('day14:')
 
 const parseQuantity = (item) => {
@@ -18,7 +18,7 @@ const reactions = raw.reduce((acc, line) => {
       items: lefts.split(', ').map(parseQuantity),
       metioned: 0,
       askQuantity: 0,
-      children: 0
+      children: 0,
     }
   } else {
     debug('warning')
@@ -98,34 +98,45 @@ const sortList = test => test.map((val, ind) => { return { ind, val } })
   .sort((a, b) => { return a.val > b.val ? 1 : a.val == b.val ? 0 : -1 })
   .map((obj) => obj.ind);
 
+
 const autoRefine = () => {
   reactions['FUEL'].metioned = 0
   const names = Object.keys(reactions)
 
-  debug(names)
+  // debug(names)
 
   const metionedList = names.map(name => {
     return reactions[name].metioned
   })
 
-  debug(metionedList)
+  // debug(metionedList)
 
   const sorted = sortList(metionedList)
-  debug(sorted)
+  // debug(sorted)
 
   // refineAsks(names[6])
 
   sorted.forEach(index => {
     refineAsks(names[index])
-  })
+  })  
+
+  debug('total', calcTotal())
 }
 
-updateAsks('FUEL', 1)
+updateAsks('FUEL', 1)  
 updateMentioned('FUEL')
 updateChildren('FUEL')
 autoRefine('FUEL')
-debug(reactions)
-debug('total', calcTotal())
+// debug(reactions)
+// debug('total', calcTotal())
+
 
 // 610203, too low 
 // 1063118, too high
+// 1093306, not right  
+// 1061798, not right
+// 1061798
+// 1592203, not right
+// 1062257
+
+// 1086439
