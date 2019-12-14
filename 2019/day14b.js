@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day14c.data', '\n')
+const raw = filereader.readFile('day14d.data', '\n')
 const debug = require('debug')('day14:')
 
 const parseQuantity = (item) => {
@@ -16,8 +16,8 @@ const reactions = raw.reduce((acc, line) => {
       name: dest.name,
       quantity: dest.quantity,
       items: lefts.split(', ').map(parseQuantity),
+      metioned: 0,
       askQuantity: 0,
-      // calculated: false
     }
   } else {
     debug('warning')
@@ -25,6 +25,17 @@ const reactions = raw.reduce((acc, line) => {
 
   return acc
 }, {})
+
+const updateMentioned = (name) => {
+  if (name == 'ORE') return
+
+  const re = reactions[name]
+  re.metioned++
+
+  re.items.forEach(item => {
+    updateMentioned(item.name)
+  })
+}
 
 const updateAsks = (name, quantity) => {
   if (name == 'ORE') return 
@@ -69,19 +80,34 @@ const calcTotal = () => {
   return total
 }
 
-const autoRefine = (name) => {
-  if (name == 'ORE') return
-  const re = reactions[name]
-  re.items.forEach(item => {
-    refineAsks(item.name)
-    // debug(item)
-    autoRefine(item.name)
+const sortList = test => test.map((val, ind) => { return { ind, val } })
+  .sort((a, b) => { return a.val > b.val ? 1 : a.val == b.val ? 0 : -1 })
+  .map((obj) => obj.ind);
+
+const autoRefine = () => {
+  reactions['FUEL'].metioned = 0
+  const names = Object.keys(reactions)
+
+  debug(names)
+
+  const metionedList = names.map(name => {
+    return reactions[name].metioned
+  })
+
+  debug(metionedList)
+
+  const sorted = sortList(metionedList)
+  debug(sorted)
+
+  sorted.forEach(index => {
+    refineAsks(names[index])
   })
 }
 
 updateAsks('FUEL', 1)
-debug(reactions)
+updateMentioned('FUEL')
 autoRefine('FUEL')
+// debug(reactions)
 debug('total', calcTotal())
 
-// 610203, too low
+// 610203, too low 
