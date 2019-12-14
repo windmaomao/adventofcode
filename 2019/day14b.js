@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day14d.data', '\n')
+const raw = filereader.readFile('day14c.data', '\n')
 const debug = require('debug')('day14:')
 
 const parseQuantity = (item) => {
@@ -46,23 +46,7 @@ const refineAsks = (name) => {
   }
 }
 
-const autoRefine = (name) => {
-  const re = reactions[name]
-  re.items.forEach(item => {
-    refineAsks(item.name)
-  })
-}
-
-updateAsks('FUEL', 1)
-debug(reactions, 'step0')
-// refineAsks('KHKGT')
-// refineAsks('QDVJ')
-autoRefine('FUEL')
-debug(reactions, 'step1')
-
-let done = false
-while (!done) {
-
+const calcTotal = () => {
   const names = Object.keys(reactions).filter(name => {
     let independent = true
     reactions[name].items.forEach(item => {
@@ -81,10 +65,20 @@ while (!done) {
     return acc + cost
   }, 0)
 
-  debug(names, total)
-
-  done = true
+  return total
 }
 
+const autoRefine = (name) => {
+  if (name == 'ORE') return
+  const re = reactions[name]
+  re.items.forEach(item => {
+    refineAsks(item.name)
+  })
+}
+
+updateAsks('FUEL', 1)
+debug(reactions)
+autoRefine('FUEL')
+debug('total', calcTotal())
 
 // 610203, too low
