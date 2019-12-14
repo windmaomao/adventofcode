@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day14a.data', '\n')
+const raw = filereader.readFile('day14.data', '\n')
 const debug = require('debug')('day14:')
 
 const parseQuantity = (item) => {
@@ -58,11 +58,10 @@ const calcFuel = () => {
   sorted.forEach(index => {
     const name = names[index]
     const right = reactions[name]
-    debug(right)
-
     right.items.forEach(item => {
-      const inc = right.total / right.quantity * item.quantity
-      debug(inc)
+      // calc left value based on right value
+      // const inc = right.total / right.quantity * item.quantity
+      const inc = Math.ceil(right.total / right.quantity) * item.quantity
       if (item.name == 'ORE') {
         total += inc
       } else {
@@ -72,7 +71,7 @@ const calcFuel = () => {
     })
   })
 
-  debug(sorted)
+  // debug(sorted)
   debug(total)
 }
 
