@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day14a.data', '\n')
+const raw = filereader.readFile('day14d.data', '\n')
 const debug = require('debug')('day14:')
 
 const parseQuantity = (item) => {
@@ -17,7 +17,7 @@ const reactions = raw.reduce((acc, line) => {
       quantity: dest.quantity,
       items: lefts.split(', ').map(parseQuantity),
       askQuantity: 0,
-      calculated: false
+      // calculated: false
     }
   } else {
     debug('warning')
@@ -31,14 +31,34 @@ const updateAsks = (name, quantity) => {
 
   const re = reactions[name]
   re.askQuantity = re.askQuantity + quantity
+  const runs = quantity / re.quantity
 
   re.items.forEach(item => {
-    updateAsks(item.name, quantity / re.quantity * item.quantity)
+    updateAsks(item.name, runs * item.quantity)
+  })
+}
+
+const refineAsks = (name) => {
+  const re = reactions[name]
+  const newAsk = Math.ceil(re.askQuantity / re.quantity) * re.quantity
+  if (newAsk > re.askQuantity) {
+    updateAsks(name, newAsk - re.askQuantity)
+  }
+}
+
+const autoRefine = (name) => {
+  const re = reactions[name]
+  re.items.forEach(item => {
+    refineAsks(item.name)
   })
 }
 
 updateAsks('FUEL', 1)
-debug(Object.keys(reactions))
+debug(reactions, 'step0')
+// refineAsks('KHKGT')
+// refineAsks('QDVJ')
+autoRefine('FUEL')
+debug(reactions, 'step1')
 
 let done = false
 while (!done) {
@@ -54,27 +74,17 @@ while (!done) {
     return independent
   })
 
-  debug(names)
+  const total = names.reduce((acc, name) => {
+    const item = reactions[name]
+    const runs = Math.ceil(item.askQuantity / item.quantity)
+    const cost = runs * item.items[0].quantity
+    return acc + cost
+  }, 0)
+
+  debug(names, total)
 
   done = true
 }
 
 
-// const calcTotal = (name, quantity) => {
-//   const re = reactions[name]
-//   const runs = Math.ceil(quantity / re.quantity)
-//   debug(name, runs)
-
-//   return re.items.reduce((acc, item) => {
-//     if (item.name == 'ORE') {
-//       return acc + item.quantity
-//     } else {
-//       return acc + runs * calcTotal(item.name, item.quantity)
-//     }
-//   }, 0)
-// }
-
-// debug(calcTotal('FUEL', 1))
-
-// updateAsks('FUEL', 1)
-// debug(reactions['A'])
+// 610203, too low
