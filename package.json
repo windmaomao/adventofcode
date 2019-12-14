@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "2015": "nodemon --exec babel-node 2015/index.js",
+    "2015": "DEBUG=day*:* nodemon --exec babel-node 2015/index.js",
     "start": "DEBUG=day*:* nodemon --exec babel-node 2019/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

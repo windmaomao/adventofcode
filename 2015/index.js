@@ -1,3 +1,4 @@
-import day from './1' 
+import { input } from './utils'
+import { day1 } from './days'
 
-day()
+day1(input('day1', ''))

@@ -1,4 +1,4 @@
-import { input } from './utils'
+const print = require('debug')('day1:')
 
 const _m = { '(': 1, ')': -1 }
 const floor = arr => arr.reduce((acc, a, i) => {
@@ -7,9 +7,8 @@ const floor = arr => arr.reduce((acc, a, i) => {
   return acc + _m[a]
 }, 0)
 
-const day1 = () => {
-  const raw = input('1', '')
-  console.log(floor(raw)) 
+const main = (input) => {
+  print(floor(input)) 
 }
 
-export default day1
+export default main
