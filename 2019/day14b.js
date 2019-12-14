@@ -39,6 +39,7 @@ const updateAsks = (name, quantity) => {
 }
 
 const refineAsks = (name) => {
+  if (name == 'ORE') return 
   const re = reactions[name]
   const newAsk = Math.ceil(re.askQuantity / re.quantity) * re.quantity
   if (newAsk > re.askQuantity) {
@@ -73,6 +74,8 @@ const autoRefine = (name) => {
   const re = reactions[name]
   re.items.forEach(item => {
     refineAsks(item.name)
+    // debug(item)
+    autoRefine(item.name)
   })
 }
 
