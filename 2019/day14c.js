@@ -51,7 +51,7 @@ const updateChildren = (name) => {
 }
 
 const updateAsks = (name, quantity) => {
-  if (name == 'ORE') return 
+  if (name == 'ORE') return
 
   const re = reactions[name]
   re.askQuantity = re.askQuantity + quantity
@@ -63,7 +63,7 @@ const updateAsks = (name, quantity) => {
 }
 
 const refineAsks = (name) => {
-  if (name == 'ORE') return 
+  if (name == 'ORE') return
   const re = reactions[name]
   const newAsk = Math.ceil(re.askQuantity / re.quantity) * re.quantity
   if (newAsk > re.askQuantity) {
@@ -105,12 +105,12 @@ const autoRefine = () => {
   debug(names)
 
   const metionedList = names.map(name => {
-    return reactions[name].metioned
+    return reactions[name].children
   })
 
   debug(metionedList)
 
-  const sorted = sortList(metionedList)
+  const sorted = sortList(metionedList).reverse()
   debug(sorted)
 
   // refineAsks(names[6])
