@@ -16,7 +16,8 @@ const reactions = raw.reduce((acc, line) => {
       name: dest.name,
       quantity: dest.quantity,
       items: lefts.split(', ').map(parseQuantity),
-      level: 0
+      level: 0,
+      total: 0
     }
   } else {
     debug('warning')
@@ -39,5 +40,42 @@ const getLevel = (name) => {
   return re.level
 }
 
+const sortList = test => test.map((val, ind) => { return { ind, val } })
+  .sort((a, b) => { return a.val > b.val ? 1 : a.val == b.val ? 0 : -1 })
+  .map((obj) => obj.ind);
+
+const calcFuel = () => {
+  reactions['FUEL'].total = 1
+  const names = Object.keys(reactions)
+
+  const levelList = names.map(name => {
+    return reactions[name].level
+  })
+
+  const sorted = sortList(levelList).reverse()
+
+  let total = 0
+  sorted.forEach(index => {
+    const name = names[index]
+    const right = reactions[name]
+    debug(right)
+
+    right.items.forEach(item => {
+      const inc = right.total / right.quantity * item.quantity
+      debug(inc)
+      if (item.name == 'ORE') {
+        total += inc
+      } else {
+        const left = reactions[item.name]
+        left.total += inc
+      }
+    })
+  })
+
+  debug(sorted)
+  debug(total)
+}
+
 getLevel('FUEL')
-debug(reactions)
+calcFuel()
+// debug(reactions)
