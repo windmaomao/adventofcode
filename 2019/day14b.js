@@ -18,6 +18,7 @@ const reactions = raw.reduce((acc, line) => {
       items: lefts.split(', ').map(parseQuantity),
       metioned: 0,
       askQuantity: 0,
+      children: 0
     }
   } else {
     debug('warning')
@@ -35,6 +36,18 @@ const updateMentioned = (name) => {
   re.items.forEach(item => {
     updateMentioned(item.name)
   })
+}
+
+const updateChildren = (name) => {
+  if (name == 'ORE') return 1
+
+  const re = reactions[name]
+  let count = 0
+  re.items.forEach(item => {
+    count = count + updateChildren(item.name)
+  })
+  re.children = re.children + count
+  return re.children
 }
 
 const updateAsks = (name, quantity) => {
@@ -109,8 +122,9 @@ const autoRefine = () => {
 
 updateAsks('FUEL', 1)
 updateMentioned('FUEL')
+updateChildren('FUEL')
 autoRefine('FUEL')
-// debug(reactions)
+debug(reactions)
 debug('total', calcTotal())
 
 // 610203, too low 
