@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day14d.data', '\n')
+const raw = filereader.readFile('day14c.data', '\n')
 const debug = require('debug')('day14:')
 
 const parseQuantity = (item) => {
@@ -72,7 +72,8 @@ const calcTotal = () => {
 
   const total = names.reduce((acc, name) => {
     const item = reactions[name]
-    const runs = Math.ceil(item.askQuantity / item.quantity)
+    // const runs = Math.ceil(item.askQuantity / item.quantity)
+    const runs = item.askQuantity / item.quantity
     const cost = runs * item.items[0].quantity
     return acc + cost
   }, 0)
@@ -99,6 +100,8 @@ const autoRefine = () => {
   const sorted = sortList(metionedList)
   debug(sorted)
 
+  // refineAsks(names[6])
+
   sorted.forEach(index => {
     refineAsks(names[index])
   })
@@ -111,3 +114,4 @@ autoRefine('FUEL')
 debug('total', calcTotal())
 
 // 610203, too low 
+// 1063118, too high
