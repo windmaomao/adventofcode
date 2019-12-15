@@ -54,7 +54,7 @@ const commands = { 'n': 1, 's': 2, 'w': 3, 'e': 4 }
 const dirs = { 'o': 's', '.': 's', 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
 
 const runBoard = (data) => {
-  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, total = 600
+  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, total = 201
 
   // empty before move/check
   const empty = pos => board.pos[pos.y][pos.x] == '.' || board.pos[pos.y][pos.x] == ' '
