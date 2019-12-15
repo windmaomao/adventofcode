@@ -55,7 +55,7 @@ const dirs = { 'o': 's', '.': 's', 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
 const clocks = { 'e': 's', 'n': 'e', 'w': 'n', 's': 'w' }
 
 const runBoard = (data) => {
-  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, lastDir = 's', total = 201
+  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, lastDir = 's', total = 922
 
   // empty before move/check
   const empty = pos => board.pos[pos.y][pos.x] == '.' || board.pos[pos.y][pos.x] == ' '
@@ -78,14 +78,14 @@ const runBoard = (data) => {
     // debug('next', board.next)
     // debug('empty', empty(board.next), board.pos[board.next.y][board.next.x])
 
-    if (empty(board.next)) {
+    // if (empty(board.next)) {
       board = stepBoard(data, board)
       if (board.output) {
         p.x = board.next.x; p.y = board.next.y
         lastDir = board.dir
-        debug('dir', p.x, p.y, lastDir)
+        // debug('dir', p.x, p.y, lastDir)
       }
-    }
+    // }
 
     count++
   }
