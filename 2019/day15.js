@@ -82,7 +82,7 @@ const intcode = (arr, ops) => {
 const initBoard = () => {
   const pos = new Array(50).fill(0).map(row => new Array(44).fill(' '))
   const p = { x: 35, y: 25 }
-  pos[p.y][p.x] = '.'
+  pos[p.y][p.x] = 'o'
   return {
     once: true, print: false,
     output: 0, i: 0, relative: 0, score: 0, done: false,
@@ -91,9 +91,23 @@ const initBoard = () => {
 }
 
 const plotBoard = (board) => {
+  const p = board.p
+  const saved = board.pos[p.y][p.x]
+  board.pos[p.y][p.x] = 'x'
   const picture = board.pos.map(row => row.join('')).join('\n')
   debug(picture)
+  board.pos[p.y][p.x] = saved
 }
+
+const countBoard = (board, symbol) => {
+  let count = 0
+  board.pos.forEach(row => {
+    row.forEach(dot => {
+      if (dot == symbol) count++
+    })
+  })
+  return count
+} 
 
 const nextPos = (p, c) => {
   if (c === 1) return { x: p.x, y: p.y - 1 }
@@ -134,18 +148,21 @@ const stepBoard = (data, board) => {
 
 // north(1), south(2), west(3), and east(4)
 // 0, hit wall, 1, ok, 2: bingo
-const mm = { w: 1, s: 2, a: 3, d: 4 }
+const mm = { 'i': 1, 'k': 2, 'j': 3, 'l': 4 }
 const _commond = d => mm[d]
 const raw1 = [...raw]
 const runBoard = (data) => {
   let board = initBoard()
-  let count = 0, i = 0, command = 2, manual = true, total = 15000
-  while (count < total) {
+  let count = 0, i = 0, command = 2, done = false
+  while (!done) {
     const d = readlineSync.keyIn('Dir?')
     command = _commond(d)
     board.command = command
     board = stepBoard(data, board)
+    const dots = countBoard(board, '.')
     plotBoard(board)
+    debug(board.p, board.output, dots)
+    // done=true
     count++
   }
   // debug(count)
