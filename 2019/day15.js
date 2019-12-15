@@ -80,10 +80,12 @@ const intcode = (arr, ops) => {
 
 const initBoard = () => {
   const pos = new Array(21).fill(0).map(row => new Array(44).fill(' '))
+  const p = { x: 15, y: 15 }
+  pos[p.y][p.x] = 'o'
   return {
     once: true, print: false,
     output: 0, i: 0, relative: 0, score: 0, done: false,
-    pos
+    pos, p
   }
 }
 
@@ -92,50 +94,54 @@ const plotBoard = (board) => {
   debug(picture)
 }
 
-// north(1), south(2), west(3), and east(4)
-// 0, hit wall, 1, ok, 2: bingo
+const nextPos = (p, c) => {
+  if (c === 1) return { x: p.x, y: p.y - 1 }
+  if (c === 2) return { x: p.x, y: p.y + 1 }
+  if (c === 3) return { x: p.x - 1, y: p.y }
+  if (c === 4) return { x: p.x + 1, y: p.y }
+}
+
 const stepBoard = (data, board) => {
   let {
     done, once, print, output, i, relative,
-    pos
+    pos, command, p
   } = board
 
-  const nextPos = (p, command) => {
-    if (command === 1) return { x: p.x, y: p.y + 1 }
-    if (command === 2) return { x: p.x, y: p.y - 1 }
-    if (command === 3) return { x: p.x - 1, y: p.y }
-    if (command === 4) return { x: p.x + 1, y: p.y }
+  output = command
+
+  let res, status
+  res = intcode(data, { once, print, output, i, relative })
+  i = res.i; status = res.output; relative = res.relative
+
+  const np = nextPos(p, output)
+  if (status == 0) {
+    pos[np.y][np.x] = '#'
+    output = 4-output
   }
-
-  let p = { x: 15, y: 15 }
-
-  while (!done) {
-    output = 1
-
-    let res, status
-    res = intcode(data, { once, print, output, i, relative })
-    i = res.i; status = res.output; relative = res.relative
-
-    const np = nextPos(p, output)
-    if (status == 0) {
-      pos[np.y][np.x] = '#'
-    }
-    if (status == 1) {
-      pos[np.y][np.x] = '.'
-      p.x = np.x; p.y = np.y
-    }
-    debug(status)
-
-    done= true
-
+  if (status == 1) {
+    pos[np.y][np.x] = '.'
+    p.x = np.x; p.y = np.y
   }
+  if (status == 2) {
+    pos[np.y][np.x] = 'D'
+    p.x = np.x; p.y = np.y
+  }
+  debug(status)
+
   return board
 }
+
+// north(1), south(2), west(3), and east(4)
+// 0, hit wall, 1, ok, 2: bingo
 
 const raw1 = [...raw]
 const runBoard = (data) => {
   let board = initBoard()
-  board = stepBoard(data, board)
+  let commands = [1]
+  commands.forEach(c => {
+    board.command = c
+    board = stepBoard(data, board)
+  })
   return board
 }
 
