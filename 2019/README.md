@@ -15,6 +15,7 @@
 --- Day 11: Space Police ---
 --- Day 12: The N-Body Problem ---
 --- Day 13: Care Package ---
+--- Day 14: Space Stoichiometry ---
 
 
 ## Types
@@ -24,17 +25,18 @@ H - Hashmap, I - Intcode, P - Position, R - Recursive, F - Filter, M - Math
          1111111111222222
 1234567890123456789012345
   FF  FFFFF              
-  H  H   HH              
+  H  H   HH  H           
  I  I I I I I            
   P    P PPPP            
-  M      M M             
-R    R                  
+  M      M M M           
+R    R       R          
 
 ## Stats
 
 ```
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
+ 14   18:45:17   4972      0   19:19:07   4390      0
  13   00:09:33    885      0   02:24:57   1757      0
  12   00:41:04   1409      0   03:09:37   1579      0
  11   01:25:46   1996      0   02:41:58   2537      0
@@ -152,3 +154,10 @@ Fully prepared for it, however ended with long time spent on debugging for secon
 
 - Refactor your code, make sure interface is precise 
 - When not working, debug it through
+
+## Day 14
+
+Wake up at 5:30am, however this is the nighmare day for me, couldn't get my head spin right until chatted with my wife who studied math. 
+
+- Need to have pen and paper with you
+- Ask others help in case you are stuck
