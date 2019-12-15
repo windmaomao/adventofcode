@@ -80,8 +80,8 @@ const intcode = (arr, ops) => {
 
 const initBoard = () => {
   const pos = new Array(21).fill(0).map(row => new Array(44).fill(' '))
-  const p = { x: 15, y: 15 }
-  pos[p.y][p.x] = 'o'
+  const p = { x: 15, y: 10 }
+  pos[p.y][p.x] = '.'
   return {
     once: true, print: false,
     output: 0, i: 0, relative: 0, score: 0, done: false,
@@ -126,7 +126,7 @@ const stepBoard = (data, board) => {
     pos[np.y][np.x] = 'D'
     p.x = np.x; p.y = np.y
   }
-  debug(status)
+  // debug(status, p)
 
   return board
 }
@@ -137,11 +137,18 @@ const stepBoard = (data, board) => {
 const raw1 = [...raw]
 const runBoard = (data) => {
   let board = initBoard()
-  let commands = [1]
-  commands.forEach(c => {
-    board.command = c
+  let count = 0, i = 0
+  let commands = [
+    1,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,2,4,2,4,2,4,2,
+    1,4,1,4,1,4,1,4,1,4,1,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
+    4,1,4,1,4,1
+  ]
+  while (count < commands.length) {
+    // if (i > commands.length - 1) i = 0
+    board.command = commands[count]
     board = stepBoard(data, board)
-  })
+    count++
+  }
   return board
 }
 
