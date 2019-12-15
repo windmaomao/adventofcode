@@ -4,7 +4,7 @@ const intcode = require('./day13_intcode')
 const debug = require('debug')('day15:')
 
 const initBoard = () => {
-  const pos = new Array(50).fill(0).map(row => new Array(50).fill(' '))
+  const pos = new Array(60).fill(0).map(row => new Array(60).fill(' '))
   const p = { x: 35, y: 25 }
   pos[p.y][p.x] = 'o'
   return {
@@ -35,7 +35,7 @@ const countBoard = (board, symbol) => {
 
 const stepBoard = (data, board) => {
   let { once, print, output, i, relative, pos, current, next, dir } = board
-  const symbols = ['#', '.', 'D']
+  const symbols = ['#', '.', '.']
   const res = intcode(data, { once, print, output, i, relative })
   if (pos[next.y][next.x] == ' ') {
     pos[next.y][next.x] = symbols[res.output]
@@ -55,9 +55,12 @@ const commandPos = (p, c) => {
 const commands = { 'n': 1, 's': 2, 'w': 3, 'e': 4 }
 const dirs = { 'o': 's', '.': 's', 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
 const clocks = { 'e': 's', 'n': 'e', 'w': 'n', 's': 'w' }
+// const dirs = { 'o': 's', '.': 's', 'e': 's', 'n': 'e', 'w': 'n', 's': 'w' }
+// const clocks = { 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
 
+// 922
 const runBoard = (data) => {
-  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, lastDir = 's', total = 922
+  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, lastDir = 's', total = 4022
 
   // empty before move/check
   const empty = pos => board.pos[pos.y][pos.x] == '.' || board.pos[pos.y][pos.x] == ' '
@@ -99,8 +102,9 @@ plotBoard(b)
 
 debug('part 2: ', b.current)
 
+const op = { x: 17, y: 37 }
 let count2 = 0
-b.pos[b.current.y][b.current.x] = 'O'
+b.pos[op.y][op.x] = 'O'
 
 const letters = ['e', 'n', 's', 'w']
 const paintPoint = (pos, p) => {
@@ -115,7 +119,7 @@ const paintBound = (pos, p) => {
   paintPoint(pos, { x: p.x, y: p.y-1 })
 }
 
-while (count2 < 37) {
+while (count2 < 481) {
   // collect all the O
   let os = []
   b.pos.forEach((row, y) => {
