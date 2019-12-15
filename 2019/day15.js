@@ -79,14 +79,29 @@ const intcode = (arr, ops) => {
   return sav()
 }
 
+const getLevel = (board, parent) => {
+  // find all items links to parent
+  const keys = Object.keys(board.links).filter(i => {
+    return board.links[i] == parent
+  })
+  if (keys.length < 1) return 0
+
+  return keys.reduce((acc, i) => {
+    const level = getLevel(board, i)
+    if (level > acc) acc = level
+    return acc
+  }, 0) + 1
+}
+
 const initBoard = () => {
   const pos = new Array(50).fill(0).map(row => new Array(44).fill(' '))
   const p = { x: 35, y: 25 }
+  const links = {}
   pos[p.y][p.x] = 'o'
   return {
     once: true, print: false,
     output: 0, i: 0, relative: 0, score: 0, done: false,
-    pos, p
+    pos, p, links, level: 0
   }
 }
 
@@ -97,6 +112,7 @@ const plotBoard = (board) => {
   const picture = board.pos.map(row => row.join('')).join('\n')
   debug(picture)
   board.pos[p.y][p.x] = saved
+  debug(board.level, board.links)
 }
 
 const countBoard = (board, symbol) => {
@@ -131,9 +147,11 @@ const stepBoard = (data, board) => {
   const np = nextPos(p, output)
   if (status == 0) {
     pos[np.y][np.x] = '#'
-    output = 4-output
   }
   if (status == 1) {
+    const target = np.x + ',' + np.y
+    board.links[p.x + ',' + p.y] = target
+    board.level = getLevel(board, target)
     pos[np.y][np.x] = '.'
     p.x = np.x; p.y = np.y
   }

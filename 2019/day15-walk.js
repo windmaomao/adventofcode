@@ -16,11 +16,11 @@ const initBoard = () => {
 
 const plotBoard = (board) => {
   const p = board.next
-  const saved = board.pos[p.y][p.x]
-  board.pos[p.y][p.x] = 'x'
+  // const saved = board.pos[p.y][p.x]
+  // board.pos[p.y][p.x] = 'x'
   const picture = board.pos.map(row => row.join('')).join('\n')
   debug(picture)
-  board.pos[p.y][p.x] = saved
+  // board.pos[p.y][p.x] = saved
 }
 
 const countBoard = (board, symbol) => {
@@ -34,11 +34,12 @@ const countBoard = (board, symbol) => {
 } 
 
 const stepBoard = (data, board) => {
-  let { once, print, output, i, relative, pos, next } = board
-  const res = intcode(data, { once, print, output, i, relative })
+  let { once, print, output, i, relative, pos, current, next, dir } = board
   const symbols = ['#', '.', 'D']
+  pos[current.y][current.x] = dir
+  const res = intcode(data, { once, print, output, i, relative })
   pos[next.y][next.x] = symbols[res.output]
-  return { ...res, pos, next }
+  return { ...res, pos, current, next, dir }
 }
 
 
@@ -50,19 +51,25 @@ const commandPos = (p, c) => {
 }
 
 const commands = { 'n': 1, 's': 2, 'w': 3, 'e': 4 }
-const dirs = { 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
+const dirs = { 'x': 's', 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
+
 const runBoard = (data) => {
-  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, dir = 's'
-  while (count < 100) {
-    const command = commands[dir]
+  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, dir = 'x', total = 5
+  while (count < 7) {
+    // prepare for next move
+    board.current = p
+    board.dir = dirs[dir]
+    const command = commands[board.dir]
     board.next = commandPos(p, command); 
     board.output = command
+
+    // try moving
     board = stepBoard(data, board)
-    const status = board.output
-    if (status) {
+
+    // decide next if blocked
+    if (board.output) {
       p.x = board.next.x; p.y = board.next.y
-    } else {
-      dir = dirs[dir]
+      dir = 'x'
     }
     count++
   }
