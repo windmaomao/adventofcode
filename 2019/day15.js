@@ -123,7 +123,16 @@ const countBoard = (board, symbol) => {
     })
   })
   return count
-} 
+}
+
+const saveBoard = (board) => {
+  const picture = board.pos.map(row => row.join('')).join('\n')
+  const fs = require('fs') 
+  fs.writeFileSync(
+    "output", picture,
+    function (err) { console.log(err ? 'Error :' + err : 'ok') }
+  )
+}
 
 const nextPos = (p, c) => {
   if (c === 1) return { x: p.x, y: p.y - 1 }
@@ -174,14 +183,18 @@ const runBoard = (data) => {
   let count = 0, i = 0, command = 2, done = false
   while (!done) {
     const d = readlineSync.keyIn('Dir?')
-    command = _commond(d)
-    board.command = command
-    board = stepBoard(data, board)
-    const dots = countBoard(board, '.')
-    plotBoard(board)
-    debug(board.p, board.output, dots)
+    if (d == 's') {
+      saveBoard(board)
+    } else {
+      command = _commond(d)
+      board.command = command
+      board = stepBoard(data, board)
+      const dots = countBoard(board, '.')
+      plotBoard(board)
+      debug(board.p, board.output, dots)
+      count++
+    }
     // done=true
-    count++
   }
   // debug(count)
   return board
