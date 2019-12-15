@@ -52,9 +52,10 @@ const commandPos = (p, c) => {
 
 const commands = { 'n': 1, 's': 2, 'w': 3, 'e': 4 }
 const dirs = { 'o': 's', '.': 's', 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
+const clocks = { 'e': 's', 'n': 'e', 'w': 'n', 's': 'w' }
 
 const runBoard = (data) => {
-  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, total = 201
+  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, lastDir = 's', total = 201
 
   // empty before move/check
   const empty = pos => board.pos[pos.y][pos.x] == '.' || board.pos[pos.y][pos.x] == ' '
@@ -64,7 +65,11 @@ const runBoard = (data) => {
     board.current = p
     // debug('current', board.current)
     const dir = board.pos[p.y][p.x]
-    board.dir = dirs[dir]
+    if (dir == '.') {
+      board.dir = clocks[lastDir]
+    } else {
+      board.dir = dirs[dir]
+    }
     board.pos[p.y][p.x] = board.dir
     // debug('dir', board.dir)
     const command = commands[board.dir]
@@ -77,7 +82,8 @@ const runBoard = (data) => {
       board = stepBoard(data, board)
       if (board.output) {
         p.x = board.next.x; p.y = board.next.y
-        // debug('move', p.x, p.y)
+        lastDir = board.dir
+        debug('dir', p.x, p.y, lastDir)
       }
     }
 
