@@ -112,7 +112,7 @@ const plotBoard = (board) => {
   const picture = board.pos.map(row => row.join('')).join('\n')
   debug(picture)
   board.pos[p.y][p.x] = saved
-  debug(board.level, board.links)
+  debug(board.level) 
 }
 
 const countBoard = (board, symbol) => {
@@ -151,7 +151,7 @@ const stepBoard = (data, board) => {
   if (status == 1) {
     const target = np.x + ',' + np.y
     board.links[p.x + ',' + p.y] = target
-    board.level = getLevel(board, target)
+    // board.level = getLevel(board, target)
     pos[np.y][np.x] = '.'
     p.x = np.x; p.y = np.y
   }
