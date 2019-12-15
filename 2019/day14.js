@@ -1,5 +1,5 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day14c.data', '\n')
+const raw = filereader.readFile('day14.data', '\n')
 const debug = require('debug')('day14:')
 
 const parseQuantity = (item) => {
@@ -13,10 +13,11 @@ const reactions = raw.reduce((acc, line) => {
 
   if (!acc[dest.name]) {
     acc[dest.name] = {
-      name: dest.name, 
+      name: dest.name,
       quantity: dest.quantity,
       items: lefts.split(', ').map(parseQuantity),
-      asks: 0
+      level: 0,
+      total: 0,
     }
   } else {
     debug('warning')
@@ -25,65 +26,71 @@ const reactions = raw.reduce((acc, line) => {
   return acc
 }, {})
 
-const gatherRaw = (name, quantity) => {
+const getLevel = (name) => {
+  if (name == 'ORE') return 0
+
   const re = reactions[name]
-  if (re.items[0].name === 'ORE') return [{ name, quantity }]
-
-  const run = quantity / re.quantity
-  return re.items.reduce((acc, item) => {
-    return acc.concat(
-      gatherRaw(item.name, item.quantity).map(item2 => {
-        const copy = {...item2}
-        copy.quantity = copy.quantity * run
-        return copy
-      })
-    )
-  }, [])
-}
-
-const totalCost = (items) => {
-  const gather = items.reduce((acc, item) => {
-    if (!acc[item.name]) acc[item.name] = 0
-    acc[item.name] += item.quantity
-    return acc
-  }, {})
   
-  return Object.keys(gather).reduce((acc, name) => {
-    const re = reactions[name]
-    const quantity = gather[name]
-    const runs = Math.ceil(quantity / re.quantity)
-    const cost = runs * re.items[0].quantity
-    // debug(name, quantity, runs, cost)
-    return acc + cost
-  }, 0)
+  re.level = re.items.reduce((acc, item) => {
+    const level = getLevel(item.name)
+    if (level > acc) return level
+    return acc
+  }, 0) + 1
+
+  return re.level
 }
 
-const ddd = gatherRaw('FUEL', 1)
-debug(ddd)
-debug(totalCost(ddd))
+const sortList = test => test.map((val, ind) => { return { ind, val } })
+  .sort((a, b) => { return a.val > b.val ? 1 : a.val == b.val ? 0 : -1 })
+  .map((obj) => obj.ind);
 
+const calcFuel = (N) => {
+  reactions['FUEL'].total = N
+  const names = Object.keys(reactions)
 
+  const levelList = names.map(name => {
+    return reactions[name].level
+  })
 
-// const calcFuel = (element, quantity) => { 
-//   if (element === 'ORE') return quantity
+  const sorted = sortList(levelList).reverse()
 
-//   const dest = reactions[element]
+  let total = 0
+  sorted.forEach(index => {
+    const name = names[index]
+    const right = reactions[name]
+    const coef = Math.ceil(right.total / right.quantity)
 
-//   const eqnCost = dest.items.reduce((acc, item) => {
-//     return acc + calcFuel(item.name, item.quantity)
-//   }, 0)
+    right.items.forEach(item => {
+      const inc = coef * item.quantity
+      if (item.name == 'ORE') {
+        total += inc
+      } else {
+        const left = reactions[item.name]
+        left.total += inc
+      }
+    })
+  })
 
-//   const eqnRuns = Math.round(quantity / dest.quantity)
-//   const total = eqnRuns * eqnCost
-//   debug(element, quantity, total)
-//   dest.total = total
-//   return total
-// }
+  return total
+}
 
-// debug(calcFuel('FUEL', 1))
+getLevel('FUEL')
+debug('Part 1:', calcFuel(1))
 
-// const line =  '2 AB, 3 BC, 4 CA => 1 FUEL'
-// const parts = line.split(' => ')
+const reset = () => {
+  const names = Object.keys(reactions)
+  names.forEach(name => {
+    const re = reactions[name]
+    re.total = 0
+  })
+}
 
-// debug(parts)
-// debug(parseQuantity(parts[1]))
+let i = 1639300, totalFuel
+do {
+  i++
+  reset()
+  totalFuel = calcFuel(i)
+} while (totalFuel < 1000000000000)
+debug('Part 2:', i - 1)
+// debug(reactions)
+// 1000000000000
