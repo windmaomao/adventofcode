@@ -79,8 +79,8 @@ const intcode = (arr, ops) => {
 }
 
 const initBoard = () => {
-  const pos = new Array(21).fill(0).map(row => new Array(44).fill(' '))
-  const p = { x: 15, y: 10 }
+  const pos = new Array(60).fill(0).map(row => new Array(44).fill(' '))
+  const p = { x: 35, y: 25 }
   pos[p.y][p.x] = '.'
   return {
     once: true, print: false,
@@ -126,29 +126,33 @@ const stepBoard = (data, board) => {
     pos[np.y][np.x] = 'D'
     p.x = np.x; p.y = np.y
   }
-  // debug(status, p)
 
+  board.output = status
   return board
 }
 
 // north(1), south(2), west(3), and east(4)
 // 0, hit wall, 1, ok, 2: bingo
+const dirs = [
+  2,4,1,4,1,3,4,2,1,3,1,3,4,1,4,3,1,4,1,4,1,4,3,1,4,3,1,2,3,2,3,2,3,4,
+  2,3,2,3,2,3,4,2,4,3,2,4,2,4,3,2,4,3,1,2,4,3,2,4,2,4,2,1,4,1,4,3,1,2,
+  4,3,2,1,3,2,1,4
+]
 
 const raw1 = [...raw]
 const runBoard = (data) => {
   let board = initBoard()
-  let count = 0, i = 0
-  let commands = [
-    1,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,2,4,2,4,2,4,2,
-    1,4,1,4,1,4,1,4,1,4,1,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
-    4,1,4,1,4,1
-  ]
-  while (count < commands.length) {
-    // if (i > commands.length - 1) i = 0
-    board.command = commands[count]
+  let count = 0, i = 0, command = 2, total = 400
+  while (count < total) {
+    board.command = command
     board = stepBoard(data, board)
+    if (!board.output) {
+      i++
+      command = dirs[i]
+    }
     count++
   }
+  debug(count)
   return board
 }
 
@@ -157,3 +161,9 @@ plotBoard(b)
 debug('Day 15/1') 
 
 // debug(raw)
+
+  // let commands = [
+  //   1,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,2,4,2,4,2,4,2,
+  //   1,4,1,4,1,4,1,4,1,4,1,1,3,1,4,3,1,4,3,1,4,3,1,4,3,1,4,3,1,3,1,3,
+  //   4,1,4,1,2,4,1,4,1,4,1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1
+  // ]
