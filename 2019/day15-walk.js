@@ -4,7 +4,7 @@ const intcode = require('./day13_intcode')
 const debug = require('debug')('day15:')
 
 const initBoard = () => {
-  const pos = new Array(50).fill(0).map(row => new Array(44).fill(' '))
+  const pos = new Array(50).fill(0).map(row => new Array(50).fill(' '))
   const p = { x: 35, y: 25 }
   pos[p.y][p.x] = 'o'
   return {
@@ -54,30 +54,30 @@ const commands = { 'n': 1, 's': 2, 'w': 3, 'e': 4 }
 const dirs = { 'o': 's', '.': 's', 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
 
 const runBoard = (data) => {
-  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, total = 25
+  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, total = 600
 
   // empty before move/check
   const empty = pos => board.pos[pos.y][pos.x] == '.' || board.pos[pos.y][pos.x] == ' '
 
   while (count < total) {
-    debug('step', count)
+    // debug('step', count)
     board.current = p
-    debug('current', board.current)
+    // debug('current', board.current)
     const dir = board.pos[p.y][p.x]
     board.dir = dirs[dir]
     board.pos[p.y][p.x] = board.dir
-    debug('dir', board.dir)
+    // debug('dir', board.dir)
     const command = commands[board.dir]
     board.next = commandPos(p, command)
     board.output = command
-    debug('next', board.next)
-    debug('empty', empty(board.next), board.pos[board.next.y][board.next.x])
+    // debug('next', board.next)
+    // debug('empty', empty(board.next), board.pos[board.next.y][board.next.x])
 
     if (empty(board.next)) {
       board = stepBoard(data, board)
       if (board.output) {
         p.x = board.next.x; p.y = board.next.y
-        debug('move', p.x, p.y)
+        // debug('move', p.x, p.y)
       }
     }
 
