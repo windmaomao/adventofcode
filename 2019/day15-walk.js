@@ -49,12 +49,11 @@ const commandPos = (p, c) => {
   if (c === 4) return { x: p.x + 1, y: p.y }
 }
 
-// const stacks = []
 const commands = { 'n': 1, 's': 2, 'w': 3, 'e': 4 }
-
+const dirs = { 'e': 'n', 'n': 'w', 'w': 's', 's': 'e' }
 const runBoard = (data) => {
-  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, dir = 'n'
-  while (count < 2) {
+  let board = initBoard(), count = 0, p = { x: 35, y: 25 }, dir = 's'
+  while (count < 100) {
     const command = commands[dir]
     board.next = commandPos(p, command); 
     board.output = command
@@ -63,7 +62,7 @@ const runBoard = (data) => {
     if (status) {
       p.x = board.next.x; p.y = board.next.y
     } else {
-      dir = 's'
+      dir = dirs[dir]
     }
     count++
   }
