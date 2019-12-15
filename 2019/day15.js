@@ -1,6 +1,7 @@
 const filereader = require('./utils/filereader')
 const raw = filereader.readFile('day15.data', ',', true)
 const debug = require('debug')('day15:')
+var readlineSync = require('readline-sync');
 
 const digits = require('./utils/digits')
 
@@ -133,29 +134,18 @@ const stepBoard = (data, board) => {
 
 // north(1), south(2), west(3), and east(4)
 // 0, hit wall, 1, ok, 2: bingo
-const mm = { n: 1, s: 2, w: 3, e: 4 }
+const mm = { w: 1, s: 2, a: 3, d: 4 }
 const _commond = d => mm[d]
-const dirs = [
-  'm', 'n', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's',
-  'a', 'e', 'n', 'e', 'n', 'w', 'e', 'n', 'e', 'w', 's', 'n', 'w', 'e', 'n', 'w', 'n', 'w', 'e', 's', 'n', 'w', 'e', 's'
-  // 'm', 'e', 's', 'n', 'w',
-  // 'a', 'n'
-]
-
 const raw1 = [...raw]
 const runBoard = (data) => {
   let board = initBoard()
-  let count = 0, i = 0, command = 2, manual = true, total = 150
+  let count = 0, i = 0, command = 2, manual = true, total = 15000
   while (count < total) {
-    if (manual || (!manual && !board.output)) {
-      i++
-      if (dirs[i] == 'm') { manual = true; i++; }
-      else if (dirs[i] == 'a') { manual = false; i++; }
-      command = _commond(dirs[i])
-      // debug(command)
-    }
+    const d = readlineSync.keyIn('Dir?')
+    command = _commond(d)
     board.command = command
     board = stepBoard(data, board)
+    plotBoard(board)
     count++
   }
   // debug(count)
@@ -163,8 +153,11 @@ const runBoard = (data) => {
 }
 
 const b = runBoard(raw1)
-plotBoard(b)
-debug('Day 15/1') 
+// plotBoard(b)
+// debug('Day 15/1') 
+
+// debug(d)
+// debug('good')
 
 // debug(raw)
 
