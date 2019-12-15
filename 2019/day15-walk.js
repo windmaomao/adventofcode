@@ -37,8 +37,10 @@ const stepBoard = (data, board) => {
   let { once, print, output, i, relative, pos, current, next, dir } = board
   const symbols = ['#', '.', 'D']
   const res = intcode(data, { once, print, output, i, relative })
-  if (pos[next.y][next.x] == ' ')
+  if (pos[next.y][next.x] == ' ') {
     pos[next.y][next.x] = symbols[res.output]
+    if (res.output == 2) debug(next.x, next.y, 'bingo') 
+  }
   return { ...res, pos, current, next, dir }
 }
 
@@ -94,6 +96,45 @@ const runBoard = (data) => {
 
 const b = runBoard(raw)
 plotBoard(b)
+
+debug('part 2: ', b.current)
+
+let count2 = 0
+b.pos[b.current.y][b.current.x] = 'O'
+
+const letters = ['e', 'n', 's', 'w']
+const paintPoint = (pos, p) => {
+  if (letters.indexOf(pos[p.y][p.x]) >=0) {
+    pos[p.y][p.x] = 'O'
+  }
+}
+const paintBound = (pos, p) => {
+  paintPoint(pos, { x: p.x+1, y: p.y })
+  paintPoint(pos, { x: p.x-1, y: p.y })
+  paintPoint(pos, { x: p.x, y: p.y+1 })
+  paintPoint(pos, { x: p.x, y: p.y-1 })
+}
+
+while (count2 < 37) {
+  // collect all the O
+  let os = []
+  b.pos.forEach((row, y) => {
+    row.forEach((_, x) => {
+      if (b.pos[y][x] == 'O') os.push({ x, y })
+    })
+  })
+  // console.log(os)
+
+  os.forEach(p => {
+    paintBound(b.pos, p)
+  })
+
+  // plotBoard(b)
+  count2++
+}
+
+plotBoard(b)
+debug('part 2: ', count2)
 
 
 
