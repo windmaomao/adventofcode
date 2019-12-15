@@ -79,7 +79,7 @@ const intcode = (arr, ops) => {
 }
 
 const initBoard = () => {
-  const pos = new Array(60).fill(0).map(row => new Array(44).fill(' '))
+  const pos = new Array(50).fill(0).map(row => new Array(44).fill(' '))
   const p = { x: 35, y: 25 }
   pos[p.y][p.x] = '.'
   return {
@@ -133,26 +133,32 @@ const stepBoard = (data, board) => {
 
 // north(1), south(2), west(3), and east(4)
 // 0, hit wall, 1, ok, 2: bingo
+const mm = { n: 1, s: 2, w: 3, e: 4 }
+const _commond = d => mm[d]
 const dirs = [
-  2,4,1,4,1,3,4,2,1,3,1,3,4,1,4,3,1,4,1,4,1,4,3,1,4,3,1,2,3,2,3,2,3,4,
-  2,3,2,3,2,3,4,2,4,3,2,4,2,4,3,2,4,3,1,2,4,3,2,4,2,4,2,1,4,1,4,3,1,2,
-  4,3,2,1,3,2,1,4
+  'm', 'n', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's', 'e', 'w', 's',
+  'a', 'e', 'n', 'e', 'n', 'w', 'e', 'n', 'e', 'w', 's', 'n', 'w', 'e', 'n', 'w', 'n', 'w', 'e', 's', 'n', 'w', 'e', 's'
+  // 'm', 'e', 's', 'n', 'w',
+  // 'a', 'n'
 ]
 
 const raw1 = [...raw]
 const runBoard = (data) => {
   let board = initBoard()
-  let count = 0, i = 0, command = 2, total = 400
+  let count = 0, i = 0, command = 2, manual = true, total = 150
   while (count < total) {
+    if (manual || (!manual && !board.output)) {
+      i++
+      if (dirs[i] == 'm') { manual = true; i++; }
+      else if (dirs[i] == 'a') { manual = false; i++; }
+      command = _commond(dirs[i])
+      // debug(command)
+    }
     board.command = command
     board = stepBoard(data, board)
-    if (!board.output) {
-      i++
-      command = dirs[i]
-    }
     count++
   }
-  debug(count)
+  // debug(count)
   return board
 }
 
@@ -167,3 +173,9 @@ debug('Day 15/1')
   //   1,4,1,4,1,4,1,4,1,4,1,1,3,1,4,3,1,4,3,1,4,3,1,4,3,1,4,3,1,3,1,3,
   //   4,1,4,1,2,4,1,4,1,4,1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1
   // ]
+
+// const dirs = [
+//   2, 4, 1, 4, 1, 3, 4, 2, 1, 3, 1, 3, 4, 1, 4, 3, 1, 4, 1, 4, 1, 4, 3, 1, 4, 3, 1, 2, 3, 2, 3, 2, 3, 4,
+//   2, 3, 2, 3, 2, 3, 4, 2, 4, 3, 2, 4, 2, 4, 3, 2, 4, 3, 1, 2, 4, 3, 2, 4, 2, 4, 2, 1, 4, 1, 4, 3, 1, 2,
+//   4, 3, 2, 1, 3, 2, 1, 4, 1, 3, 1, 4, 2, 4, 1, 2, 4, 1, 4, 3, 1
+// ]
