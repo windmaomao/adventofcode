@@ -94,7 +94,7 @@ const getLevel = (board, parent) => {
 }
 
 const initBoard = () => {
-  const pos = new Array(50).fill(0).map(row => new Array(44).fill(' '))
+  const pos = new Array(50).fill(0).map(row => new Array(60).fill(' '))
   const p = { x: 35, y: 25 }
   const links = {}
   pos[p.y][p.x] = 'o'
