@@ -1,9 +1,11 @@
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+const timeIndex = (i, j) = {
+  return i / j
+}
 
-readline.question('Who are you?', name => {
-  console.log(`Hey there ${name}!`);
-  readline.close();
-});
+// 0 1 0 -1
+// 0 1 2 3
+
+// 1, 0 1 2 3 0 1 2 3
+// 2, 0 0 1 1 2 2 3 3 
+// 3, 0 0 0 1 1 1 2 2 2 3 3 3 
+// 4, 0 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3
