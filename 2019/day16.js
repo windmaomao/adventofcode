@@ -1,9 +1,9 @@
 const filereader = require('./utils/filereader')
-// const raw = filereader.readFile('day16.data', '', true)
+const raw = filereader.readFile('day16.data', '', true)
 const debug = require('debug')('day16:')
 
-const str = '03081770884921959731165446850517'
-const raw = str.split('')
+// const str = '03081770884921959731165446850517'
+// const raw = str.split('')
 
 const basePattern = [0,1,0,-1]
 

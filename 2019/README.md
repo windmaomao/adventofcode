@@ -28,7 +28,7 @@ H - Hashmap, I - Intcode, P - Position, R - Recursive, F - Filter, M - Math
   H  H   HH  H           
  I  I I I I I            
   P    P PPPP            
-  M      M M M           
+  M      M M MM          
 R    R       R          
 
 ## Stats
@@ -36,6 +36,8 @@ R    R       R
 ```
       --------Part 1--------   --------Part 2--------
 Day       Time   Rank  Score       Time   Rank  Score
+ 16   01:37:03   1840      0   08:50:09   1697      0
+ 15   04:46:28   1661      0   17:58:36   4049      0
  14   18:45:17   4972      0   19:19:07   4390      0
  13   00:09:33    885      0   02:24:57   1757      0
  12   00:41:04   1409      0   03:09:37   1579      0
@@ -161,3 +163,11 @@ Wake up at 5:30am, however this is the nighmare day for me, couldn't get my head
 
 - Need to have pen and paper with you
 - Ask others help in case you are stuck
+- Try turn things into 1D problem
+
+## Day 15
+
+This is a difficult math question, the final answer require very sharp observation and some guess luck. 
+
+- Need to read example case very carefully
+- Check others work to get hints
