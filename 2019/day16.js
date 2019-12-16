@@ -1,10 +1,9 @@
 const filereader = require('./utils/filereader')
-const raw = filereader.readFile('day16.data', '', true)
+// const raw = filereader.readFile('day16.data', '', true)
 const debug = require('debug')('day16:')
 
-// debug(raw) 
-// const str = '80871224585914546619083218645595'
-// const raw = str.split('')
+const str = '03081770884921959731165446850517'
+const raw = str.split('')
 
 const basePattern = [0,1,0,-1]
 
@@ -23,12 +22,42 @@ while (count < total) {
   count++
 }
 
-const firstFew = [
-  digits[0], digits[1], digits[2], digits[3],
-  digits[4], digits[5], digits[6], digits[7],
-]
+debug(digits.join(''))
 
-debug(firstFew)
+const offset = +raw.slice(0, 7).join('')
+debug(offset)
+
+const N = 10000, rawL = raw.length
+const bigArr = new Array(rawL * N)
+for(let i = 0; i< N; i++) {
+  raw.forEach((v, j) => {
+    bigArr[i*rawL+j] = +v
+  })
+}
+debug('Big', bigArr.length)
+
+let restArr = bigArr.slice(offset)
+debug('Rest', restArr.length)
+// debug(+restArr.slice(0, 7).join(''))  
+
+const fft2 = arr => {
+  let sum = 0
+  const count = arr.length
+  arr.forEach((_, i) => {
+    sum += arr[count-1-i]
+    arr[count-1-i] = sum % 10
+  })
+}
+
+count = 0; 
+while (count < total) {
+  fft2(restArr)
+  count++
+}
+debug(+restArr.slice(0, 8).join(''))
+
+
+// debug(restArr.slice(0, 8).join(''))
 
 // debug(timeIndex(1, 3))
 // debug((1 / 3 | 0))
