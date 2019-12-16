@@ -1,9 +1,10 @@
 const filereader = require('./utils/filereader')
-// const raw = filereader.readFile('day16.data', '', true)
+const raw = filereader.readFile('day16.data', '', true)
 const debug = require('debug')('day16:')
 
 // debug(raw) 
-const raw = [1, 2, 3, 4, 5, 6, 7, 8]
+// const str = '80871224585914546619083218645595'
+// const raw = str.split('')
 
 const basePattern = [0,1,0,-1]
 
@@ -16,13 +17,18 @@ const fft = digits => {
   }).map(firstDigit)
 }
 
-let count = 0, total = 4, digits = [...raw]
+let count = 0, total = 100, digits = [...raw]
 while (count < total) {
   digits = fft(digits)
   count++
 }
 
-debug(digits)
+const firstFew = [
+  digits[0], digits[1], digits[2], digits[3],
+  digits[4], digits[5], digits[6], digits[7],
+]
+
+debug(firstFew)
 
 // debug(timeIndex(1, 3))
 // debug((1 / 3 | 0))
