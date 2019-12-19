@@ -23,3 +23,4 @@ start = planets['YOU']
 goal = { planets['SAN'] => true }
 bfs = Search.bfs(start, neighbours: transfer, goal: goal)
 puts bfs[:gen]
+# puts Search.path_of(bfs[:prev], planets['SAN']).count
