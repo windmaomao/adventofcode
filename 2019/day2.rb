@@ -1,6 +1,6 @@
 require_relative 'utils/intcode'
 
-input = ARGF.read.split(",").map(&:to_i)
+input = ARGF.read.split(?,).map(&:to_i)
 
 def run(mem, noun, verb)
   mem[1] = noun
