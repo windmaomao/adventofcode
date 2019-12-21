@@ -1,15 +1,14 @@
 require_relative 'utils/intcode'
 
-VERBOSE = ARGV.delete('-v')
-
-input = (ARGV[0]&.include?(?,) ? ARGV[0] : ARGF.read).split(?,).map(&method(:Integer)).freeze
+input = ARGF.read.split(?,).map(&:to_i)
 ic = Intcode.new(input)
 
 def run(ic, script)
   ic = ic.dup.continue(input: script.chars.map(&:ord))
-  big, small = ic.output.partition { |x| x > 127 }
-  puts small.map(&:chr).join if VERBOSE
-  puts big
+  damage = ic.output[-1]
+  message = ic.output[0..-2].map(&:chr).join
+  puts message
+  puts damage
 end
 
 # (!A | !C) & D
