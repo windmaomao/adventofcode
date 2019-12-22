@@ -12,6 +12,16 @@ const moduleInverse = (pos, size, modBy) => {
   return i
 }
 
+const moduleInverse2 = (pos, size, modBy) => {
+  let i = 0, last = pos, newLast = -1
+  while (newLast != 0) {
+    newLast = last % modBy
+    i += (last - newLast) / modBy
+    last = newLast + size
+  }
+  return i
+}
+
 const moduleForward = (pos, size, modBy) => {
   let last = pos, i = 0
   while (last > 0) {
@@ -34,7 +44,7 @@ const shufflePos = (ops, size, pos, backward = false) => {
         if (!backward) {
           last = moduleForward(last, size, op[1])
         } else {
-          last = moduleInverse(last, size, op[1])
+          last = moduleInverse2(last, size, op[1])
         }
         break;
       case 'c':   // cut
@@ -56,8 +66,20 @@ const orders = raw.map(line => {
   return ['n']
 })
 
-debug(shufflePos(orders, 10007, 2019))
-// debug(shufflePos(testOrders1, 10, 9))
+debug('Part 1:', shufflePos(orders, 10007, 2019))
+debug('Part 2:', shufflePos(orders, 119315717514047, 2020, true))
+
+// const moduleInverse2 = (a, n) => {
+//   let t = 0, newt = 1
+//   let r = n, newr = a
+//   let q
+//   while (newr != 0) {
+//     q = Math.trunc(r / newr)
+//     t = newt; newt = t - q * newt
+//     r = newr; newr = r - q * newr
+//   }
+//   return r > 1 ? null : t % n
+// }
 
 // const testOrders1 = [
 //   ['i', 7],
