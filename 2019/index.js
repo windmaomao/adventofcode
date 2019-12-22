@@ -5,4 +5,4 @@
 // import './day15-walk'
 // import './day16'
 // import './day17'
-import './day22'
+import './day22p'
