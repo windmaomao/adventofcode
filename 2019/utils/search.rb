@@ -23,6 +23,7 @@ module Search
     path
   end
 
+  #! A* search from start to goal
   def astar(start, neighbours:, heuristic:, goal:)
     g_score = Hash.new(1.0 / 0.0)
     g_score[start] = 0
@@ -51,7 +52,7 @@ module Search
     nil
   end
 
-  # BFS search path from start to goal
+  #! BFS search path from start to goal
   # Input:
   # - start: starting node
   # - neighbours: neighbour nodes array

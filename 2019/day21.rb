@@ -11,6 +11,11 @@ def run(ic, script)
   puts damage
 end
 
+# The idea is to make sure if you jump
+# you can land on safe ground including the 
+# case if you have to jump again
+# Otherwise you are safe to jump
+
 # (!A | !C) & D
 # (!A | !B | !C) & D
 run(ic, <<CODE)

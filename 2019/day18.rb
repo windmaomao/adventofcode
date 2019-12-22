@@ -49,6 +49,7 @@ input.each_with_index { |row, y|
 # #.aBCc#
 # #######
 keys_from = sources.to_h { |src|
+  puts "source", src
   keys = Search.bfs(
     src, num_goals: Float::INFINITY,
     neighbours: ->pos {
@@ -58,6 +59,7 @@ keys_from = sources.to_h { |src|
     },
     goal: ->pos { (?a..?z).cover?(flat_input[pos]) },
   )
+  puts keys[:goals]
 
   [src, keys[:goals].map { |pos, dist|
     path = Search.path_of(keys[:prev], pos)

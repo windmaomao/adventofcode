@@ -40,6 +40,9 @@ let restArr = bigArr.slice(offset)
 debug('Rest', restArr.length)
 // debug(+restArr.slice(0, 7).join(''))  
 
+// As long as we are in the latter half of the list,
+// each value is just the sum of all values coming after it.
+
 const fft2 = arr => {
   let sum = 0
   const count = arr.length
