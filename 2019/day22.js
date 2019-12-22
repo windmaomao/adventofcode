@@ -1,3 +1,5 @@
+const filereader = require('./utils/filereader')
+const raw = filereader.readFile('day22.data', '\n')
 const debug = require('debug')('day22:')
 
 const moduleInverse = (pos, size, modBy) => {
@@ -10,17 +12,17 @@ const moduleInverse = (pos, size, modBy) => {
   return i
 }
 
-const shufflePos = (ops, pos, size) => {
+const shufflePos = (ops, size, pos) => {
   let last = pos
   ops.reverse().forEach(op => {
     switch(op[0]) {
-      case 'increment':
+      case 'i':   // deal with increment
         last = moduleInverse(last, size, op[1])
         break;
-      case 'new stack':
+      case 'n':   // deal into new stack
         last = size -1 - last
         break;
-      case 'cut':
+      case 'c':   // cut
         last = (last + op[1] + size) % size
         break;
     }
@@ -28,25 +30,21 @@ const shufflePos = (ops, pos, size) => {
   return last
 }
 
-const orders = [
-  ['new stack'],
-  ['cut', -2],
-  ['increment', 7],
-  ['cut', 8],
-  ['cut', -4],
-  ['increment', 7],
-  ['cut', 3],
-  ['increment', 9],
-  ['increment', 3],
-  ['cut', -1],
-]
+const orders = raw.map(line => {
+  const parts = line.split(' ')
+  if (parts.length == 2) return ['c', parseInt(parts[1])]
+  if (parts[1] == 'with') return ['i', parseInt(parts[3])]
+  return ['n']
+})
 
-debug(shufflePos(orders, 0, 10))
+debug(shufflePos(orders, 10007, 2020))
+
+// debug(shufflePos(orders, 10, 9))
 
 // const testOrders1 = [
-//   ['increment', 7],
-//   ['new stack'],
-//   ['new stack'],
+//   ['i', 7],
+//   ['n'],
+//   ['n'],
 // ]
 
 // const testOrders2 = [
@@ -55,15 +53,15 @@ debug(shufflePos(orders, 0, 10))
 //   ['new stack'],
 // ]
 
-const testOrders4 = [
-  ['new stack'],
-  ['cut', -2],
-  ['increment', 7], 
-  ['cut', 8],
-  ['cut', -4],
-  ['increment', 7],
-  ['cut', 3],
-  ['increment', 9],
-  ['increment', 3],
-  ['cut', -1],
-]
+// const testOrders4 = [
+// ['n'],
+// ['c', -2],
+// ['i', 7],
+// ['c', 8],
+// ['c', -4],
+// ['i', 7],
+// ['c', 3],
+// ['i', 9],
+// ['i', 3],
+// ['c', -1],
+// ]
