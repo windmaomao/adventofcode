@@ -25,13 +25,15 @@ const moduleInverse2 = (pos, size, modBy) => {
 const moduleInverse3 = (a, n) => {
   let t = 0, newt = 1
   let r = n, newr = a
-  let q
+  let q, oldt, oldr
   while (newr != 0) {
-    q = Math.trunc(r / newr)
-    t = newt; newt = t - q * newt
-    r = newr; newr = r - q * newr
+    q = r / newr | 0
+    // debug(`q: ${r} ${newr} ${q}`)
+    oldt = newt; newt = t - q * newt; t = oldt; 
+    // debug(`t: ${t} ${newt}`)
+    oldr = newr; newr = r - q * newr; r = oldr; 
   }
-  return r > 1 ? null : t % n
+  return r > 1 ? null : (t < 0 ? t + n : t) % n
 }
 
 const moduleForward = (pos, size, modBy) => {
@@ -79,13 +81,22 @@ const orders = raw.map(line => {
   return ['n']
 })
 
+// debug(moduleInverse3(3, 10))
 debug('Part 1:', shufflePos(orders, 10007, 2019))
 
-const rOrders = [
-  ['i', 102104511168549],
-  ['c', 33232573029476]
+const testOrders1 = [
+  ['i', 7],
+  ['n'],
+  ['n'],
 ]
-debug('Part 2:', shufflePos(rOrders, 119315717514047, 2020, true))
+debug('Part 2:', shufflePos(testOrders1, 10, 3, true))
+
+
+// const rOrders = [
+//   ['i', 102104511168549],
+//   ['c', 33232573029476]
+// ]
+// debug('Part 2:', shufflePos(rOrders, 119315717514047, 2020, true))
 
 // const testOrders1 = [
 //   ['i', 7],
