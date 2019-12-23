@@ -47,7 +47,7 @@ const moduleForward = (pos, size, modBy) => {
   return i
 }
 
-const bigOp = (a, b, c) => (BigInt(a) * BigInt(b)) % BigInt(c)
+const bigOp = (a, b, c) => parseInt((BigInt(a) * BigInt(b)) % BigInt(c))
 
 const shufflePos = (ops, size, pos, backward = false) => {
   let last = pos
@@ -92,20 +92,22 @@ debug('Part 1:', shufflePos(orders, 10007, 2019))
  * b) combine cetain combo steps togather
  */
 
-const joinTwo = (a, b) => {
+const bigOp2 = (a, b, c) => parseInt((BigInt(a) + BigInt(b)) % BigInt(c))
+
+const joinTwo = (a, b, size) => {
   switch (a[0] + '-' + b[0]) {
     case 'i-i':
       return [
-        ['i', a[1] * b[1]]
+        ['i', bigOp(a[1], b[1], size)]
       ]
     case 'c-i':
       return [
         ['i', b[1]],
-        ['c', a[1] * b[1]]
+        ['c', bigOp(a[1], b[1], size)]
       ]
     case 'c-c':
       return [
-        ['c', a[1] + b[1]]
+        ['c', bigOp2(a[1], b[1], size)]
       ]
     case 'n-i':
       return [
@@ -124,14 +126,14 @@ const joinTwo = (a, b) => {
   return [a, b]
 }
 
-const compactShuffles = list => {
+const compactShuffles = (list, size) => {
   if (list.length < 2) return list
 
   const res = []
 
   let i = 0, last = list[i]
   while (i < list.length - 1) {
-    const joints = joinTwo(last, list[i + 1])
+    const joints = joinTwo(last, list[i + 1], size)
     // debug(i, joints.join('|'))
     switch (joints.length) {
       case 3: 
@@ -164,10 +166,10 @@ const compactShuffles = list => {
   return res
 }
 
-const minimizeShuffles = list => {
+const minimizeShuffles = (list, size) => {
   let shuffled = [...list]
   while (shuffled.length > 3) {
-    shuffled = compactShuffles(shuffled)
+    shuffled = compactShuffles(shuffled, size)
   }
   return shuffled
 }
@@ -185,7 +187,7 @@ const testOrders4 = [
 ['c', -1],
 ]
 
-debug(minimizeShuffles(testOrders4).join('|'))
+debug(minimizeShuffles(testOrders4, 10).join('|'))
 
 const rOrders = [
   ['i', 14722883731704],
