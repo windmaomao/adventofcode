@@ -31,8 +31,6 @@ const moduleInverse3 = (a, n) => {
     oldt = newt; newt = t - q * oldt; t = oldt; 
     oldr = newr; newr = r - q * oldr; r = oldr; 
   }
-  const res = (t < 0 ? t + n : t) % n
-  debug('Inv', a, n, res)
   return r > 1 ? null : (t < 0 ? t + n : t) % n
 }
 
@@ -72,7 +70,6 @@ const shufflePos = (ops, size, pos, backward = false) => {
         }
         break;
     }
-    debug(last)
   })
   return last
 }
@@ -84,16 +81,7 @@ const orders = raw.map(line => {
   return ['n']
 })
 
-// debug(moduleInverse3(3, 10))
 debug('Part 1:', shufflePos(orders, 10007, 2019))
-
-// const testOrders2 = [
-//   ['c', 6],
-//   ['i', 7],
-//   ['n'],
-// ]
-// debug('Part 2:', shufflePos(testOrders2, 10, 8, true))
-
 
 const rOrders = [
   ['i', 14722883731704],
