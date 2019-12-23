@@ -28,11 +28,11 @@ const moduleInverse3 = (a, n) => {
   let q, oldt, oldr
   while (newr != 0) {
     q = r / newr | 0
-    // debug(`q: ${r} ${newr} ${q}`)
-    oldt = newt; newt = t - q * newt; t = oldt; 
-    // debug(`t: ${t} ${newt}`)
-    oldr = newr; newr = r - q * newr; r = oldr; 
+    oldt = newt; newt = t - q * oldt; t = oldt; 
+    oldr = newr; newr = r - q * oldr; r = oldr; 
   }
+  const res = (t < 0 ? t + n : t) % n
+  debug('Inv', a, n, res)
   return r > 1 ? null : (t < 0 ? t + n : t) % n
 }
 
@@ -45,6 +45,8 @@ const moduleForward = (pos, size, modBy) => {
   }
   return i
 }
+
+const bigOp = (a, b, c) => (BigInt(a) * BigInt(b)) % BigInt(c)
 
 const shufflePos = (ops, size, pos, backward = false) => {
   let last = pos
@@ -59,7 +61,7 @@ const shufflePos = (ops, size, pos, backward = false) => {
           last = moduleForward(last, size, op[1])
         } else {
           // last = moduleInverse2(last, size, op[1])
-          last = (last * moduleInverse3(op[1], size)) % size
+          last = bigOp(last, moduleInverse3(op[1], size), size)
         }
         break;
       case 'c':   // cut
@@ -70,6 +72,7 @@ const shufflePos = (ops, size, pos, backward = false) => {
         }
         break;
     }
+    debug(last)
   })
   return last
 }
@@ -84,19 +87,20 @@ const orders = raw.map(line => {
 // debug(moduleInverse3(3, 10))
 debug('Part 1:', shufflePos(orders, 10007, 2019))
 
-const testOrders1 = [
-  ['i', 7],
-  ['n'],
-  ['n'],
-]
-debug('Part 2:', shufflePos(testOrders1, 10, 3, true))
-
-
-// const rOrders = [
-//   ['i', 102104511168549],
-//   ['c', 33232573029476]
+// const testOrders2 = [
+//   ['c', 6],
+//   ['i', 7],
+//   ['n'],
 // ]
-// debug('Part 2:', shufflePos(rOrders, 119315717514047, 2020, true))
+// debug('Part 2:', shufflePos(testOrders2, 10, 8, true))
+
+
+const rOrders = [
+  ['i', 14722883731704],
+  ['c', 105269438226243],
+  ['n']
+]
+debug('Part 2:', shufflePos(rOrders, 119315717514047, 2020, true))
 
 // const testOrders1 = [
 //   ['i', 7],
@@ -105,9 +109,9 @@ debug('Part 2:', shufflePos(testOrders1, 10, 3, true))
 // ]
 
 // const testOrders2 = [
-//   ['cut', 6],
-//   ['increment', 7],
-//   ['new stack'],
+//   ['c', 6],
+//   ['i', 7],
+//   ['n'],
 // ]
 
 // const testOrders4 = [
