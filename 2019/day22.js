@@ -2,6 +2,7 @@ const filereader = require('./utils/filereader')
 const raw = filereader.readFile('day22.data', '\n')
 const debug = require('debug')('day22:')
 
+// Basic inverse 
 const moduleInverse = (pos, size, modBy) => {
   let i = 0, last = pos
   while (last != 0) {
@@ -12,6 +13,7 @@ const moduleInverse = (pos, size, modBy) => {
   return i
 }
 
+// Basic inverse, a bit more efficient
 const moduleInverse2 = (pos, size, modBy) => {
   let i = 0, last = pos, newLast = -1
   while (newLast != 0) {
@@ -22,6 +24,7 @@ const moduleInverse2 = (pos, size, modBy) => {
   return i
 }
 
+// Fast inverse
 const moduleInverse3 = (a, n) => {
   let t = 0, newt = 1
   let r = n, newr = a
@@ -82,6 +85,24 @@ const orders = raw.map(line => {
 })
 
 debug('Part 1:', shufflePos(orders, 10007, 2019))
+
+/**
+ * TODO: Calculate the shuffle list
+ * a) big number of exponential operation
+ * b) combine cetain combo steps togather
+ */
+
+// const compactShuffles = (list, size) => {
+//   let i = 0
+//   while { i < } {
+//     const tmp = []
+//     switch ((res[j][0] + "-" + list[i][0])) {
+//       case 'n-n':
+//         break;
+//     }
+
+//   } while (true)
+// }
 
 const rOrders = [
   ['i', 14722883731704],
