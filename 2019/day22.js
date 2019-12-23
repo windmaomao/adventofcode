@@ -174,14 +174,19 @@ const minimizeShuffles = (list, size) => {
   return shuffled
 }
 
-debug(minimizeShuffles(orders, 119315717514047).join('|'))
+const baseShuffles = minimizeShuffles(orders, 119315717514047)
 
-const exp = (arr, n) => {
+const expMinShuffles = (arr, n, size) => {
   if (n == 0) return []
-  const base = n % 2 == 1 ? [...arr] : []
-  const arr2 = [...arr].concat([...arr])
-  return base.concat(exp(arr2, Math.trunc(n/2)))
+  const unit = minimizeShuffles(arr, size)
+  const base = n % 2 == 1 ? unit : []
+  const arr2 = unit.concat(unit)
+  return minimizeShuffles(
+    base.concat(expMinShuffles(arr2, Math.trunc(n/2), size)),
+    size)
 }
+
+debug(expMinShuffles(baseShuffles, 101741582076661, 119315717514047).join('|'))
 
 const rOrders = [
   ['i', 14722883731704],
