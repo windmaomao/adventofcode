@@ -87,9 +87,9 @@ const orders = raw.map(line => {
 debug('Part 1:', shufflePos(orders, 10007, 2019))
 
 /**
- * TODO: Calculate the shuffle list
+ * Calculate the shuffle list
  * a) big number of exponential operation
- * b) combine cetain combo steps togather
+ * b) combine combo steps togather
  */
 
 const bigOp2 = (a, b, c) => parseInt((BigInt(a) + BigInt(b)) % BigInt(c))
@@ -174,20 +174,14 @@ const minimizeShuffles = (list, size) => {
   return shuffled
 }
 
-const testOrders4 = [
-['n'],
-['c', -2],
-['i', 7],
-['c', 8],
-['c', -4],
-['i', 7],
-['c', 3],
-['i', 9],
-['i', 3],
-['c', -1],
-]
+debug(minimizeShuffles(orders, 119315717514047).join('|'))
 
-debug(minimizeShuffles(testOrders4, 10).join('|'))
+const exp = (arr, n) => {
+  if (n == 0) return []
+  const base = n % 2 == 1 ? [...arr] : []
+  const arr2 = [...arr].concat([...arr])
+  return base.concat(exp(arr2, Math.trunc(n/2)))
+}
 
 const rOrders = [
   ['i', 14722883731704],
