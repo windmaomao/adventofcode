@@ -50,7 +50,6 @@ const shufflePos = (ops, size, pos, backward = false) => {
   let last = pos
   const list = !backward ? [...ops] : ops.reverse()
   list.forEach(op => {
-    debug(op)
     switch (op[0]) {
       case 'n':   // deal into new stack
         last = size - 1 - last
@@ -71,7 +70,6 @@ const shufflePos = (ops, size, pos, backward = false) => {
         }
         break;
     }
-    debug(last)
   })
   return last
 }

@@ -21,7 +21,7 @@ type Shuffle struct {
 }
 
 func main() {
-	lines := readLines("input.txt")
+	lines := readLines("./inputs/day22.data")
 
 	dealStackRegex := regexp.MustCompile(`^deal into new stack$`)
 	dealIncrementRegex := regexp.MustCompile(`^deal with increment (\d+)$`)
