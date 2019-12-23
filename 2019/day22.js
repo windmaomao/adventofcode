@@ -92,17 +92,100 @@ debug('Part 1:', shufflePos(orders, 10007, 2019))
  * b) combine cetain combo steps togather
  */
 
-// const compactShuffles = (list, size) => {
-//   let i = 0
-//   while { i < } {
-//     const tmp = []
-//     switch ((res[j][0] + "-" + list[i][0])) {
-//       case 'n-n':
-//         break;
-//     }
+const joinTwo = (a, b) => {
+  switch (a[0] + '-' + b[0]) {
+    case 'i-i':
+      return [
+        ['i', a[1] * b[1]]
+      ]
+    case 'c-i':
+      return [
+        ['i', b[1]],
+        ['c', a[1] * b[1]]
+      ]
+    case 'c-c':
+      return [
+        ['c', a[1] + b[1]]
+      ]
+    case 'n-i':
+      return [
+        ['i', b[1]],
+        ['c', -b[1] + 1],
+        ['n']
+      ]
+    case 'n-c':
+      return [
+        ['c', -b[1]],
+        ['n']
+      ]
+    case 'n-n':
+      return []
+  }
+  return [a, b]
+}
 
-//   } while (true)
-// }
+const compactShuffles = list => {
+  if (list.length < 2) return list
+
+  const res = []
+
+  let i = 0, last = list[i]
+  while (i < list.length - 1) {
+    const joints = joinTwo(last, list[i + 1])
+    // debug(i, joints.join('|'))
+    switch (joints.length) {
+      case 3: 
+        res.push(joints[0])
+        res.push(joints[1])
+        last = joints[2]
+        i++
+        break;
+      case 2:
+        res.push(joints[0])
+        last = joints[1]
+        i++
+        break;
+      case 1:
+        last = joints[0]
+        i++
+        break;
+      case 0:
+        i++
+        if (i < list.length - 1) {
+          last = list[i]
+        } else {
+          last = null
+        }
+        break;
+    }
+  }
+  if (last) res.push(last)
+
+  return res
+}
+
+const minimizeShuffles = list => {
+  let shuffled = [...list]
+  while (shuffled.length > 3) {
+    shuffled = compactShuffles(shuffled)
+  }
+  return shuffled
+}
+
+const testOrders4 = [
+['n'],
+['c', -2],
+['i', 7],
+['c', 8],
+['c', -4],
+['i', 7],
+['c', 3],
+['i', 9],
+['i', 3],
+['c', -1],
+]
+
+debug(minimizeShuffles(testOrders4).join('|'))
 
 const rOrders = [
   ['i', 14722883731704],
