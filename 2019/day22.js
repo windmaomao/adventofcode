@@ -174,26 +174,27 @@ const minimizeShuffles = (list, size) => {
   return shuffled
 }
 
-const baseShuffles = minimizeShuffles(orders, 119315717514047)
+const deckSize = 119315717514047
+const expSize = 101741582076661
 
 const expMinShuffles = (arr, n, size) => {
   if (n == 0) return []
-  const unit = minimizeShuffles(arr, size)
+  const unit = [...arr]
   const base = n % 2 == 1 ? unit : []
-  const arr2 = unit.concat(unit)
-  return minimizeShuffles(
-    base.concat(expMinShuffles(arr2, Math.trunc(n/2), size)),
-    size)
+  const arr2 = minimizeShuffles(unit.concat(unit), size)
+  return base.concat(expMinShuffles(arr2, Math.trunc(n/2), size))
 }
 
-debug(expMinShuffles(baseShuffles, 101741582076661, 119315717514047).join('|'))
+const baseOrders = minimizeShuffles(orders, deckSize)
+const finalOrders = expMinShuffles(baseOrders, expSize, deckSize)
+debug(minimizeShuffles(finalOrders, deckSize).join('|'))
 
 const rOrders = [
   ['i', 14722883731704],
   ['c', 105269438226243],
   ['n']
 ]
-debug('Part 2:', shufflePos(rOrders, 119315717514047, 2020, true))
+debug('Part 2:', shufflePos(rOrders, deckSize, 2020, true))
 
 // const testOrders1 = [
 //   ['i', 7],
