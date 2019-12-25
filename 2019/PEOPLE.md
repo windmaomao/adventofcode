@@ -8,7 +8,7 @@
 [4]Mike Leneweit, Singapore, Security Execution, Zuhlke Group ?
 [11]Big-Manitu Manikandan Kumar, Security Execution, Singapore
 [13]Malte Hartwig, Singapore, Security Execution, Zuhlke Group, Advanced Software Engineer
-Fang Jin, Morrisville, AVP, Employee Compliance, Frontend developer, 12pm
+[6]Fang Jin, Morrisville, AVP, Employee Compliance, Frontend developer, 12pm
 [8]Kamil Pokladowski, AVP, Sales Service, Zurich, IT Project Manager/BA
 Anonymous user #704073
 [24]Sid Chikorde, Zurich, Reporting and Delivery Mgmt
