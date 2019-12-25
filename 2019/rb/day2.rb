@@ -1,6 +1,8 @@
 require_relative 'utils/intcode'
 
-input = ARGF.read.split(?,).map(&:to_i)
+fn = open("2019/inputs/day2.data")
+
+input = fn.read.split(?,).map(&:to_i)
 
 def run(mem, noun, verb)
   src = mem.dup
@@ -11,5 +13,5 @@ def run(mem, noun, verb)
     .memory[0]
 end
 
-puts run(input, 12, 2)
-puts run(input, 62, 55)
+p run(input, 12, 2)
+p run(input, 62, 55)
