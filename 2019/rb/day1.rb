@@ -1,3 +1,5 @@
+fn = open("2019/inputs/day1.data")
+
 def fuel(mass)
   mass / 3 - 2
 end
@@ -8,7 +10,7 @@ def totalFuel(mass)
   return f + totalFuel(f)
 end
 
-input = ARGF.each_line.map(&:to_i)
+input = fn.each_line.map(&:to_i)
 
 puts input.map{|n| fuel(n)}.sum
 puts input.map{|n| totalFuel(n)}.sum
