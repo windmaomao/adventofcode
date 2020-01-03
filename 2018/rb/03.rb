@@ -19,12 +19,12 @@ def fabricPts(x, y, w, h)
   m
 end
 
-fabrics = input.map{|f| [f[0], fabricPts(f[1],f[2],f[3],f[4])]}
+fabrics = input.map{|f| fabricPts(f[1],f[2],f[3],f[4])}
 fm = {}
 
 N = 1000*1000
 fabrics.each{ |pts|
-  pts[1].each{ |pt| 
+  pts.each{ |pt| 
     x, y = pt
     c = x * N + y
     fm[c] = fm[c] ? fm[c] + 1 : 1
@@ -35,7 +35,7 @@ p fm.count{ |_, v| v > 1 }
 
 # Part 2
 p fabrics.index{|pts| 
-  pts[1].all? { |pt|
+  pts.all? { |pt|
     x, y = pt
     c = x * N + y
     fm[c] == 1
