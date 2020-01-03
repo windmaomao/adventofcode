@@ -23,18 +23,12 @@ input = fn.each_line.map(&:chomp).map{|s|
 
 # Part 1
 fm = Hash.new { |h, k| h[k] = 0 }
-
 input.each{ |pts|
-  pts.each{ |pt| 
-    fm[pt] += 1
-  }
+  pts.each{ |pt| fm[pt] += 1 }
 }
-
 p fm.count{ |_, v| v > 1 }
 
 # Part 2
 p input.index{|pts| 
-  pts.all? { |pt|
-    fm[pt] == 1
-  }
+  pts.all? { |pt| fm[pt] == 1 }
 } + 1
