@@ -12,3 +12,21 @@ numMatches = input.map{ |str| matches(str) }
 n2 = numMatches.count{ |n| n[2] }
 n3 = numMatches.count{ |n| n[3] }
 p n2*n3
+
+# Part 2
+def emptyChar(str, i)
+  a = str.dup
+  a[i] = ' '
+  a
+end
+
+def findDup(arr)
+  h = Hash.new(0)
+  arr.find { |each| (h[each] += 1) == 2 } # => 'the"
+end
+
+(0..26).each{ |i| 
+  list = input.map{ |str| emptyChar(str, i) }
+  dupp = findDup(list)
+  p dupp if dupp
+}
