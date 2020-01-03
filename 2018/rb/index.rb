@@ -1,5 +1,5 @@
-require_relative '01'
-# require_relative 'day2'
+# require_relative '01'
+require_relative '02'
 # require_relative 'day3'
 # require_relative 'day4'
 # require_relative 'day5'
