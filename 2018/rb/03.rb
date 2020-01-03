@@ -11,11 +11,11 @@ input = fn.each_line.map(&:chomp).map{|s| splitNums(s)}
 # Part 1
 def fabricPts(x, y, w, h)
   m = []
-  (x..x+w-1).each{ |i| 
-    (y..y+h-1).each{ |j| 
-      m << [i, j]
-    }
-  }
+  w.times do |i|
+    h.times do |j|
+      m << [x + i, y + j]
+    end
+  end
   m
 end
 
