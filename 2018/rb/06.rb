@@ -1,4 +1,4 @@
-fn = open("2018/input/06a")
+fn = open("2018/input/06")
 input = fn.each_line.map(&:chomp).map{|l|
   l.split(", ").map(&:to_i).freeze
 }.freeze
@@ -7,7 +7,9 @@ input = fn.each_line.map(&:chomp).map{|l|
 #   p input.map{|v| v[i]}.minmax
 # }
 
-N = 9
+# Part 1
+
+N = 400
 distMap = (0..N).map{ |y|
   (0..N).map{ |x|
     dist = input.map{ |c| (x - c[0]).abs + (y - c[1]).abs }
@@ -38,3 +40,18 @@ areas = input.each_with_index.map { |_, id|
 }
 
 p areas.max
+
+# Part 2
+
+Max = 10000
+areaTotal = 0
+distTotalMap = (0..N).map{ |y|
+  (0..N).map{ |x|
+    dist = input.map{ |c| (x - c[0]).abs + (y - c[1]).abs }
+    total = dist.inject(&:+)
+    if (total < Max)
+      areaTotal += 1
+    end
+  }
+}
+p areaTotal
