@@ -1,6 +1,6 @@
 require 'set'
 
-fn = open("2018/input/04a")
+fn = open("2018/input/04")
 
 def parseLine(str)
   sp = str.split("] ")
@@ -43,7 +43,7 @@ def sleepTime(arr)
       (i..j).each{|k| sleeps[k] = 1}
     end
   }
-  p sleeps.map{|x| x > 0 ? '#' : '.'}.join('')
+  # p sleeps.map{|x| x > 0 ? '#' : '.'}.join('')
   sleeps
 end
 
@@ -51,7 +51,7 @@ def popularTime(arr)
   res = Array.new(60, 0).map.with_index{ |_, i| 
     arr.inject(0) { |acc, a| acc + a[i] }
   }
-  res.each_with_index.max[1]
+  res.each_with_index.max
 end
 
 guards = Hash.new{ |h, k| h[k] = {
@@ -59,7 +59,7 @@ guards = Hash.new{ |h, k| h[k] = {
   "days" => [],
   "slepts" => 0
 }}
-input.take(5).map{|g| 
+input.map{|g| 
   id = g[0][3].to_i
   time = sleepTime(g)
   guards[id]["days"].push(time)
@@ -67,4 +67,9 @@ input.take(5).map{|g|
 }
 lazyFound = guards.max_by{|k, v| v["slepts"] }
 p lazyFound[0]
-p popularTime(lazyFound[1]["days"])
+p popularTime(lazyFound[1]["days"])[1]
+
+# Part 2
+lazyFound2 = guards.max_by{|k, v| popularTime(v["days"])[0] }
+p lazyFound2[0]
+p popularTime(lazyFound2[1]["days"])[1]
