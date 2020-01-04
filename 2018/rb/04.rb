@@ -10,13 +10,14 @@ chunks = input.sort.slice_before{ |l|
 }.to_a
 
 N = 60
-guards = Hash.new { |h, k| h[k] = Array.new(N, 0) }
-chunks.each{ |arr| 
+guards = chunks.each_with_object(
+  Hash.new { |h, k| h[k] = Array.new(N, 0) }
+) { |arr, acc| 
   guard = lastInt(arr[0])
   arr.each_cons(2) { |p| 
     if p[0].end_with?('falls asleep')
       i, j = p.map{|l| Integer(l.scan(/\d+/).last, 10)}
-      (i..j-1).each{|k| guards[guard][k] += 1}
+      (i..j-1).each{|k| acc[guard][k] += 1}
     end
   }
 }
