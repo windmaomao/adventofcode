@@ -43,10 +43,19 @@ def sleepTime(arr)
       (i..j).each{|k| sleeps[k] = 1}
     end
   }
-  p sleeps
+  p sleeps.map{|x| x > 0 ? '#' : '.'}.join('')
+  sleeps
 end
 
-guards = Hash.new{ |h, k| h[k] = [] }
-input.take(1).map{|g| 
-  sleepTime(g)
+guards = Hash.new{ |h, k| h[k] = {
+  "id" => 0,
+  "days" => [],
+  "slepts" => 0
+}}
+input.take(5).map{|g| 
+  id = g[0][3]
+  time = sleepTime(g)
+  guards[id]["days"].push(time)
+  guards[id]["slepts"] += time.inject(&:+)
 }
+p guards.max_by{|k, v| v["slepts"] }[0]
