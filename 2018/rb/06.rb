@@ -8,11 +8,33 @@ input = fn.each_line.map(&:chomp).map{|l|
 # }
 
 N = 9
-puts (0..N).map{ |y|
+distMap = (0..N).map{ |y|
   (0..N).map{ |x|
     dist = input.map{ |c| (x - c[0]).abs + (y - c[1]).abs }
     minDist, closeId = dist.each_with_index.min
     isUniq = dist.select{ |v| v == minDist }.size == 1
-    isUniq ? (closeId+65).chr : '.'
-  }.join('')
+    isUniq ? closeId : -1
+  }
 }
+
+edges = []
+distMap.each_with_index{ |row, y| 
+  row.each_with_index{ |id, x| 
+    edges << id if ((x == 0 || x == N || y == 0 || y == N) && id >= 0)
+  }
+}
+edgeIds = edges.uniq
+
+areas = input.each_with_index.map { |_, id| 
+  area = 0
+  if !edgeIds.include?(id)
+    distMap.each{ |row|
+      row.each{ |id2| 
+        area += 1 if id2 == id
+      }
+    }
+  end
+  area
+}
+
+p areas.max
