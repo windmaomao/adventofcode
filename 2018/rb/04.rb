@@ -47,15 +47,24 @@ def sleepTime(arr)
   sleeps
 end
 
+def popularTime(arr) 
+  res = Array.new(60, 0).map.with_index{ |_, i| 
+    arr.inject(0) { |acc, a| acc + a[i] }
+  }
+  res.each_with_index.max[1]
+end
+
 guards = Hash.new{ |h, k| h[k] = {
   "id" => 0,
   "days" => [],
   "slepts" => 0
 }}
 input.take(5).map{|g| 
-  id = g[0][3]
+  id = g[0][3].to_i
   time = sleepTime(g)
   guards[id]["days"].push(time)
   guards[id]["slepts"] += time.inject(&:+)
 }
-p guards.max_by{|k, v| v["slepts"] }[0]
+lazyFound = guards.max_by{|k, v| v["slepts"] }
+p lazyFound[0]
+p popularTime(lazyFound[1]["days"])
