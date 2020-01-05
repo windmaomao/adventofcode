@@ -14,7 +14,7 @@ distMap = (0..N).map{ |y|
   (0..N).map{ |x|
     dist = input.map{ |c| (x - c[0]).abs + (y - c[1]).abs }
     minDist, closeId = dist.each_with_index.min
-    isUniq = dist.select{ |v| v == minDist }.size == 1
+    isUniq = dist.count(minDist) == 1
     isUniq ? closeId : -1
   }
 }
@@ -43,15 +43,10 @@ p areas.max
 
 # Part 2
 
-Max = 10000
-areaTotal = 0
 distTotalMap = (0..N).map{ |y|
   (0..N).map{ |x|
     dist = input.map{ |c| (x - c[0]).abs + (y - c[1]).abs }
-    total = dist.inject(&:+)
-    if (total < Max)
-      areaTotal += 1
-    end
+    dist.inject(&:+)
   }
 }
-p areaTotal
+p distTotalMap.flatten.select{ |e| e < 10000 }.size

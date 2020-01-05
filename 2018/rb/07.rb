@@ -37,4 +37,22 @@ def findOrders(start)
   orders
 end
 
-p findOrders(roots)
+p findOrders(roots).join('')
+
+# Part 2
+
+def findWorkerTime(start, n)
+  orders = []
+  stack = start.dup
+  workers = Array.new(n, nil)
+
+  t = 0
+  loop do
+    workers.map{ |left, i| 
+      next if left > 0
+    }
+    t += 1
+  end
+  
+  t
+end
