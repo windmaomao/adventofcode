@@ -1,4 +1,4 @@
-fn = open("2018/input/07a")
+fn = open("2018/input/07")
 input = fn.each_line.map(&:chomp).freeze
 
 Deps = input.each_with_object(
@@ -20,29 +20,29 @@ orders = []
 while orders.size < Deps.size
   orders << (noDepList(orders) - orders).sort.first
 end
-# p orders
+p orders.join
 
 # Part 2
 
+Prefix = 0
+N = 5
 time = 0
-working = [["", 0], ["", 0], ["", 0], ["", 0], ["", 0]]
+working = Array.new(N).map{|v| ["", 0] }
 orders = []
 
-while orders.size < 1
+while orders.size < Deps.size
   # no dependency, not in order, not in working
   canWork = noDepList(orders).select{ |v| 
     !orders.include?(v) &&
     !working.map(&:first).include?(v)
   }
 
-  p canWork
-
   working.each { |w|
     workingOn, _ = w
     if canWork.size > 0 && workingOn == ""
       order = canWork.sort.first
       canWork.delete(order)
-      w[0, 2] = [order, order.ord - 4]
+      w[0, 2] = [order, order.ord - 4 - Prefix]
     end
   }
 
@@ -61,7 +61,5 @@ while orders.size < 1
     end
   }
 
-  # p canWork
-  p working
 end
-# p orders
+p time
