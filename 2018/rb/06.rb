@@ -19,6 +19,13 @@ distMap = (0..N).map{ |y|
   }
 }
 
+counts = distMap.flatten.each_with_object(
+  Array.new(input.size, 0)
+) {|id, acc| 
+  acc[id] += 1 
+}
+p counts
+
 edges = []
 distMap.each_with_index{ |row, y| 
   row.each_with_index{ |id, x| 
