@@ -1,58 +1,65 @@
-fn = open("2018/input/07a")
+fn = open("2018/input/07")
 input = fn.each_line.map(&:chomp).freeze
 
-Steps = Hash.new { |h, k| h[k] = {
-  "children" => [],
-  "parents" => []
-}}
-
-input.each{ |l| 
+Deps = input.each_with_object(
+  Hash.new { |h, k| h[k] = []}
+){ |l, acc| 
   p, c = l[5], l[36]
-  Steps[p]['children'] << c
-  Steps[c]['parents'] << p
+  acc[p] ||= []
+  acc[c] << p
+  acc[c].sort!
 }
 
-roots = Steps.select{ |k, v| v['parents'].empty? }.keys
+def noDepList(order)
+  Deps.select{ |k, v| v & order == v}.keys
+end 
 
 # Part 1
 
-def findOrders(start)
-  orders = []
-  stack = start.dup
-
-  loop do
-    node = stack.sort.find{ |n| 
-      parents = Steps[n]['parents']
-      parents.size ? parents.all?{|c| orders.include?(c) } : true
-    }
-    if node
-      stack.delete(node) 
-      orders << node
-      stack += Steps[node]['children']
-      stack = stack.uniq
-    end
-    break if stack.size < 1
-  end
-  
-  orders
+orders = []
+while orders.size < Deps.size
+  orders << (noDepList(orders) - orders).sort.first
 end
-
-p findOrders(roots).join('')
+p orders.join
 
 # Part 2
 
-def findWorkerTime(start, n)
-  orders = []
-  stack = start.dup
-  workers = Array.new(n, nil)
+Prefix = 0
+N = 5
+time = 0
+working = Array.new(N).map{|v| ["", 0] }
+orders = []
 
-  t = 0
-  loop do
-    workers.map{ |left, i| 
-      next if left > 0
-    }
-    t += 1
-  end
-  
-  t
+while orders.size < Deps.size
+  # no dependency, not in order, not in working
+  canWork = noDepList(orders).select{ |v| 
+    !orders.include?(v) &&
+    !working.map(&:first).include?(v)
+  }
+
+  working.each { |w|
+    workingOn, _ = w
+    if canWork.size > 0 && workingOn == ""
+      order = canWork.sort.first
+      canWork.delete(order)
+      w[0, 2] = [order, order.ord - 4 - Prefix]
+    end
+  }
+
+  time += 1
+
+  working.each { |w|
+    workingOn, timeLeft = w
+    next if workingOn == ""
+
+    timeLeft -= 1
+    if (timeLeft == 0)
+      orders << workingOn
+      w[0, 2] = ["", 0]
+    else
+      w[0, 2] = [workingOn, timeLeft]
+    end
+  }
+
 end
+p time
