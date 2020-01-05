@@ -21,10 +21,7 @@ distMap = (0..N).map{ |y|
 
 counts = distMap.flatten.each_with_object(
   Array.new(input.size, 0)
-) {|id, acc| 
-  acc[id] += 1 
-}
-p counts
+) {|id, acc| acc[id] += 1 }
 
 edges = []
 distMap.each_with_index{ |row, y| 
@@ -32,21 +29,8 @@ distMap.each_with_index{ |row, y|
     edges << id if ((x == 0 || x == N || y == 0 || y == N) && id >= 0)
   }
 }
-edgeIds = edges.uniq
 
-areas = input.each_with_index.map { |_, id| 
-  area = 0
-  if !edgeIds.include?(id)
-    distMap.each{ |row|
-      row.each{ |id2| 
-        area += 1 if id2 == id
-      }
-    }
-  end
-  area
-}
-
-p areas.max
+p counts.select.with_index {|_, i| !edges.include?(i) }.max
 
 # Part 2
 
