@@ -2,10 +2,10 @@ fn = open("2018/input/08")
 input = fn.each_line.map(&:chomp)[0].split(" ").map(&:to_i)
 # input = "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2".split(" ").map(&:to_i)
 
-# Part 1
 i = 0
 stack = []
 value = 0
+values = []
 
 while i < input.size
   node = [input[i], input[i+1], []]
@@ -32,8 +32,8 @@ while i < input.size
     else
       value = input[i, metaCount].inject(&:+)
     end
+    values += input[i, metaCount]
 
-    # p value
     if (stack.last)
       stack.last[2] << value
     end
@@ -42,4 +42,7 @@ while i < input.size
   end
 end
 
+# Part 1
+p values.inject(&:+)
+# Part 2
 p value
