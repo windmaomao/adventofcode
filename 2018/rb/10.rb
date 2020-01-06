@@ -14,23 +14,29 @@ def plotRange(arr)
   xl, yl = [x[1]-x[0]+1, y[1]-y[0]+1]
   plot = Array.new(yl).map{|r| Array.new(xl, '.')}
   arr.each{|n| plot[n[1]-y[0]][n[0]-x[0]] = '#' }
-  plot.reverse.map{|r| r.join }
+  plot.map{|r| r.join }
 end
 
-nodes = input.dup
+current = input
 i = 0
 tmp = 1000000000000
-while i < 100000
-  nodes.each{ |n| 
-    n[0] += n[2]
-    n[1] += n[3]
+area = 0
+while true
+  newPos = current.map.with_index{ |n, j| 
+    vx, vy = input[j][2, 2]
+    x, y = n
+    [x + vx, y + vy]
   }
-  x, y = calcRange(input)
-  area = (x[1] - x[0]) * (y[1] - y[0])
+  xr, yr = calcRange(newPos)
+  area = (xr[1] - xr[0]) * (yr[1] - yr[0])
+
   break if area > tmp
   tmp = area
   i += 1
+  current = newPos
 end
 
+# Part 1
+puts plotRange(current)
+# Part 2
 p i
-puts plotRange(input)
