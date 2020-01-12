@@ -1,4 +1,4 @@
-fn = open("2018/input/13a")
+fn = open("2018/input/13")
 input = fn.each_line.map(&:chomp).freeze
 
 carts = []
@@ -11,6 +11,8 @@ input.each_with_index{|l, y|
     l[x] = dir > 1 ? '|' : '-'
   }
 }
+
+# puts input
 
 # Part 1
 def move(cart, m)
@@ -45,7 +47,8 @@ N = 1400
 while i < N
   tracks = input.dup.map{|c| c.dup }
   h = Hash.new(0)
-  carts.each{|c| 
+  # p carts.sort_by{|c| c[1]}
+  carts.sort_by{|c| c[1] * 10000 + c[0]}.each{|c| 
     if !crash
       x, y, d, s = move(c, input)
       c[0, 4] = [x, y, d, s]
@@ -61,7 +64,7 @@ while i < N
   i += 1
 end
 
-puts tracks
+# puts tracks
 p crash
 # p carts
 
