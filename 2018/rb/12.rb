@@ -15,7 +15,7 @@ chars = ['.', '#']
 str = "..." + raw.dup + "................................................"
 neg = -3
 i = 0
-while i < 300
+while i < 150
   sum = str.chars.map.with_index{|c, i| 
     c == '#' ? i + neg : 0
   }.inject(&:+)
@@ -39,7 +39,6 @@ while i < 300
   end
   str = str[0...160]
 
-  # str = str2
   i += 1
 end
 sum = str.chars.map.with_index{|c, i| 
@@ -47,7 +46,12 @@ sum = str.chars.map.with_index{|c, i|
 }.inject(&:+)
 p "#{str}, #{i}, #{sum}"
 
-
+# Part 2
+# The population is moving horizontally to the right after some time
+# Therefore the increment is fixed and we just need to wait a warmup time
+count = str.chars.count{ |c| c == '#' }
+n = 50000000000
+p (n - i) * count + sum
 
 # ".....#.#..#.#..#.#..#.#..#.#..#.#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#.#..#..#..#..#..#..#..#.#..#..#............, 102, 6397"
 # "......#.#..#.#..#.#..#.#..#.#..#.#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#..#.#..#..#..#..#..#..#..#.#..#..#..........., 103, 6448"  51
