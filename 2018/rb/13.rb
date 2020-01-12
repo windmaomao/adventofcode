@@ -21,7 +21,6 @@ def move(cart, m)
 
   # change direction at intersection 
   dirs = [[3,0,2], [2,1,3], [0,2,1], [1,3,0]]
-  # dirs = [[0,0,1], [0,1,1], [0,2,1], [0,3,1]]
   if (c == '+')
     d = dirs[d][s]
     s += 1
@@ -46,17 +45,12 @@ crash = nil
 N = 1400
 while i < N
   tracks = input.dup.map{|c| c.dup }
-  h = Hash.new(0)
-  # p carts.sort_by{|c| c[1]}
-  carts.sort_by{|c| c[1] * 10000 + c[0]}.each{|c| 
-    if !crash
-      x, y, d, s = move(c, input)
-      c[0, 4] = [x, y, d, s]
-      tracks[y][x] = symbols[d]
-      if (h[[c[0],c[1]]] > 0) 
-        crash = c.dup
-      end
-      h[[c[0],c[1]]] += 1
+  carts.sort.each{|c| 
+    x, y, d, s = move(c, input)
+    c[0, 4] = [x, y, d, s]
+    tracks[y][x] = symbols[d]
+    if carts.map {|i, j, _, _| [i, j] }.uniq.size < carts.size
+      crash = [x, y].join(",") 
     end
   }
   break if crash

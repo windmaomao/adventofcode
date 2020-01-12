@@ -27,8 +27,6 @@ map = input.map.with_index do |row, y|
   end
 end
 
-puts map.map{|a| a.join('')}
-
 def debug(map, carts)
   map.each.with_index do |row, y|
     row.each.with_index do |cell, x|
@@ -44,6 +42,8 @@ def debug(map, carts)
     puts
   end
 end
+
+debug(map, carts)
 
 tick = 0
 
