@@ -14,9 +14,18 @@ input.each_with_index{|l, y|
 
 # Part 1
 def move(cart, m)
-  (x, y), d = cart
+  (x, y), d, s = cart
   c = m[y][x]
-  # p c,d
+
+  # change direction at intersection 
+  dirs = [[3,0,2], [2,1,3], [0,3,1], [1,2,0]]
+  if (c == '+')
+    d = dirs[d][s]
+    s += 1
+    s %= 3
+    # s = s / 3 
+  end
+
   normals = [[x-1,y,d], [x+1,y,d], [x,y-1,d], [x,y+1,d]]  # - or |
   lefts =   [[x,y+1,3], [x,y-1,2], [x+1,y,1], [x-1,y,0]]  # /
   rights =  [[x,y-1,2], [x,y+1,3], [x-1,y,0], [x+1,y,1]]  # \
@@ -27,16 +36,16 @@ def move(cart, m)
     "/" => lefts,
     "\\" => rights,
   }
-  moves[c][d]
+  moves[c][d] + [s]
 end
 
 i = 0
-while i < 1
+while i < 2
   tracks = input.dup.map{|c| c.dup }
   carts.each{|c| 
-    x, y, d = move(c, input)
+    x, y, d, s = move(c, input)
+    c[0, 3] = [[x, y], d, s]
     tracks[y][x] = symbols[d]
-    c[0, 2] = [[x, y], d]
   }
 
   i += 1
