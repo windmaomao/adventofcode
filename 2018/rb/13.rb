@@ -12,9 +12,7 @@ input.each_with_index{|l, y|
   }
 }
 
-# puts input
-
-# Part 1
+# Part 1,2
 def move(cart, m)
   x, y, d, s = cart
   c = m[y][x]
@@ -41,8 +39,8 @@ def move(cart, m)
 end
 
 i = 0
-crash = nil
-N = 1400
+crashes = []
+N = 20000
 while i < N
   tracks = input.dup.map{|c| c.dup }
   carts.sort.each{|c| 
@@ -50,16 +48,15 @@ while i < N
     c[0, 4] = [x, y, d, s]
     tracks[y][x] = symbols[d]
     if carts.map {|i, j, _, _| [i, j] }.uniq.size < carts.size
-      crash = [x, y].join(",") 
+      crashes << c.dup
+      carts.delete_if { |i, j, _, _| i == x && j == y }
     end
   }
-  break if crash
+  break if carts.size == 1
 
   i += 1
 end
 
 # puts tracks
-p crash
-# p carts
-
-# 134,96
+p crashes.map{|c| "#{c[0]},#{c[1]}"}[0]
+p carts.map{|c| "#{c[0]},#{c[1]}"}[0]
