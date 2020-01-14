@@ -1,16 +1,11 @@
 def genRecipes(n, goal)
   recipes = Array.new(n*1.5)
   recipes[0, 2] = [3, 7]
-  r1 = 0
-  r2 = 1
-  rcount = 2
+  r1, r2, rcount = [0, 1, 2]
   i = 0
-  found = false
-  if (goal) 
-    latest = Array.new(goal.size, 0) 
-  end
+  latest = goal ? Array.new(goal.size, 0) : nil
 
-  while ((i < n) && !found)
+  while (i < n)
     sum = recipes[r1] + recipes[r2]
     if sum > 9
       recipes[rcount] = 1
@@ -18,7 +13,7 @@ def genRecipes(n, goal)
       if goal
         latest << 1
         latest.shift
-        found = latest == goal
+        break if latest == goal
       end
     end
 
@@ -27,7 +22,7 @@ def genRecipes(n, goal)
     if goal 
       latest << sum % 10
       latest.shift
-      found = !found ? latest == goal : found 
+      break if latest == goal
     end
 
     r1 = (r1 + 1 + recipes[r1]) % rcount
@@ -36,7 +31,7 @@ def genRecipes(n, goal)
     i += 1
   end  
 
-  [recipes, rcount, found]
+  [recipes, rcount, latest]
 end
 
 
@@ -49,5 +44,5 @@ p [N..N+9].map{|i| rs[i]}.join('')
 # Part 2
 N2 = 16000000
 G = input.to_s.chars.map(&:to_i)
-rs, count, found = genRecipes(N2, G)
-p found ? count - G.size - 1 : nil
+rs, count, latest = genRecipes(N2, G)
+p count - G.size, latest
