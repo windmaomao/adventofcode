@@ -1,35 +1,40 @@
-def display(r, f1, f2)
-  r.map.with_index { |n, i|
-    case i
-    when f1
-      "(#{n})"
-    when f2 
-      "[#{n}]"
-    else
-      " #{n} "
+def genRecipes(n, goal)
+  recipes = Array.new(n*1.5)
+  recipes[0, 2] = [3, 7]
+  r1 = 0
+  r2 = 1
+  rcount = 2
+  i = 0
+  found = false
+
+  while ((i < n) && !found)
+    sum = recipes[r1] + recipes[r2]
+    if sum > 9
+      recipes[rcount] = 1
+      rcount += 1
     end
-  }.join
-end
 
-N = 2018 #920831 
-B = 10
-recipes = Array.new(N+B)
-recipes[0, 2] = [3, 7]
-r1 = 0
-r2 = 1
-rcount = 2
-i = 0
-
-while i < N+B 
-  rs = [r1, r2].map{|i| recipes[i]}
-  rs.inject(&:+).to_s.chars.map(&:to_i).each{|v| 
-    recipes[rcount] = v
+    recipes[rcount] = sum % 10
     rcount += 1
-  }
-  r1, r2 = [r1,r2].map{|i| (i+1+recipes[i]) % rcount }
-  i += 1
-  # p display(recipes, r1, r2) # + "  " + i.to_s
+    found = goal && (recipes[rcount-5,5] == [5,9,4,1,4])
+
+    r1 = (r1 + 1 + recipes[r1]) % rcount
+    r2 = (r2 + 1 + recipes[r2]) % rcount
+
+    i += 1
+  end  
+
+  [recipes, rcount]
 end
 
+
+input = 920831
 # Part 1
-p [N..N+9].map{|i| recipes[i]}.join('')
+N = input
+rs, count = genRecipes(N, nil)
+p [N..N+9].map{|i| rs[i]}.join('')
+
+# Part 2
+G = "51589".chars.map(&:to_i)
+rs, count = genRecipes(N, G)
+p count
