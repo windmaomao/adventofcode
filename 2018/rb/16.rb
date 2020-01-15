@@ -1,6 +1,3 @@
-# Before: [3, 3, 2, 1]  arr
-# 9 3 2 2               data
-# After:  [3, 3, 1, 1]  output
 fn = open("2018/input/16")
 input = fn.each_line.map(&:chomp).freeze
 
@@ -84,8 +81,18 @@ loop do
   }
 end
 
-p pids
-p ops
+fn = open("2018/input/16b")
+input = fn.each_line.map(&:chomp).map{ |l| 
+  l.split(" ").map(&:to_i) 
+}
+
+arr = [0, 0, 0, 0]
+input.each{|data| 
+  op = pids[data[0]]
+  arr = opcode(arr, data, op)
+}
+
+p arr[0]
 
 # arr = [3, 2, 1, 1]
 # data = [9, 2, 1, 2]
