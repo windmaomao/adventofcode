@@ -59,6 +59,34 @@ p samples.map{|g|
   }.count(true) >= 3
 }.count(true)
 
+# Part 2
+ops = Array.new(16).map{|v| [] }
+samples.each{|g| 
+  arr, data, output = g
+  op = data[0]
+  (0..15).each{|i| 
+    if opcode(arr, data, i) == output
+      ops[op] << i
+    end
+  }
+}
+
+ops = ops.map{|arr| arr.uniq}
+pids = Array.new(16, -1)
+
+loop do
+  fid = ops.index{ |arr| arr.size == 1 }
+  break if fid == nil
+  n = ops[fid][0]
+  pids[fid] = n
+  ops.each{ |arr|
+    arr.delete_if { |x| x == n }
+  }
+end
+
+p pids
+p ops
+
 # arr = [3, 2, 1, 1]
 # data = [9, 2, 1, 2]
 # output = [3, 2, 2, 1]
