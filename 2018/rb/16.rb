@@ -4,7 +4,7 @@
 fn = open("2018/input/16")
 input = fn.each_line.map(&:chomp).freeze
 
-groups = input.each_slice(4).map{|c|
+samples = input.each_slice(4).map{|c|
   arr = c[0].scan(/\d+/).map(&:to_i)
   data = c[1].scan(/\d+/).map(&:to_i)
   output = c[2].scan(/\d+/).map(&:to_i)
@@ -52,7 +52,7 @@ def opcode(arr, data, op)
 end
 
 # Part 1
-p groups.map{|g| 
+p samples.map{|g| 
   arr, data, output = g
   (0..15).map{|i| 
     opcode(arr, data, i) == output
