@@ -57,18 +57,13 @@ def opcode(arr, data)
   output
 end
 
-i = ip 
-arr = [ip,0,0,0,0,0]
+arr = [0,0,0,0,0,0]
 j = 0
-while j < 36
-  data = input[i]
-  p arr
-  p data
+while arr[ip] < input.size
+  data = input[arr[ip]]
   arr = opcode(arr, data)
-
-  arr[0] += 1
-  i = arr[0]
+  arr[ip] += 1
   j += 1
 end
 
-# p arr[0]
+p arr
