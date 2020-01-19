@@ -57,13 +57,27 @@ def opcode(arr, data)
   output
 end
 
-arr = [0,0,0,0,0,0]
-j = 0
-while arr[ip] < input.size
-  data = input[arr[ip]]
-  arr = opcode(arr, data)
-  arr[ip] += 1
-  j += 1
+def spin(input, ip, a)
+  arr = a.dup
+  while arr[ip] < input.size
+    data = input[arr[ip]]
+    # r0 = arr[0]
+    arr = opcode(arr, data)
+    # p arr if arr[0] != r0
+    arr[ip] += 1
+  end
+  arr
 end
 
-p arr
+# Part 1
+arr = [0,0,0,0,0,0]
+p spin(input, ip, arr)[0]
+
+# Part 2
+# register0 is sum of all divisors of 10551347
+# arr = [1,0,0,0,0,0]
+# p spin(input, ip, arr)[0]
+arr = [1, 73, 144539, 10551347]
+p arr.sum
+
+# 15285504
