@@ -6,6 +6,7 @@
   "scripts": {
     "2015": "DEBUG=day*:* nodemon --exec babel-node 2015/index.js",
     "start": "DEBUG=day*:* nodemon --exec babel-node 2019/index.js",
+    "2015-rb": "nodemon --exec ruby 2015/index.rb",
     "2018-rb": "nodemon --exec ruby 2018/rb/index.rb",
     "rb": "nodemon --exec ruby 2019/rb/index.rb",
     "test": "echo \"Error: no test specified\" && exit 1"

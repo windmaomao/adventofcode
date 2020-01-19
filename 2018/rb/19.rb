@@ -75,6 +75,8 @@ p spin(input, ip, arr)[0]
 
 # Part 2
 # register0 is sum of all divisors of 10551347
+# [0, 0, 10550400, 34, 10551347, 0]
+# [1, 1, 1, 7, 10551347, 10551347]
 # arr = [1,0,0,0,0,0]
 # p spin(input, ip, arr)[0]
 arr = [1, 73, 144539, 10551347]
