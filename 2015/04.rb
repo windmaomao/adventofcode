@@ -1,14 +1,21 @@
 require 'digest/md5'
 
-secret = "bgvyzdsv"
+fn = open("2015/04.input")
+input = fn.each_line.to_a[0].freeze
 
-i = 1
-loop do 
-  md = Digest::MD5.hexdigest("#{secret}#{i}")
-  break if md[0, 5] == "00000"
-  i += 1
+def findNum(secret, n)
+  i = 0
+  zeros = "0" * n
+  loop do 
+    md = Digest::MD5.hexdigest("#{secret}#{i}")
+    break if md[0, n] == zeros
+    i += 1
+  end
+  i
 end
-p i
 
+# Part 1
+p findNum(input, 5)
 
-# 1006653 too high
+# Part 2
+p findNum(input, 6)
