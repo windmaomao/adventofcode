@@ -8,7 +8,7 @@ An opening parenthesis, (, means he should go up one floor, and a closing parent
 
 For example:
 
-- (()) and ()() both result in floor 0.
+- \`(())\` and ()() both result in floor 0.
 - ((( and (()(()( both result in floor 3.
 - ))((((( also results in floor 3.
 - ()) and ))( both result in floor -1 (the first basement level).

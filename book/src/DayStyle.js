@@ -21,6 +21,9 @@ const DayStyle = styled.div`
     margin-left: 2em;
     list-style-type: square;
   }
+  code {
+    border: 1px dashed gray;
+  }
 `
 
 export default DayStyle
