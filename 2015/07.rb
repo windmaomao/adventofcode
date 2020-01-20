@@ -1,7 +1,7 @@
 fn = open("2015/07a.input")
 
 Deps = Hash.new
-input = fn.each_line.map(&:chomp).take(3).map{|l|
+input = fn.each_line.map(&:chomp).take(8).map{|l|
   ins = l.scan(/[a-z]+|\d+|[A-Z]+/)
   names = l.scan(/[a-z]+/)
   name = names.pop
@@ -15,11 +15,14 @@ def expr(eqn, vals)
     case v 
     when 'AND'; '&'
     when 'OR'; '|'
+    when 'LSHIFT'; '<<'
+    when 'RSHIFT'; '>>'
+    when 'NOT'; '~'
     else
-      v.to_i.to_s == v ? v.to_i : vals[v]
+      v.to_i.to_s == v ? v : vals[v]
     end
   }.join(' ')
-  eval(filled)
+  eval(filled) % 65536
 end
 
 # Part 1
