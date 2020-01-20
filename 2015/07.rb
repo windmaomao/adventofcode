@@ -8,7 +8,8 @@ input = fn.each_line.map(&:chomp).map{|l|
   Deps[name] = [names, ins - [name], nil]
 }
 
-def eval(eqn, names, vals)
+def expr(eqn, names, vals)
+  return eval(eqn[0]) if names.size < 1
   1
 end
 
@@ -21,7 +22,7 @@ while found.size < Deps.size
     found << name
     names, eqn, _ = Deps[name]
     vals = names.map{|n| Deps[n][2]}
-    Deps[name][2] = eval(eqn, names, vals)
+    Deps[name][2] = expr(eqn, names, vals)
   }
 end
 
