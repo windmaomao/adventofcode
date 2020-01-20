@@ -1,10 +1,13 @@
 # Adevent of Code 
 
-My journey started at 2019 with `Javascript`. Afterwards I went back to practice 2018, 2015 etc. with `Ruby`.  
+My journey started at 2019 with `Javascript`. Afterwards I went back to practice 2018, 2015 etc. with `Ruby`. 
+
+Over 25*2 questions each year, they are presented with the vivid story telling within the story theme. The pattern also emerges from each of them, ex. basic loop, couting and file line parsering. The pattern, once identified and practiced, via your chosen language, is some valuable treasure you could collect. 
 
 ## Usage 
 
 ```
+  npm install
   <!-- 2019 -->
   npm start
   <!-- 2018 -->
@@ -13,7 +16,7 @@ My journey started at 2019 with `Javascript`. Afterwards I went back to practice
   npm run 2015-rb
 ```
 
-## Question
+## Pattern
 
 ### Basic loop, cout, minmax
 
