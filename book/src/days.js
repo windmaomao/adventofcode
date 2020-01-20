@@ -1,17 +1,17 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import DayStyle from './DayStyle'
-import source from './days/01'
+import content from './2015'
 
-const days2015 = [
-  {
-    title: '01',
-    text: 'Day 1: Not Quite Lisp',
-    body: <DayStyle>
-      <ReactMarkdown source={source} />
+const days2015 = content.map((src, i) => ({
+  title: i+1,
+  text: '',
+  body: (
+    <DayStyle>
+      <ReactMarkdown source={src} />
     </DayStyle>
-  },
-]
+  )
+}))
 
 const days = [
   { title: 'Competition', separator: true },
