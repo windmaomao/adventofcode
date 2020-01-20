@@ -23,20 +23,25 @@ def expr(eqn, vals)
   eval(filled) % 65536
 end
 
-# Part 1
-
-found = []
-vals = {}
-while found.size < Deps.size
-  selected = Deps.select{ |k, v| v[0] & found == v[0]}.keys - found  
-  selected.each{|name| 
-    found << name
-    names, eqn = Deps[name]
-    vals[name] = expr(eqn, vals)
-  }
+def solve()
+  found = []
+  vals = {}
+  while found.size < Deps.size
+    selected = Deps.select{ |k, v| v[0] & found == v[0]}.keys - found  
+    selected.each{|name| 
+      found << name
+      names, eqn = Deps[name]
+      vals[name] = expr(eqn, vals)
+    }
+  end
+  vals
 end
 
-p vals['a']
+# Part 1
+sln = solve()
+p sln['a']
 
 # Part 2
-# Change input b to previous a and rerun
+Deps['b'][1][0] = sln['a'].to_s
+sln = solve()
+p sln['a']
