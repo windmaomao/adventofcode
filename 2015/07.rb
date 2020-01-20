@@ -1,14 +1,12 @@
-fn = open("2015/07a.input")
+fn = open("2015/07.input")
 
 Deps = Hash.new
-input = fn.each_line.map(&:chomp).take(8).map{|l|
+input = fn.each_line.map(&:chomp).map{|l|
   ins = l.scan(/[a-z]+|\d+|[A-Z]+/)
   names = l.scan(/[a-z]+/)
   name = names.pop
   Deps[name] = [names, ins - [name]]
 }
-
-p Deps
 
 def expr(eqn, vals)
   filled = eqn.map{|v| 
@@ -38,4 +36,7 @@ while found.size < Deps.size
   }
 end
 
-p vals
+p vals['a']
+
+# Part 2
+# Change input b to previous a and rerun
