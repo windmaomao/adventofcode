@@ -11,26 +11,19 @@ input = fn.each_line.map(&:chomp).map{|l|
   names.each{|n| dg.add_edge(n, name) }
 }
 
-def expr(eqn, vals)
-  filled = eqn.map{|v| 
-    case v 
-    when 'AND'; '&'
-    when 'OR'; '|'
-    when 'LSHIFT'; '<<'
-    when 'RSHIFT'; '>>'
-    when 'NOT'; '~'
-    else
-      v.to_i.to_s == v ? v : vals[v]
-    end
-  }.join(' ')
-  eval(filled) % 65536
-end
-
-
 vals = {}
 require 'rgl/topsort'
+require_relative './utils/expr'
+
+# Part 1
 dg.topsort_iterator.to_a.map{|name|
   vals[name] = expr(formulas[name], vals)
 }
+p vals['a']
 
+# Part 2
+formulas['b'][0] = vals['a'].to_s
+dg.topsort_iterator.to_a.map{|name|
+  vals[name] = expr(formulas[name], vals)
+}
 p vals['a']
