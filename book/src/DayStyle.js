@@ -16,6 +16,7 @@ const DayStyle = styled.div`
   }
   p {
     margin: 1em 0;
+    width: 95%;
   }
   ul {
     margin-left: 2em;
@@ -23,6 +24,10 @@ const DayStyle = styled.div`
   }
   code {
     border: 1px dashed gray;
+  }
+  img {
+    margin: 0.5em 0;
+    max-width: 90%;
   }
 `
 

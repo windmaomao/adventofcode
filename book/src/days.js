@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import DayStyle from './DayStyle'
-import content from './2015'
+import content from './md/2015'
 
 const days2015 = content.map((src, i) => ({
   title: i+1,
