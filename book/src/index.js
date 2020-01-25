@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Book } from 'react-brandbook'
-import topics from './code/days'
+import code from './code'
 
 ReactDOM.render(
   <Book
     title={'AdventOfCode'}
     logo={'Eric Wastl'}
-    topics={topics}
+    topics={code.topics}
   />, 
   document.getElementById('root')
 )
