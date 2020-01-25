@@ -2,7 +2,13 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import DayStyle from './DayStyle'
 import content from './md/2015'
-import advanced from './md/advanced'
+import advanced from './md/patterns'
+
+const Body = ({ src }) => (
+  <DayStyle>
+    <ReactMarkdown source={src} />
+  </DayStyle>
+)
 
 const days = [
   { title: 'Code', separator: true },
@@ -11,23 +17,14 @@ const days = [
     stories: content.map((src, i) => ({
       title: i + 1,
       text: '',
-      body: (
-        <DayStyle>
-          <ReactMarkdown source={src} />
-        </DayStyle>
-      )
+      body: <Body src={src} />
     })) 
   },
   {
-    title: 'Patterns', stories: [
-      {
-        title: 'Topological sorting',
-        body:
-          <DayStyle>
-            <ReactMarkdown source={advanced[0]} />
-          </DayStyle>
-      }
-    ]
+    title: 'Patterns', stories: [{
+      title: 'Topological sorting',
+      body: <Body src={advanced[0]} />
+    }]
   }
 ]
 
