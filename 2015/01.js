@@ -1,22 +1,21 @@
-import _ from 'lodash'
+import './utils/array'
 
-const d = s => s === '(' ? 1 : -1
-const sumFloor = (acc, s) => acc + d(s)
+const floor = s => s === '(' ? 1 : -1
 const sum2Basement = (acc, s, i) => {
-  if (acc.value === -1) return acc
-  return { 
-    pos: i + 1,
-    value: acc.value + d(s) 
-  }
+  const prev = i > 0 ? acc[i - 1] : 0
+  if (prev === -1) return false
+  acc.push(prev + floor(s))
+  return acc
 }
 
-const parse = data => data[0].split('')
-const part1 = data => parse(data)
-  .reduce(sumFloor, 0)
+const part1 = data => data
+  .sum(floor)
 
-const part2 = data => _.chain(data)
-  .flatMap(x => x.split(''))
-  .reduce(sum2Basement, { value: 0, pos: 0 }
-  ).value()
+const part2 = data => data
+  .transform(sum2Basement, [])
+  .length
 
-export default () => ({ part1, part2 })
+export default () => ({ 
+  separator: '',
+  part1, part2 
+})
