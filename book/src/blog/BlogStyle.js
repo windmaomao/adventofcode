@@ -2,10 +2,12 @@ import styled from 'styled-components'
 
 const BlogStyle = styled.div`
   padding: 5px;
-  font-family: "Times New Rome";
+  font-family: Palatino, "Times New Rome";
   -webkit-font-smoothing: auto;
   font-size: 16px;
   line-height: 1.8;
+  max-width: 650px;
+  margin: 0 auto;
   h1, h2, h3 {
     font-weight: bold;
     margin: 1em 0;
