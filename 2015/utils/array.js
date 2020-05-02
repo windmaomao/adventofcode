@@ -18,3 +18,8 @@ Array.prototype.sum = function (predicate) {
 Array.prototype.uniqBy = function (iteratee) {
   return _.uniqBy(this, iteratee)
 }
+
+// TakeWhile
+Array.prototype.takeWhile = function (predicate) {
+  return _.takeWhile(this, predicate)
+}

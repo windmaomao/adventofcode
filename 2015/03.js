@@ -11,8 +11,12 @@ const part1 = (data) => data
   .uniqBy(posKey)
   .length
 
+const modFilter = v => (_, i) => i % 2 === v
 const part2 = data => [0, 1]
-  .flatMap(_ => data.transform(nextPos, [[0, 0]]))
+  .flatMap(v => data
+    .filter(modFilter(v))
+    .transform(nextPos, [[0, 0]])
+  )
   .uniqBy(posKey)
   .length
 
