@@ -1,4 +1,6 @@
 export { default as input } from './input'
 export { default as array } from './array'
 export { default as string } from './string'
+export { default as number } from './number'
 export { default as graph } from './graph'
+export { default as expr } from './expr'

@@ -1,24 +1,33 @@
-const raw = [
-  "123 -> x",
-  "456 -> y",
-  "x AND y -> d",
-  "x OR y -> e",
-  "x LSHIFT 2 -> f",
-  "y RSHIFT 2 -> g",
-  "NOT x -> h",
-  "NOT y -> i",
-]
+import { graph, expr } from './utils'
 
-const processData = l => {
+const processData = (acc, l) => {
   const ins = l.scan(/[a-z]+|\d+|[A-Z]+/g)
   const names = l.scan(/[a-z]+/g)
   const name = names.pop()
-  return [name, names, ins.remove(name)]
+  acc.map[name] = names
+  acc.eqn[name] = ins.remove(name)
+  return acc
 }
 
-const prepare = data => raw.map(processData)
-const part1 = data => data
-const part2 = data => 0
-const finish = data => data
+const prepare = data => {
+  const tmp = data.reduce(processData, { 
+    map: {}, eqn: {}, val: {},
+    graph: null
+  })
+  tmp.graph = graph(tmp.map)
+  return tmp
+}
+const solve = data => data.graph
+  .tsort()
+  .reduce((acc, d) => {
+    acc.val[d] = expr(acc.eqn[d], acc.val)
+    return acc
+  }, data)
+const part1 = solve
+const part2 = data => {
+  data.eqn.b[0] = `${data.val.a}`
+  return solve(data)
+}
+const finish = obj => obj.val.a
 
 export default () => ({ prepare, part1, part2, finish })

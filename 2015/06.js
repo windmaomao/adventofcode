@@ -7,7 +7,7 @@ const processData = s => [
 ]
 
 const N = 1000
-const initLights = () => new Array(N * N).fill(0)
+const initLights = () => Array.new(N * N, 0)
 
 const toggle = (v, op) => ((op > 1) ? 1 - v : op)
 const bright = (v, op) => ((op === 0) ? Math.max(0, v - 1) : v + op)

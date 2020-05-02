@@ -12,8 +12,9 @@ async function load() {
   const { separator, prepare, finish, part1, part2 } = parts.default()
 
   const data = input(`${day}.input`, separator)  
-  print(1)(after(finish, part1(before(prepare, data))))
-  print(2)(after(finish, part2(before(prepare, data))))
+  const prepared = before(prepare, data)
+  print(1)(after(finish, part1(prepared)))
+  print(2)(after(finish, part2(prepared)))
 }
 
 load()

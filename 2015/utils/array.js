@@ -1,5 +1,10 @@
 import _ from 'lodash'
 
+// New
+Array.new = function (n, v) {
+  return new Array(n).fill(v)
+}
+
 // Transform
 Array.prototype.transform = function (iter, acc) {
   return _.transform(this, iter, acc)
