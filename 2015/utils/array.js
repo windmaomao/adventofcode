@@ -23,3 +23,8 @@ Array.prototype.uniqBy = function (iteratee) {
 Array.prototype.takeWhile = function (predicate) {
   return _.takeWhile(this, predicate)
 }
+
+// Range 
+Array.prototype.range = function (start) {
+  return _.range(start)
+}
