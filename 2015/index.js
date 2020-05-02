@@ -1,7 +1,7 @@
 import { input } from './utils'
 import debug from 'debug'
 
-const day = '07'
+const day = '08'
 
 const before = (prepare, data) => prepare ? prepare(data) : data
 const print = part => debug(`day${day}:part${part}`)
