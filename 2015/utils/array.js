@@ -19,6 +19,11 @@ Array.prototype.uniqBy = function (iteratee) {
   return _.uniqBy(this, iteratee)
 }
 
+// Take
+Array.prototype.take = function (n) {
+  return _.take(this, n)
+}
+
 // TakeWhile
 Array.prototype.takeWhile = function (predicate) {
   return _.takeWhile(this, predicate)
