@@ -13,3 +13,8 @@ const sum = d => {
 Array.prototype.sum = function (predicate) {
   return _.reduce(this, sum(predicate), 0)
 }
+
+// Uniqe
+Array.prototype.uniqBy = function (iteratee) {
+  return _.uniqBy(this, iteratee)
+}
