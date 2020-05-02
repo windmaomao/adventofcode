@@ -5,7 +5,8 @@ const sum2Basement = (acc, s, i) => {
   return acc.push(prev + floor(s))
 }
 
+const prepare = data => data[0].split('')
 const part1 = data => data.sum(floor)
 const part2 = data => data.transform(sum2Basement, []).length
 
-export default () => ({ separator: '', part1, part2 })
+export default () => ({ prepare, part1, part2 })

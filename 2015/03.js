@@ -5,10 +5,9 @@ const nextPos = (acc, s, i) => {
   return acc.push(pos)
 }
 
-const posKey = p => `${p[0]}x${p[1]}`
-const part1 = (data) => data
+const prepare = data => data[0].split('')
+const part1 = data => data
   .transform(nextPos, [[0, 0]])
-  .uniqBy(posKey).length
 
 const modFilter = v => (_, i) => i % 2 === v
 const part2 = data => [0, 1]
@@ -16,6 +15,8 @@ const part2 = data => [0, 1]
     .filter(modFilter(v))
     .transform(nextPos, [[0, 0]])
   )
-  .uniqBy(posKey).length
+  
+const posKey = p => `${p[0]}x${p[1]}`
+const finish = data => data.uniqBy(posKey).length
 
-export default () => ({ separator: '', part1, part2 })
+export default () => ({ prepare, part1, part2, finish })
