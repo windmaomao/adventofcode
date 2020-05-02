@@ -2,12 +2,12 @@ import { expect } from 'chai'
 import './utils'
 import day from './02'
 
-const _s = arr => arr.map(v => v.split('x').map(Number))
+const { prepare, part1, part2, finish } = day()
 const test1 = (data, res) => () => {
-  expect(day().part1(_s(data))[0]).to.equal(res)
+  expect(finish(part1(prepare(data)))).to.equal(res)
 }
 const test2 = (data, res) => () => {
-  expect(day().part2(_s(data))[0]).to.equal(res)
+  expect(finish(part2(prepare(data)))).to.equal(res)
 }
 describe('02', () => {
   describe('part1', () => {
