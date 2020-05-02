@@ -9,7 +9,4 @@ const sum2Basement = (acc, s, i) => {
 const part1 = data => data.sum(floor)
 const part2 = data => data.transform(sum2Basement, []).length
 
-export default () => ({ 
-  separator: '',
-  part1, part2 
-})
+export default () => ({ separator: '', part1, part2 })
