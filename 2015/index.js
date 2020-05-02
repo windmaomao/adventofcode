@@ -1,7 +1,7 @@
 import { input } from './utils'
 import debug from 'debug'
 
-const day = '03'
+const day = '04'
 
 async function load() {
   const parts = await import(`./${day}`)
