@@ -6,8 +6,8 @@ const strDiff = str => {
 
 const strDiff2 = str => {
   const v = str.slice(1, -1)
-  const quote = [...v.matchAll(/("|\\)/g)]
-  return 4 + quote.length
+  const match = v.match(/("|\\)/g) || []
+  return 4 + match.length
 }
 
 const prepare = data => data
