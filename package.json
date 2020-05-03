@@ -9,7 +9,7 @@
     "2015-rb": "nodemon --exec ruby 2015/index.rb",
     "2018-rb": "nodemon --exec ruby 2018/rb/index.rb",
     "rb": "nodemon --exec ruby 2019/rb/index.rb",
-    "test": "mocha '2015/**/*.spec.js' --require @babel/register -w"
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -19,8 +19,7 @@
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.6",
     "@babel/register": "^7.9.0",
-    "chai": "^4.2.0",
-    "mocha": "^7.1.2",
+    "jest": "^25.5.4",
     "nodemon": "^2.0.3"
   },
   "dependencies": {

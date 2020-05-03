@@ -1,15 +1,9 @@
-import { expect } from 'chai'
-import './utils'
+import daySpec from './daySpec'
 import day from './01'
 
-const { prepare, part1, part2 } = day()
-const test1 = (data, res) => () => {
-  expect(part1(prepare(data))).to.equal(res)
-}
-const test2 = (data, res) => () => { 
-  expect(part2(prepare(data))).to.equal(res) 
-}
 describe('01', () => {
+  const { test1, test2 } = daySpec(day)
+
   describe('part1', () => {
     it('(())', test1(['(())'], 0))
     it('))(((((', test1(['))((((('], 3))
