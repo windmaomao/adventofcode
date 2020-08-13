@@ -1,4 +1,5 @@
 const data = require('../js/input')('01/01.data')
+require('../js/array')
 
 const floor = s => s === '(' ? 1 : -1
 
@@ -9,6 +10,8 @@ const sum2Basement = (acc, s, i) => {
 }
 
 const prepare = data[0].split('')
-const part1 = prepare.reduce((acc, item) => acc + floor(item), 0)
+const part1 = prepare.sum(floor)
+const part2 = prepare.transform(sum2Basement, []).length
 
 console.log(part1)
+console.log(part2)
