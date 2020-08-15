@@ -1,7 +1,7 @@
 package org.adventofcode
 
-fun step(c: Char, i: Int, v: Int) : Int {
-  return if (c == '(') (v + 1) else (v - 1)
+fun charValue(c: Char) : Int {
+  return if (c == '(') 1 else -1
 }
 
 class Day01(name: String): Day(name) {
@@ -12,12 +12,14 @@ class Day01(name: String): Day(name) {
   fun part2(s: String): Int {
     var i = 0
     var v = 0
-    while (i < s.length) {
-      v = step(s.get(i), i, v)
-      i++
-      if (v == -1) return i
+    run loop@{
+      s.forEach {
+        if (v == -1) return@loop
+        v += charValue(it)
+        i++
+      }
     }
-    return 0
+    return i
   }
 
 }
