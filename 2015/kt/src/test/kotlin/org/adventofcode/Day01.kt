@@ -6,7 +6,7 @@ fun charValue(c: Char) : Int {
 
 class Day01(name: String): Day(name) {
   fun part1(s: String): Int {
-    return s.count{ it == '(' } - s.count{ it == ')' }
+    return s.map(::charValue).sum()
   }
 
   fun part2(s: String): Int {
