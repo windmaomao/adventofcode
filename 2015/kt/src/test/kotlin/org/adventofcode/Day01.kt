@@ -9,6 +9,10 @@ class Day01(name: String): Day(name) {
     return s.map(::charValue).sum()
   }
 
+  /**
+   * Brutal force,
+   * iterate through and return if found
+   */
   fun part2(s: String): Int {
     var i = 0
     var v = 0
@@ -20,6 +24,15 @@ class Day01(name: String): Day(name) {
       }
     }
     return i
+  }
+
+  /**
+   * Use scan to get a results array
+   */
+  @OptIn(ExperimentalStdlibApi::class)
+  fun part2s(s: String): Int {
+    val all = s.scan(0) { acc, c -> acc + charValue(c) }
+    return all.indexOf(-1)
   }
 
 }
