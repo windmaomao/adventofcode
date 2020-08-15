@@ -8,7 +8,7 @@ class Day01Test {
   val d = Day01()
 
   private fun loadResource(): String {
-    val fn = "src/test/resources/01.data"
+    val fn = "../res/01.input"
     val lines: List<String> = File(fn).readLines()
     return lines.first()
   }
