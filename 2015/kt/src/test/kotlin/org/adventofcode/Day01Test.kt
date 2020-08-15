@@ -2,16 +2,9 @@ package org.adventofcode
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.File
 
 class Day01Test {
-  val d = Day01()
-
-  private fun loadResource(): String {
-    val fn = "../res/01.input"
-    val lines: List<String> = File(fn).readLines()
-    return lines.first()
-  }
+  val d = Day01("01")
 
   @Test fun Day01Part1Example() {
     assertEquals(0, d.part1("(())"))
@@ -25,8 +18,19 @@ class Day01Test {
     assertEquals(-3, d.part1(")())())"))
   }
 
+  @Test fun Day02Part2Example() {
+    assertEquals(1, d.part2(")"))
+    assertEquals(5, d.part2("()())"))
+  }
+
   @Test fun Day01Part1() {
-    val s = loadResource()
+    val s = d.loadRes()
     assertEquals(280, d.part1(s))
   }
+
+  @Test fun Day01Part2() {
+    val s = d.loadRes()
+    assertEquals(1797, d.part2(s))
+  }
+
 }
