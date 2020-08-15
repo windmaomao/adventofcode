@@ -1,5 +1,9 @@
 package org.adventofcode
 
+fun step(c: Char, i: Int, v: Int) : Int {
+  return if (c == '(') (v + 1) else (v - 1)
+}
+
 class Day01(name: String): Day(name) {
   fun part1(s: String): Int {
     return s.count{ it == '(' } - s.count{ it == ')' }
@@ -9,14 +13,11 @@ class Day01(name: String): Day(name) {
     var i = 0
     var v = 0
     while (i < s.length) {
-      if (s.get(i) == '(') v += 1
-      if (s.get(i) == ')') v -= 1
-      if (v == -1) {
-        i++
-        return i
-      }
+      v = step(s.get(i), i, v)
       i++
+      if (v == -1) return i
     }
     return 0
   }
+
 }
