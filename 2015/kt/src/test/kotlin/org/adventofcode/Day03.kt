@@ -22,10 +22,9 @@ class Day03(name: String): Day(name) {
 
   @OptIn(ExperimentalStdlibApi::class)
   fun part2(s: String): Int {
-    return s
-      .chunked(2)
-      .scan(listOf(0,0)) { acc: List<Int>, c: String ->
-        acc.mapIndexed { i, a -> nextPos(a, c[i]) }
-      }.flatten().distinct().count()
+    return s.chunked(2)
+      .scan(listOf(0,0), teamPoses)
+      .flatten()
+      .distinct().count()
   }
 }
