@@ -24,19 +24,16 @@ class Day01Test {
   }
 
   @Test fun day01Part1() {
-    val s = d.loadRes()
-    assertEquals(280, d.part1(s))
+    assertEquals(280, d.part1(d.getLine()))
   }
 
   @Test fun day01Part2() {
-    val s = d.loadRes()
-    assertEquals(1797, d.part2(s))
+    assertEquals(1797, d.part2(d.getLine()))
   }
 
   @OptIn(ExperimentalStdlibApi::class)
   @Test fun day01Part2s() {
-    val s = d.loadRes()
-    assertEquals(1797, d.part2s(s))
+    assertEquals(1797, d.part2s(d.getLine()))
   }
 
 }

@@ -3,11 +3,11 @@ package org.adventofcode
 import java.io.File
 
 open class Day(val name: String) {
+  var lines: List<String> =
+    File("../res/$name.input").readLines()
 
-  fun loadRes(): String {
-    val fn = "../res/$name.input"
-    val lines: List<String> = File(fn).readLines()
-    return lines.first()
+  fun getLine(i: Int = 0): String {
+    if (lines.count() > i) return lines.get(i)
+    return ""
   }
-
 }
