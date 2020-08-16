@@ -8,7 +8,15 @@ class Day02(name: String): Day(name) {
       val h = props[2]
 
       val m: Int = props.max()!!
-      return 2*l*w + 2*w*h + 2*h*l + l*w*h/m
+      return (l*w + w*h + h*l)*2 + l*w*h/m
+    }
+    fun reserved(): Int {
+      val l = props[0]
+      val w = props[1]
+      val h = props[2]
+
+      val m: Int = props.max()!!
+      return (l+w+h-m)*2 + l*w*h
     }
   }
 
@@ -21,5 +29,9 @@ class Day02(name: String): Day(name) {
 
   fun part1(boxes: List<List<Int>>): Int {
     return boxes.map { box -> Box(box).paper() }.sum()
+  }
+
+  fun part2(boxes: List<List<Int>>): Int {
+    return boxes.map { box -> Box(box).reserved() }.sum()
   }
 }
