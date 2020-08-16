@@ -12,11 +12,12 @@ class Day02(name: String): Day(name) {
     }
   }
 
-//  fun getBoxes(): List<List<Int>> {
-//    return lines.map{ line ->
-//      listOf(1, 2, 3)
-//    }
-//  }
+  fun getProps(): List<List<Int>> {
+    loadRes()
+    return lines.map{ line ->
+      line.split('x').map{ it.toInt() }
+    }
+  }
 
   fun part1(boxes: List<List<Int>>): Int {
     return boxes.map { box -> Box(box).paper() }.sum()
