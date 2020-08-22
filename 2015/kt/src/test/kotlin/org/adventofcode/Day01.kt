@@ -7,19 +7,12 @@ class Day01(name: String): Day(name) {
     return s.map(charValue).sum()
   }
 
-  /**
-   * Brutal force,
-   * iterate through and return if found
-   */
   fun part2(s: String): Int {
     var i = 0
     var v = 0
-    run loop@{
-      s.forEach {
-        if (v == -1) return@loop
-        v += charValue(it)
-        i++
-      }
+    while(v != -1) {
+      v += charValue(s.get(i))
+      i++
     }
     return i
   }

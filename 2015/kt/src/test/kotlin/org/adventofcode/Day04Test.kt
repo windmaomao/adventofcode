@@ -1,6 +1,6 @@
 package org.adventofcode
 
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Test
 
 class Day04Test {
@@ -8,7 +8,20 @@ class Day04Test {
 
   @Test
   fun day04Part1Example() {
-    Assert.assertEquals("000001dbbfa", d.md5("abcdef609043"))
+    val match = d.match("abcdef", 5)
+    assertEquals(true, match(609043))
+    val match2 = d.match("pqrstuv", 5)
+    assertEquals(true, match2(1048970))
+  }
+
+  @Test
+  fun day04Part1() {
+    assertEquals(254575, d.part1(d.getLine()))
+  }
+
+  @Test
+  fun day04Part2() {
+    assertEquals(1038736, d.part2(d.getLine()))
   }
 
 }
