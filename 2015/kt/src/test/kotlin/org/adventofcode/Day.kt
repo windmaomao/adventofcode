@@ -16,4 +16,5 @@ open class Day(val name: String) {
     if (lines.count() > i) return lines.get(i)
     return ""
   }
+
 }
