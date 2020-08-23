@@ -13,12 +13,12 @@ class Day05(name: String): Day(name) {
     return true
   }
 
-  fun day1(strs: List<String>): Int {
-    return strs.map(::matches1).count{ it }
+  fun day1(list: List<String>): Int {
+    return list.map(::matches1).count{ it }
   }
 
-  fun day2(strs: List<String>): Int {
-    return strs.map(::matches2).count{ it }
+  fun day2(list: List<String>): Int {
+    return list.map(::matches2).count{ it }
   }
 
 }
