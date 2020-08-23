@@ -21,7 +21,6 @@ class Day02(name: String): Day(name) {
   }
 
   fun getProps(): List<List<Int>> {
-    loadRes()
     return lines.map{ line ->
       line.split('x').map{ it.toInt() }
     }
