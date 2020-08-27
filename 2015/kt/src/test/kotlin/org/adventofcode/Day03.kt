@@ -1,17 +1,17 @@
 package org.adventofcode
 
 class Day03(name: String): Day(name) {
-  private val LEN = 10000
-  val nextPos = { acc: Int, c: Char ->
+  private val len = 10000
+  private val nextPos = { acc: Int, c: Char ->
     when(c) {
-      '^' -> acc + LEN
-      'v' -> acc - LEN
+      '^' -> acc + len
+      'v' -> acc - len
       '>' -> acc + 1
       '<' -> acc - 1
       else -> acc
     }
   }
-  val teamPoses = { acc: List<Int>, c: String ->
+  private val teamPoses = { acc: List<Int>, c: String ->
     acc.mapIndexed { i, a -> nextPos(a, c[i]) }
   }
 

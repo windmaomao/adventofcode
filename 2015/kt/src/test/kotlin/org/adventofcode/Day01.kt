@@ -11,7 +11,7 @@ class Day01(name: String): Day(name) {
     var i = 0
     var v = 0
     while(v != -1) {
-      v += charValue(s.get(i))
+      v += charValue(s[i])
       i++
     }
     return i
