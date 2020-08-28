@@ -26,4 +26,18 @@ class Day01(name: String): Day(name) {
     return all.indexOf(-1)
   }
 
+  /**
+   * Use yield to generate
+   */
+  fun part2y(s: String): Int {
+    val list = sequence {
+      var v = 0
+      s.forEach {
+        v += charValue(it)
+        yield(v)
+      }
+    }
+    return list.takeWhile{ it == -1 }.toList().size
+  }
+
 }
