@@ -5,5 +5,4 @@
 build
 
 # Ignore Idea editor
-**/.idea/workspace.xml
-**/.idea/tasks.xml
+.idea/

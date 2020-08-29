@@ -17,4 +17,9 @@ open class Day(val name: String) {
     return ""
   }
 
+  fun extractNumbers(s: String): List<Int> {
+    val pattern = """\d+""".toRegex()
+    return pattern.findAll(s).map { it.value.toInt() }.toList()
+  }
+
 }
