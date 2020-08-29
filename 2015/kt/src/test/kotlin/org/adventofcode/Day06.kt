@@ -20,6 +20,16 @@ data class Instruction(
     }
     return arr
   }
+  fun applyArr(arr: Array<Int>) : Array<Int> {
+    when (action) {
+      ACTION.Toggle -> getPos().forEach { arr[it] += 2 }
+      ACTION.On -> getPos().forEach { arr[it] += 1 }
+      else -> getPos().forEach {
+        if (arr[it] > 0) arr[it] -= 1
+      }
+    }
+    return arr
+  }
 }
 
 class Day06(name: String): Day(name) {
@@ -41,6 +51,14 @@ class Day06(name: String): Day(name) {
       .map { getInstruction(it) }
       .forEach { it.applyArr(arr) }
     return arr.count { it }
+  }
+
+  fun part2(list: List<String>): Int {
+    val arr = Array<Int>(n*n){ 0 }
+    list
+      .map { getInstruction(it) }
+      .forEach { it.applyArr(arr) }
+    return arr.sum()
   }
 
 }
