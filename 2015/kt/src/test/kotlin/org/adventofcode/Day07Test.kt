@@ -7,19 +7,6 @@ class Day07Test {
   private val d: Day07 = Day07()
 
   @Test
-  fun day07Graph() {
-    val g = Graph()
-    g.depends("b", "a")
-    assertEquals(listOf("b", "a"), g.tsort("a"))
-    g.depends("c", "b")
-    g.depends("d", "b")
-    assertEquals(listOf("c", "d", "b"), g.tsort("b"))
-    assertEquals(listOf("c", "d", "b", "a"), g.tsort("a"))
-    g.depends("e", "a")
-    assertEquals(listOf("c", "d", "b", "e", "a"), g.tsort("a"))
-  }
-
-  @Test
   fun day07Equation() {
     val v: HashMap<String, Int> = HashMap<String, Int>()
     assertEquals(123, Equation("", listOf("123"),"x").eval(v))
@@ -39,12 +26,31 @@ class Day07Test {
   }
 
   @Test
-  fun day07Part1Example() {
+  fun day07Part1GetEquation() {
     val (op, inputs, output) = d.getEquation("x LSHIFT 2 -> f")
     assertEquals(
       listOf("LSHIFT", listOf("x", "2"), "f"),
       listOf(op, inputs, output)
     )
+  }
+
+  @Test
+  fun day07Part1Example() {
+    val list: List<String> = listOf(
+      "123 -> x",
+      "456 -> y",
+      "x AND y -> d",
+      "x OR y -> e",
+      "x LSHIFT 2 -> f",
+      "y RSHIFT 2 -> g",
+      "NOT x -> h",
+      "NOT y -> i"
+    )
+
+    val topologyList = d.getTopologyList(list, "d")
+    assertEquals(arrayListOf("123", "x", "456", "y", "d"), topologyList)
+    val values = d.calcEquations(topologyList)
+    assertEquals(72, values["d"])
   }
 
   @Test

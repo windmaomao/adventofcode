@@ -1,29 +1,5 @@
 package org.adventofcode
 
-class Graph {
-  private val tree: HashMap<String, String> =
-    HashMap<String, String>()
-
-  fun depends(child: String, parent: String) {
-    if (!tree.containsKey(parent)) {
-      tree.put(parent, "")
-    }
-    tree.put(child, parent);
-  }
-
-  // Topological sort
-  fun tsort(root: String): List<String> {
-    val list: ArrayList<String> = arrayListOf()
-    tree
-      .filterValues { it == root }
-      .forEach { (key, _) ->
-        list.addAll(tsort(key))
-      }
-    list.add(root)
-    return list
-  }
-}
-
 data class Equation(
   val op: String,
   val inputs: List<String>,
@@ -50,6 +26,8 @@ data class Equation(
 }
 
 class Day07(name: String = "07"): Day(name) {
+  val equations: HashMap<String, Equation> = HashMap<String, Equation>()
+
   fun getEquation(s: String): Equation {
     val parts = s.split(" -> ")
     val op = "[A-Z]+".toRegex().find(parts[0])?.value ?: ""
@@ -58,25 +36,46 @@ class Day07(name: String = "07"): Day(name) {
     return Equation(op, inputs ,parts[1])
   }
 
-  fun part1(list: List<String>): Int {
-    val g = Graph()
-    val equations: HashMap<String, Equation> = HashMap<String, Equation>()
-    val values: HashMap<String, Int> = HashMap<String, Int>()
+  fun tsort(
+    tree: HashMap<String, Equation>,
+    root: String,
+    found: ArrayList<String>
+  ) {
+    if (found.contains(root)) return
 
-    list.map { getEquation(it) }.forEach { e ->
-      equations.put(e.output, e)
-      e.inputs.forEach { input ->
-        g.depends(input, e.output)
+    val eq = tree[root]
+    if (eq == null || eq.inputs.isEmpty()) {
+      found.add(root)
+    } else {
+      eq.inputs.forEach { child ->
+        tsort(tree, child, found)
+        if (!found.contains(child)) {
+          found.add(child)
+        }
       }
     }
+  }
 
-    val l = g.tsort("a")
+  fun getTopologyList(list: List<String>, root: String): List<String> {
+    list.map { getEquation(it) }.forEach { equations[it.output] = it }
 
-    l.forEach { output ->
-      values["output"] = equations[output]?.eval(values) ?: 0
+    val found: ArrayList<String> = arrayListOf()
+    tsort(equations, root, found)
+
+    return found.toList()
+  }
+
+  fun calcEquations(topologyList: List<String>): HashMap<String, Int> {
+    val values: HashMap<String, Int> = HashMap<String, Int>()
+    topologyList.forEach { output ->
+      values[output] = equations[output]?.eval(values) ?: output.toInt()
     }
+    return values
+  }
 
-    return values["a"] ?: 0
+  fun part1(list: List<String>, root: String = "a"): Int {
+    val values = calcEquations(getTopologyList(list, root))
+    return values[root] ?: 0
   }
 
 
