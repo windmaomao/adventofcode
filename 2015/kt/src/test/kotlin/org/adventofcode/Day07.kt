@@ -25,7 +25,7 @@ data class Equation(
 }
 
 class Day07(name: String = "07"): Day(name) {
-  private val equations: HashMap<String, Equation> = HashMap<String, Equation>()
+  private val equations: HashMap<String, Equation> = HashMap()
 
   fun getEquation(s: String): Equation {
     val parts = s.split(" -> ")
@@ -62,7 +62,7 @@ class Day07(name: String = "07"): Day(name) {
   }
 
   fun calcEquations(topologyList: List<String>): HashMap<String, Int> {
-    val values: HashMap<String, Int> = HashMap<String, Int>()
+    val values: HashMap<String, Int> = HashMap()
     topologyList.forEach { output ->
       values[output] = equations[output]?.eval(values) ?: output.toInt()
     }
