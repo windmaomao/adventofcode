@@ -2,24 +2,22 @@
 
 #### Problem
 
-Given a list of characters represending up and down operations, find out his last position. 
+Given a list of characters for up and down operations, find out his last position. 
 
 Ex.
 
-- `^v` and `^^vv` both end in position `0`.
-- `vv^^^^` ends in position `2`.
+- `()` and `(())` both end in position `0`.
+- `(())))` ends in position `-2`.
 
 #### Solution
 
-> A quick solution is to count the `^` and `v`, and take the difference, ex. `s.count("^") - s.count("v")`
+> A quick solution is to count the `(` and `)`, and take the difference, ex. `s.count("(") - s.count(")")`
 
-If you assign a value to each character, ex. `1` for `^` and `-1` for 
-
-`v`, you can first `map` each to value and then `sum` them togather. 
+In order to be a bit generic, we assign a value to each character, ex. `1` for `(` and `-1` for `)`, and then  `sum` them together. 
 
 ```kotlin
   val charValue = { c: Char -> 
-    when (c) { '^' -> 1 else -> -1 }
+    when (c) { '(' -> 1 else -> -1 }
   }
 
   fun part1(s: String): Int {
@@ -31,7 +29,7 @@ If you assign a value to each character, ex. `1` for `^` and `-1` for
 
 `charValue` is a `function`, referenced by  `map` which accepts `function` as its input.
 
-> Sending a `function` into another as input is normally referred as Functional Programming (FP) these days. Although this book will not get deep into FP, the pattern of using a function to simplify  so that this function can be studied early on, normally through `test`, is applied throughtout this book.
+> Sending a `function` into another one as input is normally referred as Functional Programming (FP) these days. Although this book will not get deep into FP, the pattern of using a function to simplify  so that this function can be studied early on, normally through `test`, is applied throughtout this book.
 
 #### Test
 

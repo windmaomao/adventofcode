@@ -2,20 +2,22 @@
 
 #### Problem
 
-Given a position, find out how many operations you need to perform from the list to reach there.  
+Given a position `-1`, find out how many operations you need to take to get there.  
 
 Ex.
 
-- `^vv` takes 3 steps to reach position `-1`.
-- `vv^^^^` takes 6 steps to reach position `4`.
+- `())` reaches with `3` steps.
+- `(())((())))` reaches with `11` steps.
 
 #### Solution
 
+In order to break from a list (or loop, or stream), we can use `break`,  `while` or similar flow control. More or less  an `if` is introduced in the middle of the process. 
+
 ```kotlin
-  fun part2(s: String, pos: Int = -1): Int {
+  fun part2(s: String): Int {
     var i = 0
     var v = 0
-    while(v != pos) {
+    while(v != -1) {
       v += charValue(s[i])
       i++
     }
@@ -23,9 +25,7 @@ Ex.
   }
 ```
 
-Instead of the previous part, we need an intermediate variable `v` to keep track of the position so to compare with given position. And we use another index variable `i` to keep track of the steps taken. 
-
-> In order to break from a list (or loop, or stream), we can use `break`,  `while` or similar flow control. More or less  an `if` is introduced in the middle of the process. 
+Instead of the previous part, we need an intermediate variable `v` to keep track of the position so to compare with the destination `-1`. And we use another index variable `i` to keep track of the steps taken. 
 
 #### Test
 

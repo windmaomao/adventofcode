@@ -2,7 +2,7 @@
 
 #### Problem
 
-Avoid using a `while` loop or any `if` statement early on.
+Avoid using a `while` loop or any `if` statement early on. 
 
 ```kotlin
   while(v != pos) {
@@ -14,7 +14,7 @@ Avoid using a `while` loop or any `if` statement early on.
 
 #### Solution
 
-Instead of having `while`, We want to seperate this `if` from the loop, as demostrated below using a `sequence` and later `takeWhile`.  
+Instead of having `while`, We want to separate this `if` from the loop, as demonstrated below using a `sequence`.  
 
 ```kotlin
   fun part2y(s: String): Int {
@@ -29,13 +29,15 @@ Instead of having `while`, We want to seperate this `if` from the loop, as demos
   }
 ```
 
-The nice thing about this seperation is that you can think of the problem as two parts from now one, A) generate the data as a continious list; B) explore the new generated list later by applying other operations
+The nice thing about this separation is that you can think of the problem as two parts from now on: A) generate the data as a continuous list; B) explore the new generated list later by applying other operations
 
 > Sequence (or generator) is one of the modern feature to us, it's lazy by nature, and it could have unlimited number and allows you focus on the generation of the data. 
 
 There's certain level of _unknown_ in this `sequence` , as you can see, you won't know the length of the sequence before it's generated via `toList` function, where we take the length as our answer. 
 
-The change of length is due to that we ask to take the first few elements until a condition is met through `takeWhile` function. Of course nothing to stop you using any other operations as you normally do (ex. `map`, `forEach` etc.). The main take away here is that the problem seems relatively easier. 
+The length is only going to be determined when we ask to take the first few elements until a condition is met via `takeWhile` function. Of course nothing to stop you using any other operations as you normally do (ex. `map`, `forEach` etc.). 
+
+The main take away here is that the original problem seems 50% easier if you want to focus your attention to only half of them. 
 
 #### Test
 
