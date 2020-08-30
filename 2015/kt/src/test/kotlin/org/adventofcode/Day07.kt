@@ -6,27 +6,26 @@ data class Equation(
   val output: String
 ) {
   fun eval(values: HashMap<String, Int>): Int {
-    val _i = { i: Int -> inputs[i].toInt() }
     val _v = { i: Int ->
       values.getOrDefault(inputs[i], 0)
     }
     return when (op) {
       "AND" -> _v(0) and _v(1)
       "OR" -> _v(0) or _v(1)
-      "LSHIFT" -> _v(0) shl _i(1)
-      "RSHIFT" -> _v(0) shr _i(1)
+      "LSHIFT" -> _v(0) shl _v(1)
+      "RSHIFT" -> _v(0) shr _v(1)
       "NOT" -> {
         var t = _v(0).inv()
         if (t < 0) { t += 65536 }
         t
       }
-      else -> _i(0)
+      else -> _v(0)
     }
   }
 }
 
 class Day07(name: String = "07"): Day(name) {
-  val equations: HashMap<String, Equation> = HashMap<String, Equation>()
+  private val equations: HashMap<String, Equation> = HashMap<String, Equation>()
 
   fun getEquation(s: String): Equation {
     val parts = s.split(" -> ")
@@ -44,16 +43,13 @@ class Day07(name: String = "07"): Day(name) {
     if (found.contains(root)) return
 
     val eq = tree[root]
-    if (eq == null || eq.inputs.isEmpty()) {
-      found.add(root)
-    } else {
+    if (eq != null  && eq.inputs.isNotEmpty()) {
       eq.inputs.forEach { child ->
         tsort(tree, child, found)
-        if (!found.contains(child)) {
-          found.add(child)
-        }
+        if (!found.contains(child)) { found.add(child) }
       }
     }
+    if (!found.contains(root)) { found.add(root) }
   }
 
   fun getTopologyList(list: List<String>, root: String): List<String> {
@@ -78,5 +74,13 @@ class Day07(name: String = "07"): Day(name) {
     return values[root] ?: 0
   }
 
-
+  fun part2(list: List<String>, a: Int): Int {
+    val newList: List<String> = list.map {
+      when (it) {
+        "19138 -> b" -> "$a -> b"
+        else -> it
+      }
+    }
+    return part1(newList)
+  }
 }
