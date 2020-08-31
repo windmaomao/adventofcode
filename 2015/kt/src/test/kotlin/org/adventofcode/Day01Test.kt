@@ -36,6 +36,11 @@ class Day01Test {
     assertEquals(1797, d.part2s(d.getLine()))
   }
 
+  @Test fun day01Generator() {
+    val s: Sequence<Int> = d.getSequence(d.getLine())
+    assertEquals(listOf(1, 0, 1, 0, 1), s.take(5).toList())
+  }
+
   @Test fun day01Part2y() {
     assertEquals(1797, d.part2y(d.getLine()))
   }

@@ -17,19 +17,23 @@ Avoid using a `while` loop or any `if` statement early on.
 Instead of having `while`, We want to separate this `if` from the loop, as demonstrated below using a `sequence`.  
 
 ```kotlin
-  fun part2y(s: String): Int {
-    val list = sequence {
+  fun getSequence(s: String) : Sequence<Int> {
+    return sequence {
       var v = 0
       s.forEach {
         v += charValue(it)
         yield(v)
       }
     }
-    return list.takeWhile{ it == -1 }.toList().size
+  }
+
+  fun part2y(s: String): Int {
+    return getSequence(s).takeWhile{ it >= -1 }
+      .toList().size
   }
 ```
 
-The nice thing about this separation is that you can think of the problem as two parts from now on: A) generate the data as a continuous list; B) explore the new generated list later by applying other operations
+The nice thing about this separation is that you can think of the problem as two parts from now on: A) generate the data as a continuous list; B) explore the new generated list later by applying other operations.
 
 > Sequence (or generator) is one of the modern feature to us, it's lazy by nature, and it could have unlimited number and allows you focus on the generation of the data. 
 
@@ -42,9 +46,12 @@ The main take away here is that the original problem seems 50% easier if you wan
 #### Test
 
 ```kotlin
-  @Test fun day02Part2yExample() {
-    assertEquals(1, d.part2y(")"))
-    assertEquals(5, d.part2y("()())"))
+  @Test fun day01Generator() {
+    val s: Sequence<Int> = d.getSequence(d.getLine())
+    assertEquals(
+      listOf(1, 0, 1, 0, 1), 
+      s.take(5).toList()
+    )
   }
 
   @Test fun day01Part2y() {
