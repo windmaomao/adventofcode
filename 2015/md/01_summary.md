@@ -14,7 +14,21 @@ Avoid using a `while` loop or any `if` statement early on.
 
 #### Solution
 
-Instead of having `while`, We want to separate this `if` from the loop, as demonstrated below using a `sequence`.  
+```kotlin
+  fun part2s(s: String): Int {
+    val all = s.asSequence()
+      scan(0) { acc, c -> acc + charValue(c) }
+    return all.indexOf(-1)
+  }
+```
+
+We convert the string into a `sequence` and then use `scan` to get snapshot of all positions, thus find the index of `-1` in the end.
+
+> Sequence (or generator) is one of the modern feature to us, it's lazy by nature, and it could have unlimited number and allows you focus on the generation of the data. 
+
+The code should be as efficient as used to be, in theory, due to the laziness of the `sequence`, since it won't generate all of items before calling `indexOf`, instead the items are generated 
+
+We could generate the `sequence` from scratch,  
 
 ```kotlin
   fun getSequence(s: String) : Sequence<Int> {
@@ -28,14 +42,13 @@ Instead of having `while`, We want to separate this `if` from the loop, as demon
   }
 
   fun part2y(s: String): Int {
-    return getSequence(s).takeWhile{ it >= -1 }
-      .toList().size
+    return getSequence(s).indexOf(-1)
   }
 ```
 
-The nice thing about this separation is that you can think of the problem as two parts from now on: A) generate the data as a continuous list; B) explore the new generated list later by applying other operations.
+The nice thing about this separation is that yo	u can think of the problem as two parts from now on: A) generate the data as a continuous list; B) explore the new generated list later by applying other operations.
 
-> Sequence (or generator) is one of the modern feature to us, it's lazy by nature, and it could have unlimited number and allows you focus on the generation of the data. 
+
 
 There's certain level of _unknown_ in this `sequence` , as you can see, you won't know the length of the sequence before it's generated via `toList` function, where we take the length as our answer. 
 

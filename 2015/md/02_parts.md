@@ -67,13 +67,18 @@ For same list of box dimensions in string, find out the total wrapping paper fol
 ```kotlin
 data class Box(...) {
   ...
-  fun reserved() = (l + w + h - m) * 2 + l * w * h
+  fun reserved() = 
+  	(l + w + h - m) * 2 + l * w * h
 }
 
 fun part2(lines: List<String>): Int {
   return list.map { getBox(it).reserved() }.sum()
 }
 ```
+
+You might wondered why we use a `class` in `part1`? In the end what matters are `paper()` and `reserved()` functions. Here's one of the advantage with a `class`, you can put these functions into the same scope, and they could share some internal variable like `m`.
+
+> The best part of using `class` here is that what happened inside stays inside. And this happen to be one of the requirement of Functional Programming (FP).
 
 #### Test
 

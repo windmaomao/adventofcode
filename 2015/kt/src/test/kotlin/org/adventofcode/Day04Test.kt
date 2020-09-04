@@ -6,13 +6,13 @@ import org.junit.Test
 class Day04Test {
   private val d = Day04("04")
 
-  @Test
-  fun day04Part1Example() {
-    val match = d.match("abcdef", 5)
-    assertEquals(true, match(609043))
-    val match2 = d.match("pqrstuv", 5)
-    assertEquals(true, match2(1048970))
-  }
+//  @Test
+//  fun day04Part1Example() {
+//    val match = d.match("abcdef", 5)
+//    assertEquals(true, match(609043))
+//    val match2 = d.match("pqrstuv", 5)
+//    assertEquals(true, match2(1048970))
+//  }
 
   @Test
   fun day04Part1() {

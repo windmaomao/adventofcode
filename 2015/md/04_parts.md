@@ -1,8 +1,8 @@
-### Day 3 - Less dimension is better
+### Day 4 - Function outputs Functioon
 
 #### Problem
 
-Given a list of direction instructions in two dimensions, find out total number of places visited.
+Find the smallest number after md5 encoding that starts with `00000`
 
 Ex. 
 
@@ -12,20 +12,19 @@ Ex.
 #### Solution
 
 ```kotlin
-  private val len = 10000
-
-  private val nextPos = { acc: Int, c: Char ->
-    when(c) {
-      '^' -> acc + len
-      'v' -> acc - len
-      '>' -> acc + 1
-      '<' -> acc - 1
-      else -> acc
+  val md = MessageDigest.getInstance("MD5")
+  val md5 = { c: String ->
+    md.digest(c.toByteArray()).joinToString("") {
+      "%02x".format(it)
     }
   }
 
-  fun part1(s: String): Int {
-    return s.scan(0, nextPos).distinct().count()
+  fun match(secret: String, n: Int): (Int) -> Boolean {
+    val zeros: String = "0".repeat(n)
+    return { i: Int ->
+      val s = md5(secret + i.toString())
+      s.take(n).equals(zeros)
+    }
   }
 ```
 

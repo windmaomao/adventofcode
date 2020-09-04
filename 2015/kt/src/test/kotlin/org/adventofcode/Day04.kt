@@ -2,35 +2,32 @@ package org.adventofcode
 
 import java.security.MessageDigest
 
-class Day04(name: String): Day(name) {
+class Matcher() {
   val md = MessageDigest.getInstance("MD5")
-  val md5 = { c: String ->
-    md.digest(c.toByteArray()).joinToString("") {
-      "%02x".format(it)
-    }
+
+  val md5 = { c: String -> md
+    .digest(c.toByteArray())
+    .joinToString("") { "%02x".format(it) }
   }
 
-  fun match(secret: String, n: Int): (Int) -> Boolean {
-    val zeros: String = "0".repeat(n)
-    return { i: Int ->
+  val match = { secret: String, n: Int ->
+    val zeros = "0".repeat(n);
+    { i: Int ->
       val s = md5(secret + i.toString())
-      s.take(n).equals(zeros)
+      s.take(n) == zeros
     }
   }
+}
 
+class Day04(name: String): Day(name) {
   fun part(secret: String, n: Int): Int {
-    val m = match(secret, n)
-    var i = 0
-    while (!m(i)) { i++ }
-    return i
-  }
-  
-  fun part1(secret: String): Int {
-    return part(secret, 5)
+    val m = Matcher().match(secret, n)
+    return generateSequence(0, Int::inc)
+      .map { m(it) }
+      .indexOf(true)
   }
 
-  fun part2(secret: String): Int {
-    return part(secret, 6)
-  }
+  fun part1(secret: String) = part(secret, 5)
+  fun part2(secret: String) = part(secret, 6)
 
 }

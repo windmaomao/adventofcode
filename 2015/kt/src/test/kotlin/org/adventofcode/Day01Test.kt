@@ -45,4 +45,8 @@ class Day01Test {
     assertEquals(1797, d.part2y(d.getLine()))
   }
 
+  @Test fun day01Part2sy() {
+    assertEquals(1797, d.part2sy(d.getLine()))
+  }
+
 }

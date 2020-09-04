@@ -44,4 +44,11 @@ class Day01(name: String = "01"): Day(name) {
       .toList().size
   }
 
+  @OptIn(ExperimentalStdlibApi::class)
+  fun part2sy(s: String): Int {
+    val seq = s.asSequence()
+      .scan(0) { acc, c -> acc + charValue(c) }
+    return seq.indexOf(-1)
+  }
+
 }
