@@ -1,6 +1,6 @@
 package org.adventofcode
 
-class Day01(name: String): Day(name) {
+class Day01(name: String = "01"): Day(name) {
   val charValue = { c: Char -> if (c == '(') 1 else -1 }
 
   fun part1(s: String): Int {

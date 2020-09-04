@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class Day01Test {
-  private val d = Day01("01")
+  private val d = Day01()
 
   @Test fun day01Part1Example() {
     assertEquals(0, d.part1("(())"))
