@@ -2,5 +2,11 @@ package org.adventofcode
 
 import java.io.File
 
-fun parseFile(name: String) =
+fun parseFile(name: String): List<String> =
   File("../res/$name.input").readLines()
+
+fun String.extracNumbers(): List<Int> =
+  """\d+""".toRegex()
+    .findAll(this)
+    .map { it.value.toInt() }
+    .toList()
