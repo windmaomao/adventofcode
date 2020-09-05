@@ -4,7 +4,7 @@
 
 Given list of strings as input, what could be our general process of looking for answer?
 
-> There's a problem writing code as laundry list. Trying not to do that way is very time consuming, and fruitful at the same time. It gives you better chance finding this/next answer.
+> There's a problem writing code as laundry list. Trying not to do that is very time consuming, and fruitful at the same time. It gives you better chance finding this/next answer.
 
 #### Solution
 
@@ -26,7 +26,7 @@ Finding the answer normally involves a few steps.
 
 - Once every piece of information is available, we then assemble them into the final answer. 
 
-Each of the steps could have its own complexity,  which might splits into more pieces. Once the complexity is full understood, the task could be out-sourced to a helper, ex. `Box` class, to simplify the work.
+Each of the steps could have its own complexity,  which might splits into more pieces. Once the complexity is fully understood, the task could be out-sourced to a helper, ex. `Box` class, to simplify the work.
 
 #### Test
 

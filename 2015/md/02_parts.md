@@ -23,19 +23,17 @@ data class Box(
     l * w * h / m
 }
 
-fun getBox(s: String): Box {
-  val (l, w, h) = extractNumbers(s)
-  return Box(l, w, h)
-}
-
 fun part1(lines: List<String>): Int {
-  return lines.map { getBox(s).paper() }.sum()                     
+  return lines.map { 
+    val (l, w, h) = extractNumbers(s)
+		Box(l, w, h).paper()
+  }.sum()                     
 }
 ```
 
-For each line  `getBox` is applied to build a model `Box` which is defined from a `class`.
+For each line in order to calculate the paper, we outsource it to an internal model `Box` .
 
-> Isn't it against Functionoal Programming (FP) to use `class`? Well, `class` to an object is like integer type to a number. Whether you are sticking to FP depends on whether the `Box` change any external states and whether it prodeces the same `paper` for a given set of sizes.
+> Function programming and Object oriented programming can be used together. They are mostly serving two different ways of organizing functions in this case.
 
 #### Test
 
@@ -72,13 +70,14 @@ data class Box(...) {
 }
 
 fun part2(lines: List<String>): Int {
-  return list.map { getBox(it).reserved() }.sum()
+  return lines.map { 
+    val (l, w, h) = extractNumbers(s)
+		Box(l, w, h).reserved()
+  }.sum()                     
 }
 ```
 
-You might wondered why we use a `class` in `part1`? In the end what matters are `paper()` and `reserved()` functions. Here's one of the advantage with a `class`, you can put these functions into the same scope, and they could share some internal variable like `m`.
-
-> The best part of using `class` here is that what happened inside stays inside. And this happen to be one of the requirement of Functional Programming (FP).
+We add an additional function `reserved` to `Box` and kept the rests of code intact.
 
 #### Test
 

@@ -16,9 +16,7 @@ fun parseFile(name: String): List<String> =
 
 ```
 
-We create a function inside scope `org.adeventofcode`, therefore expecting to reuse this function for the rest of the days. 
-
-> Function, simple as this, are highly testable and reusable. And it's not neccesarily 
+We create a function inside scope `org.adeventofcode`, therefore expecting to reuse this function. Function, simple as this, are highly testable and reusable. 
 
 #### Test
 
@@ -52,11 +50,9 @@ fun String.extractNumbers(): List<Int> =
     .toList()
 ```
 
-We create a pure extension function for a string, use a regular expression to define the number `\d+` and then match and convert for each number. 
+We create an extension function for a string, which looks for  number `\d+` via regular expression and output them as an integer list.
 
-> A pure function accepts an input and generates an output without changing any external states. This is the general usage of functional programming (FP).
-
-> Extension applied to a type, ex. `String` will gives us nice syntax of `"abc".extractNumbers()`, espcially useful writing multiple functions in a chain. 
+> Extension applied to a type provides different way of calling a function, which can get very useful when chaining functions together. 
 
 
 #### Test

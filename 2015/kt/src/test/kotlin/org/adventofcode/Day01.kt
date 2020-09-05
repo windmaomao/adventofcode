@@ -1,6 +1,6 @@
 package org.adventofcode
 
-class Day01(name: String = "01"): Day(name) {
+class Day01() {
   val charValue = { c: Char -> if (c == '(') 1 else -1 }
 
   fun part1(s: String): Int {
@@ -15,33 +15,6 @@ class Day01(name: String = "01"): Day(name) {
       i++
     }
     return i
-  }
-
-  /**
-   * Use scan to get a results array
-   */
-  @OptIn(ExperimentalStdlibApi::class)
-  fun part2s(s: String): Int {
-    val all = s.scan(0) { acc, c -> acc + charValue(c) }
-    return all.indexOf(-1)
-  }
-
-  fun getSequence(s: String) : Sequence<Int> {
-    return sequence {
-      var v = 0
-      s.forEach {
-        v += charValue(it)
-        yield(v)
-      }
-    }
-  }
-
-  /**
-   * Use yield to generate
-   */
-  fun part2y(s: String): Int {
-    return getSequence(s).takeWhile{ it >= -1 }
-      .toList().size
   }
 
   @OptIn(ExperimentalStdlibApi::class)

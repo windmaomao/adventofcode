@@ -25,11 +25,10 @@ In order to be a bit generic, we assign a value to each character, ex. `1` for `
   }
 ```
 
-> Each question has two parts, therefore the solution will be given in two different function, `part1` and `part2`. The input is a `String` and here the output is an `Int`.
-
 `charValue` is a `function`, referenced by  `map` which accepts `function` as its input.
 
-> Sending a `function` into another one as input is normally referred as Functional Programming (FP) these days. Although this book will not get deep into FP, the pattern of using a function to simplify  so that this function can be studied early on, normally through `test`, is applied throughtout this book.
+> Each question has two parts, therefore the solution will be given in two different function, `part1` and `part2`. The input is a `String` and here the output is an `Int`.
+
 
 #### Test
 

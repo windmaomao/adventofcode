@@ -5,6 +5,7 @@ import org.junit.Test
 
 class Day01Test {
   private val d = Day01()
+  val line = parseFile("01").first()
 
   @Test fun day01Part1Example() {
     assertEquals(0, d.part1("(())"))
@@ -24,29 +25,16 @@ class Day01Test {
   }
 
   @Test fun day01Part1() {
-    assertEquals(280, d.part1(d.getLine()))
+    assertEquals(280, d.part1(line))
   }
 
   @Test fun day01Part2() {
-    assertEquals(1797, d.part2(d.getLine()))
-  }
-
-  @OptIn(ExperimentalStdlibApi::class)
-  @Test fun day01Part2s() {
-    assertEquals(1797, d.part2s(d.getLine()))
-  }
-
-  @Test fun day01Generator() {
-    val s: Sequence<Int> = d.getSequence(d.getLine())
-    assertEquals(listOf(1, 0, 1, 0, 1), s.take(5).toList())
-  }
-
-  @Test fun day01Part2y() {
-    assertEquals(1797, d.part2y(d.getLine()))
+    val line = parseFile("01").first()
+    assertEquals(1797, d.part2(line))
   }
 
   @Test fun day01Part2sy() {
-    assertEquals(1797, d.part2sy(d.getLine()))
+    assertEquals(1797, d.part2sy(line))
   }
 
 }

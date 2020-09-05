@@ -1,22 +1,28 @@
 package org.adventofcode
 
-data class Box(val l: Int, val w: Int, val h: Int) {
-  private val m = maxOf(l, w, h)
-  fun paper() = (l * w + w * h + h * l) * 2 + l * w * h / m
-  fun reserved() = (l + w + h - m) * 2 + l * w * h
-}
+class Day02() {
+  val paper = { l: Int, w: Int, h: Int ->
+    val m = maxOf(l, w, h)
+    (l * w + w * h + h * l) * 2 + l * w * h / m
+  }
 
-class Day02(name: String = "02"): Day(name) {
-  fun getBox(s: String): Box {
-    val (l, w, h) = extractNumbers(s)
-    return Box(l, w, h)
+  val paper2 = { l: Int, w: Int, h: Int ->
+    val m = maxOf(l, w, h)
+    (l + w + h - m) * 2 + l * w * h
+  }
+
+  private fun part(list: List<String>, fn: (Int, Int, Int) -> Int): Int {
+    return list.map {
+      val (l, w, h) = it.extractNumbers()
+      fn(l, w, h)
+    }.sum()
   }
 
   fun part1(list: List<String>): Int {
-    return list.map { getBox(it).paper() }.sum()
+    return part(list, paper)
   }
 
   fun part2(list: List<String>): Int {
-    return list.map { getBox(it).reserved() }.sum()
+    return part(list, paper2)
   }
 }
