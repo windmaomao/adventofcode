@@ -11,23 +11,19 @@ Ex.
 
 #### Solution
 
-> A quick solution is to count the `(` and `)`, and take the difference, ex. `s.count("(") - s.count(")")`
-
-In order to be a bit generic, we assign a value to each character, ex. `1` for `(` and `-1` for `)`, and then  `sum` them together. 
+We can count the `(` and `)` character, and take the difference, ex. `s.count("(") - s.count(")") to get our answer quickly. 
 
 ```kotlin
   val charValue = { c: Char -> 
     when (c) { '(' -> 1 else -> -1 }
   }
 
-  fun part1(s: String): Int {
-    return s.map(charValue).sum()
-  }
+  fun part1(s: String) = s.map(charValue).sum()
 ```
 
-`charValue` is a `function`, referenced by  `map` which accepts `function` as its input.
+But if we want to be a bit generic, we can assign an integer value to each character, ex. `1` or `-1`, with a lambda function `charValue` . We then use it to map each character and sum them up in the end. 
 
-> Each question has two parts, therefore the solution will be given in two different function, `part1` and `part2`. The input is a `String` and here the output is an `Int`.
+>Lambda function, a form of expression, is a short function used as arguments to other functions. It's a piece of executable code, let it be a method, a module or even a dependency. 
 
 
 #### Test
@@ -36,24 +32,26 @@ In order to make sure it's robust, we write
 
 ```kotlin
   @Test fun day01Part1Example() {
-    assertEquals(0, d.part1("(())"))
-    assertEquals(0, d.part1("()()"))
-    assertEquals(3, d.part1("((("))
-    assertEquals(3, d.part1("(()(()("))
-    assertEquals(3, d.part1("))((((("))
-    assertEquals(-1, d.part1("())"))
-    assertEquals(-1, d.part1("))("))
-    assertEquals(-3, d.part1(")))"))
-    assertEquals(-3, d.part1(")())())"))
+    assertEquals(0, part1("(())"))
+    assertEquals(0, part1("()()"))
+    assertEquals(3, part1("((("))
+    assertEquals(3, part1("(()(()("))
+    assertEquals(3, part1("))((((("))
+    assertEquals(-1, part1("())"))
+    assertEquals(-1, part1("))("))
+    assertEquals(-3, part1(")))"))
+    assertEquals(-3, part1(")())())"))
   }
 ```
 
 Therefore the answer could be checked with an additional `test`,
 
 ```kotlin
+  val line = parseFile("01").first()
+
   @Test fun day01Part1() {
-    assertEquals(280, d.part1(d.getLine()))
+    assertEquals(280, part1(line))
   }
 ```
 
-> `getLine` is a function loading a input file `01.input` to a single line string. Throughout the book, we will use quite a few utility functions like these to simplify the loading. For your interest, they will be provided in Appendix I - Day class. 
+Check `parseFile` from Day 0. And here we are interested at one line. 

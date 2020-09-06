@@ -1,4 +1,4 @@
-### Day 2 - Model an object
+### Day 2 - Swap the model
 
 #### Problem
 
@@ -12,28 +12,20 @@ Ex.
 #### Solution
 
 ```kotlin
-data class Box(
-  val l: Int, 
-  val w: Int, 
-  val h: Int
-) {
-  private val m = maxOf(l, w, h)
-  fun paper() = 
-    (l * w + w * h + h * l) * 2 + 
-    l * w * h / m
-}
+  val paper = { l: Int, w: Int, h: Int ->
+    val m = maxOf(l, w, h)
+    (l * w + w * h + h * l) * 2 + l * w * h / m
+  }
 
-fun part1(lines: List<String>): Int {
-  return lines.map { 
-    val (l, w, h) = extractNumbers(s)
-		Box(l, w, h).paper()
-  }.sum()                     
-}
+  private fun part1(list: List<String>): Int {
+    return list.map {
+      val (l, w, h) = it.extractNumbers()
+      paper(l, w, h)
+    }.sum()
+  }
 ```
 
-For each line in order to calculate the paper, we outsource it to an internal model `Box` .
-
-> Function programming and Object oriented programming can be used together. They are mostly serving two different ways of organizing functions in this case.
+For each line in order to calculate the paper, we outsource it to a function that takes geometric sizes and output wrapping paper .
 
 #### Test
 
@@ -41,8 +33,8 @@ You can test the model first
 
 ```kotlin
   @Test fun day02Part1Example() {
-    assertEquals(58, Box(2,3,4).paper())
-    assertEquals(43, Box(1,1,10).paper())
+    assertEquals(58, paper(2, 3, 4))
+    assertEquals(43, paper(1, 1, 10))
   }
 ```
 
@@ -63,21 +55,29 @@ For same list of box dimensions in string, find out the total wrapping paper fol
 #### Solution
 
 ```kotlin
-data class Box(...) {
-  ...
-  fun reserved() = 
-  	(l + w + h - m) * 2 + l * w * h
-}
+  val paper2 = { l: Int, w: Int, h: Int ->
+    val m = maxOf(l, w, h)
+    (l + w + h - m) * 2 + l * w * h
+  }
 
-fun part2(lines: List<String>): Int {
-  return lines.map { 
-    val (l, w, h) = extractNumbers(s)
-		Box(l, w, h).reserved()
-  }.sum()                     
-}
+  fun part(
+    list: List<String>,
+    fn: (Int, Int, Int) -> Int
+  ): Int {
+    return list.map {
+      val (l, w, h) = it.extractNumbers()
+      fn(l, w, h)
+    }.sum()
+  }
+
+  fun part2(list: List<String>): Int {
+    return part(list, paper2)
+  }
 ```
 
-We add an additional function `reserved` to `Box` and kept the rests of code intact.
+Since this is different wrapping method, we'd like to pass the wrapping method as a function `(Int, Int, Int) -> Int` into the assemply line. 
+
+> Passing a function into another function is a typical Functional Programming (FP) technique. You can think of it as one cheap way adding a dependency through the interface. Similar to passing a number, we're passing a pattern, a method, or a module through.
 
 #### Test
 
@@ -85,8 +85,8 @@ You can test the model first
 
 ```kotlin
   @Test fun day02Part2Example() {
-    assertEquals(34, Box("2x3x4").reserved())
-    assertEquals(14, Box("1x1x10").reserved()) }
+    assertEquals(34, paper2(2, 3, 4))
+    assertEquals(14, paper(1, 1, 10))
   }
 ```
 

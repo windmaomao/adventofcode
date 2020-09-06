@@ -9,9 +9,7 @@ Ex.
 - `())` reaches with `3` steps.
 - `(())((())))` reaches with `11` steps.
 
-#### Solution
-
-In order to break from a list (or loop, or stream), we can use `break`,  `while` or similar flow control. More or less  an `if` is introduced in the middle of the process. 
+#### Solution 
 
 ```kotlin
   fun part2(s: String): Int {
@@ -25,7 +23,7 @@ In order to break from a list (or loop, or stream), we can use `break`,  `while`
   }
 ```
 
-Instead of the previous part, we need an intermediate variable `v` to keep track of the position so to compare with the destination `-1`. And we use another index variable `i` to keep track of the steps taken. 
+We create an intermediate variable `v` to keep track of the position so to compare with the goal as well as another index variable `i` to keep track of the steps taken, which becomes the answer once we exit from the loop.
 
 #### Test
 

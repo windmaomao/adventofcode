@@ -11,7 +11,10 @@ class Day02() {
     (l + w + h - m) * 2 + l * w * h
   }
 
-  private fun part(list: List<String>, fn: (Int, Int, Int) -> Int): Int {
+  private fun part(
+    list: List<String>,
+    fn: (Int, Int, Int) -> Int
+  ): Int {
     return list.map {
       val (l, w, h) = it.extractNumbers()
       fn(l, w, h)
