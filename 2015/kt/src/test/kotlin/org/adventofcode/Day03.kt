@@ -1,6 +1,6 @@
 package org.adventofcode
 
-class Day03(name: String): Day(name) {
+class Day03() {
   private val len = 10000
   private val nextPos = { acc: Int, c: Char ->
     when(c) {

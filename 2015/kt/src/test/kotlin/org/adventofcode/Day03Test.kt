@@ -4,7 +4,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class Day03Test {
-  private val d = Day03("03")
+  private val d = Day03()
+  val line = parseFile("03").first()
 
   @Test fun day03Part1Example() {
     assertEquals(2, d.part1(">"))
@@ -19,11 +20,10 @@ class Day03Test {
   }
 
   @Test fun day03Part1() {
-    assertEquals(2572, d.part1(d.getLine()))
+    assertEquals(2572, d.part1(line))
   }
 
   @Test fun day03Part2() {
-    assertEquals(2631, d.part2(d.getLine()))
+    assertEquals(2631, d.part2(line))
   }
-
 }
