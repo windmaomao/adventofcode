@@ -6,6 +6,8 @@ import java.util.LinkedList
 class Tree() {
   val edges: HashMap<String, HashMap<String, Int>> = hashMapOf()
 
+  fun getNodes(): List<String> = edges.keys.toList()
+
   fun addNode(a: String): HashMap<String, Int> {
     var es = edges.get(a)
     if (es == null) {
@@ -15,19 +17,15 @@ class Tree() {
     return es
   }
 
-  fun getNodes(): List<String> = edges.keys.toList()
-
   fun addEdge(a: String, b: String, weight: Int = 0) {
     addNode(b)
     addNode(a).put(b, weight)
   }
 
-  fun bfs(node: String, visit: (String) -> Unit) {
-    val keys = edges[node]?.keys
-    keys?.forEach { visit(it) }
-    keys?.forEach { bfs(it, visit) }
-  }
-
+  /*
+   * Given the starting node and a visitor function
+   * visit each node and return the list of nodes
+   */
   fun toNodes(
     root: String,
     fn: (String, (String) -> Unit) -> Unit
@@ -37,10 +35,11 @@ class Tree() {
     return res.toList()
   }
 
-  fun getBFSNodes(root: String): List<String> {
-    val res: MutableSet<String> = mutableSetOf(root)
-    bfs(root) { node -> res.add(node) }
-    return res.toList()
+  fun bfs(node: String, visit: (String) -> Unit) {
+    visit(node)
+    val keys = edges[node]?.keys
+    keys?.forEach { visit(it) }
+    keys?.forEach { bfs(it, visit) }
   }
 
   fun dfsPre(node: String, visit: (String) -> Unit) {
@@ -53,6 +52,7 @@ class Tree() {
     visit(node)
   }
 
+  fun getBFSNodes(root: String) = toNodes(root, ::bfs)
   fun getDFSNodes(root: String) = toNodes(root, ::dfsPre)
   fun getTSortNodes(root: String) = toNodes(root, ::dfsPost)
 }
