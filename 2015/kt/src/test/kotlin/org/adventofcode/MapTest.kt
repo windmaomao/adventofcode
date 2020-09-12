@@ -7,7 +7,7 @@ class MapTest {
   val t: Map = Map()
 
   @Test
-  fun TreeAddNode() {
+  fun treeAddNode() {
     t.addNode("a")
     Assert.assertEquals(listOf("a"), t.getNodes())
     t.addNode("b")
@@ -17,7 +17,7 @@ class MapTest {
   }
 
   @Test
-  fun TreeAddEdge() {
+  fun treeAddEdge() {
     t.addEdge("a", "b")
     Assert.assertEquals(listOf("a", "b"), t.getNodes())
     t.addEdge("a", "c")
@@ -25,7 +25,7 @@ class MapTest {
   }
 
   @Test
-  fun TreeGetBFSNodes() {
+  fun treeGetBFSNodes() {
     t.addEdge("a", "c")
     t.addEdge("a", "f")
     t.addEdge("c", "d")
@@ -38,7 +38,20 @@ class MapTest {
   }
 
   @Test
-  fun TreeGetDFSNodes() {
+  fun treeGetBFSNodesCycle() {
+    t.addEdge("a", "c")
+    t.addEdge("a", "f")
+    t.addEdge("c", "d")
+    t.addEdge("c", "b")
+    t.addEdge("b", "a")
+    Assert.assertEquals(
+      listOf("a", "c", "f","b", "d"),
+      t.getBFSNodes("a")
+    )
+  }
+
+  @Test
+  fun treeGetDFSNodes() {
     t.addEdge("a", "c")
     t.addEdge("a", "f")
     t.addEdge("c", "d")
@@ -51,7 +64,7 @@ class MapTest {
   }
 
   @Test
-  fun TreeGetTSortNodes() {
+  fun treeGetTSortNodes() {
     t.addEdge("a", "c")
     t.addEdge("a", "f")
     t.addEdge("c", "d")
