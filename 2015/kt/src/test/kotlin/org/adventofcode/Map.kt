@@ -3,7 +3,7 @@ package org.adventofcode
 import java.util.Queue
 import java.util.LinkedList
 
-class Tree() {
+class Map() {
   val edges: HashMap<String, HashMap<String, Int>> = hashMapOf()
 
   fun getNodes(): List<String> = edges.keys.toList()
@@ -55,4 +55,5 @@ class Tree() {
   fun getBFSNodes(root: String) = toNodes(root, ::bfs)
   fun getDFSNodes(root: String) = toNodes(root, ::dfsPre)
   fun getTSortNodes(root: String) = toNodes(root, ::dfsPost)
+
 }

@@ -61,6 +61,18 @@ class Day07(name: String = "07"): Day(name) {
     return found.toList()
   }
 
+  fun getTopologyList2(list: List<String>, root: String): List<String> {
+    val t: Map = Map()
+    list.forEach { str ->
+      val eq = getEquation(str)
+      equations[eq.output] = eq
+      eq.inputs.forEach { dep ->
+        t.addEdge(eq.output, dep)
+      }
+    }
+    return t.getTSortNodes(root)
+  }
+
   fun calcEquations(topologyList: List<String>): HashMap<String, Int> {
     val values: HashMap<String, Int> = HashMap()
     topologyList.forEach { output ->

@@ -3,8 +3,8 @@ package org.adventofcode
 import org.junit.Assert
 import org.junit.Test
 
-class TreeTest {
-  val t: Tree = Tree()
+class MapTest {
+  val t: Map = Map()
 
   @Test
   fun TreeAddNode() {
