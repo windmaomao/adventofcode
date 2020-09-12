@@ -64,6 +64,19 @@ class MapTest {
   }
 
   @Test
+  fun treeGetDFSNodesCycle() {
+    t.addEdge("a", "c")
+    t.addEdge("a", "f")
+    t.addEdge("c", "d")
+    t.addEdge("c", "b")
+    t.addEdge("b", "a")
+    Assert.assertEquals(
+      listOf("a", "c", "b", "d", "f"),
+      t.getDFSNodes("a")
+    )
+  }
+
+  @Test
   fun treeGetTSortNodes() {
     t.addEdge("a", "c")
     t.addEdge("a", "f")
@@ -75,4 +88,17 @@ class MapTest {
       t.getTSortNodes("a")
     )
   }
+
+//  @Test
+//  fun treeGetTSortNodesCycle() {
+//    t.addEdge("a", "c")
+//    t.addEdge("a", "f")
+//    t.addEdge("c", "d")
+//    t.addEdge("c", "b")
+//    t.addEdge("b", "a")
+//    Assert.assertEquals(
+//      listOf("e", "b", "d", "c", "f", "a"),
+//      t.getTSortNodes("a")
+//    )
+//  }
 }

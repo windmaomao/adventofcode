@@ -51,18 +51,20 @@ class Map() {
       ?.forEach { bfs(it, visit) }
   }
 
-  fun dfsPre(node: String, visit: (String) -> Unit) {
-    visit(node)
+  fun dfsPre(node: String, visit: (String) -> Boolean) {
+    if (!visit(node)) return
     edges[node]?.keys?.forEach { s -> dfsPre(s, visit) }
   }
 
-  fun dfsPost(node: String, visit: (String) -> Unit) {
-    edges[node]?.keys?.forEach { s -> dfsPost(s, visit) }
+  fun dfsPost(node: String, visit: (String) -> Boolean) {
+    edges[node]?.keys?.forEach { s ->
+      dfsPost(s, visit)
+    }
     visit(node)
   }
 
   fun getBFSNodes(root: String) = toNodes2(root, ::bfs)
-  fun getDFSNodes(root: String) = toNodes(root, ::dfsPre)
-  fun getTSortNodes(root: String) = toNodes(root, ::dfsPost)
+  fun getDFSNodes(root: String) = toNodes2(root, ::dfsPre)
+  fun getTSortNodes(root: String) = toNodes2(root, ::dfsPost)
 
 }
