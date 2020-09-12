@@ -28,19 +28,25 @@ class Map() {
    */
   fun toNodes(
     root: String,
-    fn: (String, (String) -> Unit) -> Unit
-  ): List<String> {
-    val res: MutableSet<String> = mutableSetOf()
-    fn(root) { node -> res.add(node) }
-    return res.toList()
-  }
-  fun toNodes2(
-    root: String,
     fn: (String, (String) -> Boolean) -> Unit
   ): List<String> {
     val res: MutableSet<String> = mutableSetOf()
     fn(root) { node -> res.add(node) }
     return res.toList()
+  }
+
+  fun toNodes2(
+    root: String,
+    fn: (String, (String) -> Boolean, (String) -> Boolean) -> Unit
+  ): List<String> {
+    val visited: MutableSet<String> = mutableSetOf()
+    val tested: MutableSet<String> = mutableSetOf()
+    fn(root, { node ->
+      tested.add(node)
+    }) { node ->
+      visited.add(node)
+    }
+    return visited.toList()
   }
 
   fun bfs(node: String, visit: (String) -> Boolean) {
@@ -56,15 +62,22 @@ class Map() {
     edges[node]?.keys?.forEach { s -> dfsPre(s, visit) }
   }
 
-  fun dfsPost(node: String, visit: (String) -> Boolean) {
+  fun dfsPost(
+    node: String,
+    test: (String) -> Boolean,
+    visit: (String) -> Boolean
+  ) {
+    if (!test(node)) return
     edges[node]?.keys?.forEach { s ->
-      dfsPost(s, visit)
+      if (!test(node)) {
+        dfsPost(s, test, visit)
+      }
     }
     visit(node)
   }
 
-  fun getBFSNodes(root: String) = toNodes2(root, ::bfs)
-  fun getDFSNodes(root: String) = toNodes2(root, ::dfsPre)
+  fun getBFSNodes(root: String) = toNodes(root, ::bfs)
+  fun getDFSNodes(root: String) = toNodes(root, ::dfsPre)
   fun getTSortNodes(root: String) = toNodes2(root, ::dfsPost)
 
 }
