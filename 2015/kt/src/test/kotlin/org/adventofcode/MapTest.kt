@@ -106,4 +106,16 @@ class MapTest {
       t.getTSortNodes("a")
     )
   }
+
+  @Test
+  fun treeGetShortestNodes() {
+    t.addEdge("a", "b", 1)
+    t.addEdge("a", "c", 2)
+    t.addEdge("c", "b", 1)
+    Assert.assertEquals(
+      listOf("b", "c"),
+      t.getShortestNodes("a")
+    )
+  }
+
 }

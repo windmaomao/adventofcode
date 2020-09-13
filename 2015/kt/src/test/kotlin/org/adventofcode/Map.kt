@@ -1,8 +1,5 @@
 package org.adventofcode
 
-import java.util.Queue
-import java.util.LinkedList
-
 fun bfs(
   root: String,
   nexts: (String) -> List<String>,
@@ -24,15 +21,26 @@ fun dfs(
   nexts(root).forEach { dfs(it, nexts, visit) }
 }
 
-fun rsort(
+fun tsort(
   node: String,
   reserve: (String) -> Boolean,
   nexts: (String) -> List<String>,
   visit: (String) -> Unit
 ) {
   if (!reserve(node)) return
-  nexts(node).forEach { rsort(it, reserve, nexts, visit) }
+  nexts(node).forEach { tsort(it, reserve, nexts, visit) }
   visit(node)
+}
+
+fun dijkstra(
+  node: String,
+  value: Int,
+  nexts: (String) -> List<Pair<String, Int>>,
+  visit: (String, String, Int) -> Unit
+) {
+  nexts(node).forEach { (to, weight) ->
+    visit(to, node, value + weight)
+  }
 }
 
 class Map() {
@@ -108,18 +116,28 @@ class Map() {
     return visited.toList()
   }
 
-  fun dijkstra(
-    next: () -> Pair<String, Int>?,
-    visit: (String, String, Int) -> Boolean
-  ) {
-    val p = next() ?: return
-    val (from, cost) = p
-    edges[from]?.forEach { (to, weight) ->
-      visit(to, from, cost + weight)
+  fun visitShortestNodes(
+    root: String,
+    visitor: (
+      node: String,
+      value: Int,
+      nexts: (String) -> List<Pair<String, Int>>,
+      visit: (String, String, Int) -> Unit
+    ) -> Unit
+  ): List<String> {
+    val breadcrumbs: HashMap<String, Pair<String, Int>> = hashMapOf()
+    val visited: MutableList<String> = mutableListOf()
+    visitor(root, 0, { node ->
+      listOf(Pair(node, 0))
+    }) { to: String, from: String, cost: Int ->
+      breadcrumbs.put(to, Pair(from, cost))
     }
+    visited.add(root)
+    return visited.toList()
   }
 
   fun getBFSNodes(root: String) = visitNodes(root, ::bfs)
   fun getDFSNodes(root: String) = visitNodes(root, ::dfs)
-  fun getTSortNodes(root: String) = visitReservedNodes(root, ::rsort)
+  fun getTSortNodes(root: String) = visitReservedNodes(root, ::tsort)
+  fun getShortestNodes(root: String) = visitShortestNodes(root, ::dijkstra)
 }
