@@ -4,7 +4,7 @@ import org.junit.Assert
 import org.junit.Test
 
 class MapTest {
-  val t: Map = Map()
+  private val t: Map = Map()
 
   @Test
   fun treeAddNode() {
@@ -24,6 +24,11 @@ class MapTest {
     Assert.assertEquals(listOf("a", "b", "c"), t.getNodes())
   }
 
+  /**
+   *   -> f
+   * a -> c -> d
+   *        -> b -> e
+   */
   @Test
   fun treeGetBFSNodes() {
     t.addEdge("a", "c")

@@ -28,11 +28,21 @@ class Map() {
    */
   fun toNodes(
     root: String,
-    fn: (String, (String) -> Boolean) -> Unit
+    visitor: (
+      root: String,
+      nexts: (String) -> List<String>,
+      visit: (String) -> Boolean
+    ) -> Unit
   ): List<String> {
-    val res: MutableSet<String> = mutableSetOf()
-    fn(root) { node -> res.add(node) }
-    return res.toList()
+    val visited: MutableSet<String> = mutableSetOf()
+    visitor(root, { node ->
+      edges[node]?.keys?.filter {
+        !visited.contains(it)
+      }?.toList() ?: listOf()
+    }) { node ->
+      visited.add(node)
+    }
+    return visited.toList()
   }
 
   fun toNodes2(
@@ -55,6 +65,18 @@ class Map() {
     keys
       ?.filter { visit(it) }
       ?.forEach { bfs(it, visit) }
+  }
+
+  fun bfs2(
+    root: String,
+    nexts: (String) -> List<String>,
+    visit: (String) -> Boolean
+  ) {
+    visit(root)
+
+    val ns = nexts(root)
+    ns.forEach { visit(it) }
+    ns.forEach { bfs2(it, nexts, visit) }
   }
 
   fun dfsPre(
@@ -96,7 +118,7 @@ class Map() {
     }
   }
 
-  fun getBFSNodes(root: String) = toNodes(root, ::bfs)
+  fun getBFSNodes(root: String) = toNodes(root, ::bfs2)
   fun getDFSNodes(root: String) = toNodes2(root, ::dfsPre)
   fun getTSortNodes(root: String) = toNodes2(root, ::dfsPost)
 }
