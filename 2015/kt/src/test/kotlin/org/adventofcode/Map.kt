@@ -24,6 +24,17 @@ fun dfs(
   nexts(root).forEach { dfs(it, nexts, visit) }
 }
 
+fun rsort(
+  node: String,
+  test: (String) -> Boolean,
+  nexts: (String) -> List<String>,
+  visit: (String) -> Unit
+) {
+  if (!test(node)) return
+  nexts(node).forEach { rsort(it, test, nexts, visit) }
+  visit(node)
+}
+
 class Map() {
   val edges: HashMap<String, HashMap<String, Int>> = hashMapOf()
 
@@ -47,7 +58,7 @@ class Map() {
    * Given the starting node and a visitor function
    * visit each node and return the list of nodes
    */
-  fun toNodes(
+  fun visitNodes(
     root: String,
     visitor: (
       root: String,
@@ -66,32 +77,32 @@ class Map() {
     return visited.toList()
   }
 
-  fun toNodes2(
+  /*
+   * Given the starting node and a visitor function
+   * visit each node after test and return the list of nodes
+   */
+  fun visitNodesWithTest(
     root: String,
-    fn: (String, (String) -> Boolean, (String) -> Boolean) -> Unit
+    visitor: (
+      node: String,
+      test: (String) -> Boolean,
+      nexts: (String) -> List<String>,
+      visit: (String) -> Unit
+    ) -> Unit
   ): List<String> {
     val visited: MutableSet<String> = mutableSetOf()
     val tested: MutableSet<String> = mutableSetOf()
-    fn(root, { node ->
+    visitor(root, { node ->
       tested.add(node)
+    }, { node ->
+      edges[node]?.keys?.filter {
+        !visited.contains(it) &&
+        !tested.contains(it)
+      }?.toList() ?: listOf()
     }) { node ->
       visited.add(node)
     }
     return visited.toList()
-  }
-
-  fun dfsPost(
-    node: String,
-    test: (String) -> Boolean,
-    visit: (String) -> Boolean
-  ) {
-    if (!test(node)) return
-    edges[node]?.keys?.forEach { s ->
-      if (!test(node)) {
-        dfsPost(s, test, visit)
-      }
-    }
-    visit(node)
   }
 
   fun dijkstra(
@@ -105,7 +116,7 @@ class Map() {
     }
   }
 
-  fun getBFSNodes(root: String) = toNodes(root, ::bfs)
-  fun getDFSNodes(root: String) = toNodes(root, ::dfs)
-  fun getTSortNodes(root: String) = toNodes2(root, ::dfsPost)
+  fun getBFSNodes(root: String) = visitNodes(root, ::bfs)
+  fun getDFSNodes(root: String) = visitNodes(root, ::dfs)
+  fun getTSortNodes(root: String) = visitNodesWithTest(root, ::rsort)
 }
