@@ -26,12 +26,12 @@ fun dfs(
 
 fun rsort(
   node: String,
-  test: (String) -> Boolean,
+  reserve: (String) -> Boolean,
   nexts: (String) -> List<String>,
   visit: (String) -> Unit
 ) {
-  if (!test(node)) return
-  nexts(node).forEach { rsort(it, test, nexts, visit) }
+  if (!reserve(node)) return
+  nexts(node).forEach { rsort(it, reserve, nexts, visit) }
   visit(node)
 }
 
@@ -55,8 +55,9 @@ class Map() {
   }
 
   /*
-   * Given the starting node and a visitor function
-   * visit each node and return the list of nodes
+   * From the root node following a visitor function,
+   * visit each node without duplicate,
+   * and return the list of nodes
    */
   fun visitNodes(
     root: String,
@@ -78,14 +79,16 @@ class Map() {
   }
 
   /*
-   * Given the starting node and a visitor function
-   * visit each node after test and return the list of nodes
+   * From the root node following a visitor function,
+   * reserve nodes to be visited until ready,
+   * and visit them without duplicate,
+   * and return the list of nodes
    */
-  fun visitNodesWithTest(
+  fun visitReservedNodes(
     root: String,
     visitor: (
       node: String,
-      test: (String) -> Boolean,
+      reserve: (String) -> Boolean,
       nexts: (String) -> List<String>,
       visit: (String) -> Unit
     ) -> Unit
@@ -118,5 +121,5 @@ class Map() {
 
   fun getBFSNodes(root: String) = visitNodes(root, ::bfs)
   fun getDFSNodes(root: String) = visitNodes(root, ::dfs)
-  fun getTSortNodes(root: String) = visitNodesWithTest(root, ::rsort)
+  fun getTSortNodes(root: String) = visitReservedNodes(root, ::rsort)
 }
