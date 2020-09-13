@@ -3,6 +3,27 @@ package org.adventofcode
 import java.util.Queue
 import java.util.LinkedList
 
+fun bfs(
+  root: String,
+  nexts: (String) -> List<String>,
+  visit: (String) -> Boolean
+) {
+  visit(root)
+
+  val ns = nexts(root)
+  ns.forEach { visit(it) }
+  ns.forEach { bfs(it, nexts, visit) }
+}
+
+fun dfs(
+  root: String,
+  nexts: (String) -> List<String>,
+  visit: (String) -> Boolean
+) {
+  visit(root)
+  nexts(root).forEach { dfs(it, nexts, visit) }
+}
+
 class Map() {
   val edges: HashMap<String, HashMap<String, Int>> = hashMapOf()
 
@@ -59,18 +80,6 @@ class Map() {
     return visited.toList()
   }
 
-  fun bfs(
-    root: String,
-    nexts: (String) -> List<String>,
-    visit: (String) -> Boolean
-  ) {
-    visit(root)
-
-    val ns = nexts(root)
-    ns.forEach { visit(it) }
-    ns.forEach { bfs(it, nexts, visit) }
-  }
-
   fun dfsPre(
     node: String,
     test: (String) -> Boolean,
@@ -111,6 +120,7 @@ class Map() {
   }
 
   fun getBFSNodes(root: String) = toNodes(root, ::bfs)
-  fun getDFSNodes(root: String) = toNodes2(root, ::dfsPre)
+  fun getDFSNodes(root: String) = toNodes(root, ::dfs)
+//  fun getDFSNodes(root: String) = toNodes2(root, ::dfsPre)
   fun getTSortNodes(root: String) = toNodes2(root, ::dfsPost)
 }
