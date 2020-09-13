@@ -6,7 +6,7 @@ import java.util.LinkedList
 fun bfs(
   root: String,
   nexts: (String) -> List<String>,
-  visit: (String) -> Boolean
+  visit: (String) -> Unit
 ) {
   visit(root)
 
@@ -18,7 +18,7 @@ fun bfs(
 fun dfs(
   root: String,
   nexts: (String) -> List<String>,
-  visit: (String) -> Boolean
+  visit: (String) -> Unit
 ) {
   visit(root)
   nexts(root).forEach { dfs(it, nexts, visit) }
@@ -52,7 +52,7 @@ class Map() {
     visitor: (
       root: String,
       nexts: (String) -> List<String>,
-      visit: (String) -> Boolean
+      visit: (String) -> Unit
     ) -> Unit
   ): List<String> {
     val visited: MutableSet<String> = mutableSetOf()
