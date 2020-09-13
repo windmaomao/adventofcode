@@ -85,8 +85,18 @@ class Map() {
     visit(node)
   }
 
+  fun dijkstra(
+    next: () -> Pair<String, Int>?,
+    visit: (String, String, Int) -> Boolean
+  ) {
+    val p = next() ?: return
+    val (from, cost) = p
+    edges[from]?.forEach { (to, weight) ->
+      visit(to, from, cost + weight)
+    }
+  }
+
   fun getBFSNodes(root: String) = toNodes(root, ::bfs)
   fun getDFSNodes(root: String) = toNodes2(root, ::dfsPre)
   fun getTSortNodes(root: String) = toNodes2(root, ::dfsPost)
-
 }

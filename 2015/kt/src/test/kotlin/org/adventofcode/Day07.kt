@@ -35,33 +35,7 @@ class Day07(name: String = "07"): Day(name) {
     return Equation(op, inputs ,parts[1])
   }
 
-  fun tsort(
-    tree: HashMap<String, Equation>,
-    root: String,
-    found: ArrayList<String>
-  ) {
-    if (found.contains(root)) return
-
-    val eq = tree[root]
-    if (eq != null  && eq.inputs.isNotEmpty()) {
-      eq.inputs.forEach { child ->
-        tsort(tree, child, found)
-        if (!found.contains(child)) { found.add(child) }
-      }
-    }
-    if (!found.contains(root)) { found.add(root) }
-  }
-
   fun getTopologyList(list: List<String>, root: String): List<String> {
-    list.map { getEquation(it) }.forEach { equations[it.output] = it }
-
-    val found: ArrayList<String> = arrayListOf()
-    tsort(equations, root, found)
-
-    return found.toList()
-  }
-
-  fun getTopologyList2(list: List<String>, root: String): List<String> {
     val t: Map = Map()
     list.forEach { str ->
       val eq = getEquation(str)
