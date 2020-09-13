@@ -59,15 +59,7 @@ class Map() {
     return visited.toList()
   }
 
-  fun bfs(node: String, visit: (String) -> Boolean) {
-    visit(node)
-    val keys = edges[node]?.keys
-    keys
-      ?.filter { visit(it) }
-      ?.forEach { bfs(it, visit) }
-  }
-
-  fun bfs2(
+  fun bfs(
     root: String,
     nexts: (String) -> List<String>,
     visit: (String) -> Boolean
@@ -76,7 +68,7 @@ class Map() {
 
     val ns = nexts(root)
     ns.forEach { visit(it) }
-    ns.forEach { bfs2(it, nexts, visit) }
+    ns.forEach { bfs(it, nexts, visit) }
   }
 
   fun dfsPre(
@@ -118,7 +110,7 @@ class Map() {
     }
   }
 
-  fun getBFSNodes(root: String) = toNodes(root, ::bfs2)
+  fun getBFSNodes(root: String) = toNodes(root, ::bfs)
   fun getDFSNodes(root: String) = toNodes2(root, ::dfsPre)
   fun getTSortNodes(root: String) = toNodes2(root, ::dfsPost)
 }
