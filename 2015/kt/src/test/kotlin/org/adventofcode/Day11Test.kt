@@ -8,8 +8,10 @@ class Day11Test {
 
   @Test
   fun day11Passwords() {
-    val seq = d.genPasswordSeq("ab").take(1).toList()
-    Assert.assertEquals("ac", seq[0])
+    Assert.assertEquals(
+      listOf("ay", "az", "b`", "ba"),
+      d.genPasswordSeq("ax").take(4).toList()
+    )
 
   }
 
