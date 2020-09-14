@@ -31,4 +31,22 @@ class Day09Test {
   fun day09Part1() {
     assertEquals(141, d.part1(lines))
   }
+
+  @Test
+  fun day09Part2Example() {
+    assertEquals(
+      982,
+      d.part2(listOf(
+        "London to Dublin = 464",
+        "London to Belfast = 518",
+        "Dublin to Belfast = 141"
+      ))
+    )
+  }
+
+  @Test
+  fun day09Part2() {
+    assertEquals(736, d.part2(lines))
+  }
+
 }

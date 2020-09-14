@@ -7,7 +7,7 @@ class Day09 {
     return Triple(p1[0], p1[1], p0[1].toInt())
   }
 
-  fun part1(list: List<String>): Int {
+  fun part(list: List<String>): List<Int> {
     val m: Map = Map()
     list.forEach {
       val (from, to, cost) = extractRoute(it)
@@ -20,6 +20,9 @@ class Day09 {
         .mapIndexed { i, s -> Pair(s, list[i+1]) }
         .sumBy { (from, to) -> m.edges[from]?.get(to) ?: 1000 }
     }
-    return m.getNodes().permutations().map(listCost).min() ?: -1
+    return m.getNodes().permutations().map(listCost)
   }
+
+  fun part1(list: List<String>) = part(list).min()
+  fun part2(list: List<String>) = part(list).max()
 }
