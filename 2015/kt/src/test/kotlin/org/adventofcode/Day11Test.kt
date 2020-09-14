@@ -5,7 +5,6 @@ import org.junit.Test
 
 class Day11Test {
   private val d: Day11 = Day11()
-  private val str = "vzbxkghb"
 
   @Test
   fun day11Passwords() {
@@ -20,7 +19,12 @@ class Day11Test {
 
   @Test
   fun day11part1() {
-    Assert.assertEquals("xxx", d.part1(str))
+    Assert.assertEquals("vzbxxyzz", d.part1("vzbxkghb"))
+  }
+
+  @Test
+  fun day11part2() {
+    Assert.assertEquals("vzcaabcc", d.part1("vzbxxyzz"))
   }
 
 }
