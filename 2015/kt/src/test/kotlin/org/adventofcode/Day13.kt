@@ -10,12 +10,16 @@ class Day13 {
     return Triple(p1[0], p2[0], gain)
   }
 
-  fun part(list: List<String>): List<Int> {
+  fun part(
+    list: List<String>,
+    includeMe: Boolean = false
+  ): List<Int> {
     val m: Map = Map()
     list.forEach {
       val (from, to, gain) = extractSitting(it)
       m.addEdge(from, to, gain)
     }
+    if (includeMe) m.addNode("me")
     val happiness = { list: List<String> ->
       val n = list.size
       list.mapIndexed { i, p ->
@@ -28,5 +32,5 @@ class Day13 {
   }
 
   fun part1(list: List<String>) = part(list).max()
-//  fun part2(list: List<String>) = part(list).max()
+  fun part2(list: List<String>) = part(list, true).max()
 }
