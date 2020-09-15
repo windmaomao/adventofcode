@@ -25,9 +25,17 @@ class Day12Test {
   }
 
   @Test
-  fun day12Pairs() {
-    assertEquals(1, d.findPairs("""{"a":2,"b":4}"""))
-    assertEquals(2, d.findPairs("""{"a":{"b":4},"c":-1}"""))
+  fun day12Part2Example() {
+    assertEquals(6, d.part2("""[1,2,3]"""))
+    assertEquals(4, d.part2("""[1,{"c":"red","b":2},3]"""))
+    assertEquals(0, d.part2("""{"d":"red","e":[1,2,3,4],"f":5}"""))
+    assertEquals(6, d.part2("""[1,"red",5]"""))
+    assertEquals(0, d.part2("""{"a":[{"a":"red","b":4},3],"b":"red"}"""))
+  }
+
+  @Test
+  fun day12Part2() {
+    assertEquals(96852, d.part2(line))
   }
 
 }
