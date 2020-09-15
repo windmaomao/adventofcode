@@ -14,11 +14,9 @@ class Day09 {
       m.addEdge(from, to, cost)
       m.addEdge(to, from, cost)
     }
-    val listCost = { list: List<String> ->
-      list
-        .dropLast(1)
-        .mapIndexed { i, s -> Pair(s, list[i+1]) }
-        .sumBy { (from, to) -> m.edges[from]?.get(to) ?: 1000 }
+    val listCost = { list: List<String> -> list
+      .windowed(2)
+      .sumBy { (from, to) -> m.edges[from]?.get(to) ?: 1000 }
     }
     return m.getNodes().permutations().map(listCost)
   }
