@@ -1,6 +1,8 @@
 package org.adventofcode
 
 class Day14 {
+  val n = 2503
+
   fun extractReindeer(s: String): Triple<Int, Int, Int> {
     val ns = s.extractNumbers()
     return Triple(ns[0], ns[1], ns[2])
@@ -28,18 +30,22 @@ class Day14 {
   }
 
   fun part1(list: List<String>): Int {
-    val n = 2503
     return list.map {
       val (speed, fly, rest) = extractReindeer(it)
       posSeq(speed, fly, rest).take(n).last()
     }.max() ?: 0
   }
 
-//  fun part2(list: List<String>): Int {
-//    val n = 2503 + 1
-//    return list.map {
-//      val (speed, fly, rest) = extractReindeer(it)
-//      posSeq(speed, fly, rest).take(n).last()
-//    }.max() ?: 0
-//  }
+  fun part2(list: List<String>): Int {
+    val nn = list.map {
+      val (speed, fly, rest) = extractReindeer(it)
+      posSeq(speed, fly, rest).take(n).toList()
+    }
+
+    return (0..n-1)
+      .map { i -> nn.indices.maxBy { nn[it][i] } }
+      .groupBy { it }
+      .map { (k, list) -> list.size }
+      .max() ?: 0
+  }
 }
