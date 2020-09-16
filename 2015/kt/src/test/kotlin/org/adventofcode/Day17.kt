@@ -5,7 +5,7 @@ class Day17 {
   fun coinChange(
     numbers: List<Int>,
     target: Int,
-    partial: List<Int>,
+    partial: List<Int> = emptyList(),
     partialSum: Int = 0
   ): Sequence<List<Int>> {
     return sequence {
@@ -22,6 +22,10 @@ class Day17 {
         ))
       }
     }
+  }
 
+  fun part1(list: List<String>): Int {
+    val numbers = list.map { it.toInt() }
+    return coinChange(numbers, 150).toList().size
   }
 }
