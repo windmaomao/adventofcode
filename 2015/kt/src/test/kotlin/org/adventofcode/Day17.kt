@@ -24,8 +24,16 @@ class Day17 {
     }
   }
 
-  fun part1(list: List<String>): Int {
+  fun part(list: List<String>): List<List<Int>> {
     val numbers = list.map { it.toInt() }
-    return coinChange(numbers, 150).toList().size
+    return coinChange(numbers, 150).toList()
+  }
+
+  fun part1(list: List<String>) = part(list).size
+
+  fun part2(list: List<String>): Int {
+    val sizes = part(list).map { it.size }
+    val min = sizes.min()
+    return sizes.count { it == min }
   }
 }
