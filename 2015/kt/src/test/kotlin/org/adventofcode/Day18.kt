@@ -9,8 +9,20 @@ class Day18 {
        m-1, m , m+1
   )
 
-  fun nextState(prev: List<Boolean>): List<Boolean> {
-    val state = prev.toMutableList()
+  fun extractState(str: List<String>, n: Int): BooleanArray {
+    val m = n + 2
+    val arr = BooleanArray(m * m) { false }
+    str.forEachIndexed { i, s ->
+      s.forEachIndexed { j, c ->
+        val p = (i + 1) * m + j + 1
+        arr[p] = (c == '#')
+      }
+    }
+    return arr
+  }
+
+  fun nextState(prev: BooleanArray): BooleanArray {
+    val state = prev.clone()
     (1..n).forEach { i ->
       (1..n).forEach { j ->
         val p = i * m + j
@@ -18,8 +30,8 @@ class Day18 {
         state[p] = if (state[p]) (c == 2 || c == 3) else (c == 3)
       }
     }
-    return state.toList()
+    return state
   }
 
-  
+
 }
