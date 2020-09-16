@@ -6,6 +6,7 @@ import org.junit.Test
 
 class Day18Test {
   private val d: Day18 = Day18()
+  val lines = parseFile("18")
 
   @Test
   fun day18ExtractState() {
@@ -30,14 +31,18 @@ class Day18Test {
       "#.#..#",
       "####.."
     ), 6)
-    state = d.nextState(state)
+    state = d.nextState(state, 6)
     assertEquals(11, state.count { it })
-    state = d.nextState(state)
+    state = d.nextState(state, 6)
     assertEquals(8, state.count { it })
-    state = d.nextState(state)
+    state = d.nextState(state, 6)
     assertEquals(4, state.count { it })
-    state = d.nextState(state)
+    state = d.nextState(state, 6)
     assertEquals(4, state.count { it })
   }
 
+  @Test
+  fun day18Part1() {
+    assertEquals(814, d.part1(lines))
+  }
 }
