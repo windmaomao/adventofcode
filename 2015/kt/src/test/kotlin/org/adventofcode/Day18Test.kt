@@ -10,6 +10,7 @@ class Day18Test {
 
   @Test
   fun day18ExtractState() {
+    d.setSize(2)
     assertArrayEquals(
       booleanArrayOf(
         false, false, false, false,
@@ -17,12 +18,13 @@ class Day18Test {
         false, false, true, false,
         false, false, false, false
       ),
-      d.extractState(listOf("#.", ".#"), 2)
+      d.extractState(listOf("#.", ".#"))
     )
   }
 
   @Test
   fun day17NextState() {
+    d.setSize(6)
     var state = d.extractState(listOf(
       ".#.#.#",
       "...##.",
@@ -30,19 +32,27 @@ class Day18Test {
       "..#...",
       "#.#..#",
       "####.."
-    ), 6)
-    state = d.nextState(state, 6)
+    ))
+    state = d.nextState(state)
     assertEquals(11, state.count { it })
-    state = d.nextState(state, 6)
+    state = d.nextState(state)
     assertEquals(8, state.count { it })
-    state = d.nextState(state, 6)
+    state = d.nextState(state)
     assertEquals(4, state.count { it })
-    state = d.nextState(state, 6)
+    state = d.nextState(state)
     assertEquals(4, state.count { it })
   }
 
   @Test
   fun day18Part1() {
+    d.setSize(100)
     assertEquals(814, d.part1(lines))
   }
+
+  @Test
+  fun day18Part2() {
+    d.setSize(100)
+    assertEquals(814, d.part2(lines))
+  }
+
 }
