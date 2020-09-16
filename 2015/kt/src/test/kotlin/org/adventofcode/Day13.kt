@@ -21,11 +21,8 @@ class Day13 {
     }
     if (includeMe) m.addNode("me")
     val happiness = { list: List<String> ->
-      val n = list.size
-      list.mapIndexed { i, p ->
-        val prev = if (i == 0) n - 1 else i - 1
-        val next = if (i == n - 1) 0 else i + 1
-        (m.edges[p]?.get(list[prev]) ?: 0)+ (m.edges[p]?.get(list[next]) ?: 0)
+      list.plus(list[0]).windowed(2).map { (p, q) ->
+        (m.edges[p]?.get(q) ?: 0) + (m.edges[q]?.get(p) ?: 0)
       }.sum()
     }
     return m.getNodes().permutations().map(happiness)
