@@ -24,4 +24,10 @@ class Day19 {
           .asSequence()
       }.toList().distinct().size
   }
+
+  fun part1(list: List<String>): Int {
+    val s = list.last()
+    val reps = extractReplacements(list.take(list.size - 2))
+    return allMolecules(s, reps)
+  }
 }

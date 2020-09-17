@@ -5,7 +5,7 @@ import org.junit.Test
 
 class Day19Test {
   private val d: Day19 = Day19()
-//  val lines = parseFile("19")
+  val lines = parseFile("19")
   val exampleReplacements = listOf(
     listOf("H", "HO"),
     listOf("H", "OH"),
@@ -46,6 +46,11 @@ class Day19Test {
     assertEquals(7,
       d.allMolecules("HOHOHO", exampleReplacements)
     )
+  }
+
+  @Test
+  fun day19Part1() {
+    assertEquals(509, d.part1(lines))
   }
 
 }
