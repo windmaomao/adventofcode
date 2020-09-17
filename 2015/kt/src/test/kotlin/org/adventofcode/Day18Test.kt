@@ -52,7 +52,7 @@ class Day18Test {
   @Test
   fun day18Part2() {
     d.setSize(100)
-    assertEquals(814, d.part2(lines))
+    assertEquals(924, d.part2(lines))
   }
 
 }
