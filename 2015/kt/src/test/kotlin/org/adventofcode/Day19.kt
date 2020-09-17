@@ -30,4 +30,17 @@ class Day19 {
     val reps = extractReplacements(list.take(list.size - 2))
     return allMolecules(s, reps)
   }
+
+  // Still not sure how this works :)
+  // https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/cy4etju/
+  fun part2(list: List<String>): Int {
+    val s = list.last()
+    val reps = extractReplacements(list.take(list.size - 2))
+
+    val t = "Al|Ar|B|C|Ca|F|H|Mg|N|O|P|Rn|Si|Th|Ti|Y"
+      .toRegex().findAll(s).toList().size
+    val b = "Rn|Ar".toRegex().findAll(s).toList().size
+    val c = "Y".toRegex().findAll(s).toList().size
+    return t - b - 2 * c - 1
+  }
 }

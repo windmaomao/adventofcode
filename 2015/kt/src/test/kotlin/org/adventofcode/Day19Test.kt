@@ -53,4 +53,9 @@ class Day19Test {
     assertEquals(509, d.part1(lines))
   }
 
+  @Test
+  fun day19Part2() {
+    assertEquals(0, d.part2(lines))
+  }
+
 }
