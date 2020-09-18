@@ -2,56 +2,51 @@
 
 #### Problem
 
-Given a list of characters for up and down operations, find out his last position. 
+Starting from position `0`, find out the latest position after a series of up and down operations. 
 
 Ex.
 
-- `()` and `(())` both end in position `0`.
+- `()` and `(())` end in position `0`.
 - `(())))` ends in position `-2`.
 
-#### Solution
+#### Prepare
 
-We can count the `(` and `)` character, and take the difference, ex. `s.count("(") - s.count(")") to get our answer quickly. 
+In order to get our thinking into a stream of data, we can assign a value for each operation, 
 
 ```kotlin
-  val charValue = { c: Char -> 
-    when (c) { '(' -> 1 else -> -1 }
-  }
-
-  fun part1(s: String) = s.map(charValue).sum()
+fun charValue(c: Char): Int = if (c == '(') 1 else -1
 ```
 
-But if we want to be a bit generic, we can assign an integer value to each character, ex. `1` or `-1`, with a lambda function `charValue` . We then use it to map each character and sum them up in the end. 
+Given a string of characters, we get a list of `Int` (Atomic data type).
 
->Lambda function, a form of expression, is a short function used as arguments to other functions. It's a piece of executable code, let it be a method, a module or even a dependency. 
+```kotlin
+fun extractOps(s: String): List<Int> = s.map { charValue(it) }.toList()
+```
 
+#### Solution 
+
+```kotlin
+fun part1(ops: List<Int>) = ops.sum()
+```
+
+Assuming the string is prepared into  `ops`, the solution is as simple as the `sum` .
 
 #### Test
 
-In order to make sure it's robust, we write
+In order to make sure it's robust, we write test for `extractOps`.
 
 ```kotlin
-  @Test fun day01Part1Example() {
-    assertEquals(0, part1("(())"))
-    assertEquals(0, part1("()()"))
-    assertEquals(3, part1("((("))
-    assertEquals(3, part1("(()(()("))
-    assertEquals(3, part1("))((((("))
-    assertEquals(-1, part1("())"))
-    assertEquals(-1, part1("))("))
-    assertEquals(-3, part1(")))"))
-    assertEquals(-3, part1(")())())"))
-  }
+@Test fun day01ExtractOps() {
+  assertEquals(listOf(1, 1, -1), extractOps("(()"))
+}
 ```
 
-Therefore the answer could be checked with an additional `test`,
+We then test the final or intermediate answers,
 
 ```kotlin
-  val line = parseFile("01").first()
+val ops = extractOps(parseFile("01")[0])
 
-  @Test fun day01Part1() {
-    assertEquals(280, part1(line))
-  }
+@Test fun day01Part1() { 
+  assertEquals(???, part1(ops))
+}
 ```
-
-Check `parseFile` from Day 0. And here we are interested at one line. 

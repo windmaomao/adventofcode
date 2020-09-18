@@ -1,13 +1,18 @@
 package org.adventofcode
 
 class Day01() {
-  val charValue = { c: Char -> if (c == '(') 1 else -1 }
+  private fun charValue(c: Char): Int = if (c == '(') 1 else -1
 
-  fun part1(s: String): Int {
-    return s.map(charValue).sum()
-  }
+  fun extractOps(s: String): List<Int> = s.map {
+    charValue(it)
+  }.toList()
 
-  fun part2(s: String): Int {
+  fun part1(ops: List<Int>) = ops.sum()
+
+  /**
+   * Simple solution for part2
+   */
+  fun part2s(s: String): Int {
     var i = 0
     var v = 0
     while(v != -1) {
@@ -18,10 +23,8 @@ class Day01() {
   }
 
   @OptIn(ExperimentalStdlibApi::class)
-  fun part2sy(s: String): Int {
-    val seq = s.asSequence()
-      .scan(0) { acc, c -> acc + charValue(c) }
-    return seq.indexOf(-1)
-  }
+  fun part2(ops: List<Int>): Int = ops.asSequence()
+    .scan(0) { acc, v -> acc + v }
+    .indexOf(-1)
 
 }
