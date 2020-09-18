@@ -5,7 +5,7 @@ import org.junit.Test
 
 class Day02Test {
   private val d = Day02()
-  val lines = parseFile("02")
+  val lines = parseFile("02").map { it.extractNumbers() }
 
   @Test fun day02Part1Example() {
     assertEquals(58, d.paper(2, 3, 4))

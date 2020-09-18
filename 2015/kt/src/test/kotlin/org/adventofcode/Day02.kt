@@ -1,5 +1,7 @@
 package org.adventofcode
 
+typealias Paper = List<Int>
+
 class Day02() {
   val paper = { l: Int, w: Int, h: Int ->
     val m = maxOf(l, w, h)
@@ -12,20 +14,12 @@ class Day02() {
   }
 
   private fun part(
-    list: List<String>,
+    list: List<List<Int>>,
     fn: (Int, Int, Int) -> Int
   ): Int {
-    return list.map {
-      val (l, w, h) = it.extractNumbers()
-      fn(l, w, h)
-    }.sum()
+    return list.map { (l, w, h) -> fn(l, w, h) }.sum()
   }
 
-  fun part1(list: List<String>): Int {
-    return part(list, paper)
-  }
-
-  fun part2(list: List<String>): Int {
-    return part(list, paper2)
-  }
+  fun part1(list: List<Paper>) = part(list, paper)
+  fun part2(list: List<Paper>) = part(list, paper2)
 }
