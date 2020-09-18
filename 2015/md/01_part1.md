@@ -2,7 +2,7 @@
 
 #### Problem
 
-Starting from position `0`, find out the latest position after a series of up and down operations. 
+Starting from position `0`, find out the position after a series of up and down operations. 
 
 Ex.
 

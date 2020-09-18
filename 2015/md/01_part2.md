@@ -1,4 +1,4 @@
-### Part 2 - Scan to find it
+### Part 2 - Stop after the match
 
 #### Problem
 
@@ -20,9 +20,9 @@ fun part2(ops: List<Int>): Int = ops.asSequence()
 
 The problem is a bit different from the previous `sum`, because we need to keep track of the intermediate result for each step so to know if we reach the destination.
 
-Therefore we use one variantion of `reduce` (implementation of `sum`), to `scan` the collection and store all snapshots of answers while adding each item up.
+You might already notice `asSequence` in the above. It's here for saving us going over the entire list. Right after we have a match via `indexOf`, it'll stop. Bingo! Saving us to write a `while` here.
 
-You might already notice `asSequence` in the above. It's here for saving us going over the entire list, so that `indexOf` can terminate the `scan` right after it makes a match. 
+>  You might wonder why we can not use `sum` after `asSequence`. The short answer is that `sum` produces `Int` instead of `sequence` , which prevents us taking advantage of sequence of deferring mechanism.
 
 
 #### Test

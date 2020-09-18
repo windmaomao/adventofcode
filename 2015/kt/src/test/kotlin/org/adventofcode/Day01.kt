@@ -1,7 +1,11 @@
 package org.adventofcode
 
 class Day01() {
-  private fun charValue(c: Char): Int = if (c == '(') 1 else -1
+  private fun charValue(c: Char): Int = when (c) {
+    '(' -> 1
+    ')' -> -1
+    else -> 0
+  }
 
   fun extractOps(s: String): List<Int> = s.map {
     charValue(it)
