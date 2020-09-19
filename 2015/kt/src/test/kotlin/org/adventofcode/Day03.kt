@@ -27,4 +27,5 @@ class Day03() {
       .flatten()
       .distinct().count()
   }
+  
 }

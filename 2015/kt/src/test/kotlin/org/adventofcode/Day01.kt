@@ -7,24 +7,11 @@ class Day01() {
     else -> 0
   }
 
-  fun extractOps(s: String): List<Int> = s.map {
-    charValue(it)
-  }.toList()
+  fun extractOps(s: String): List<Int> = s
+    .map { charValue(it) }
+    .toList()
 
   fun part1(ops: List<Int>) = ops.sum()
-
-  /**
-   * Simple solution for part2
-   */
-  fun part2s(s: String): Int {
-    var i = 0
-    var v = 0
-    while(v != -1) {
-      v += charValue(s[i])
-      i++
-    }
-    return i
-  }
 
   @OptIn(ExperimentalStdlibApi::class)
   fun part2(ops: List<Int>): Int = ops.asSequence()
