@@ -11,21 +11,34 @@ class Day03() {
       else -> acc
     }
   }
-  private val teamPoses = { acc: List<Int>, c: String ->
-    acc.mapIndexed { i, a -> nextPos(a, c[i]) }
-  }
+  @OptIn(ExperimentalStdlibApi::class)
+  fun part1(s: String) = s
+    .scan(0, nextPos)
+    .distinct()
+    .count()
 
   @OptIn(ExperimentalStdlibApi::class)
-  fun part1(s: String): Int {
-    return s.scan(0, nextPos).distinct().count()
-  }
+  fun part2(s: String) = s
+    .mapIndexed { i, _ -> i }
+    .groupBy { it % 2 }.values
+    .flatMap { it
+      .map { i -> s[i] }
+      .scan(0, nextPos)
+    }
+    .distinct()
+    .count()
 
   @OptIn(ExperimentalStdlibApi::class)
-  fun part2(s: String): Int {
+  fun part2o(s: String): Int {
     return s.chunked(2)
-      .scan(listOf(0,0), teamPoses)
+      .scan(listOf(0,0)) {
+        acc: List<Int>, c: String ->
+          acc.mapIndexed { i, a -> nextPos(a, c[i]) }
+      }
       .flatten()
       .distinct().count()
   }
-  
+
+
+
 }
