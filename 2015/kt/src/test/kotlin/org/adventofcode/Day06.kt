@@ -13,16 +13,6 @@ data class Instruction(
       (x1..x2).map { x -> y * n + x }
     }
   }
-  fun applyArr(arr: Array<Int>) : Array<Int> {
-    when (action) {
-      ACTION.Toggle -> getPos().forEach { arr[it] += 2 }
-      ACTION.On -> getPos().forEach { arr[it] += 1 }
-      else -> getPos().forEach {
-        if (arr[it] > 0) arr[it] -= 1
-      }
-    }
-    return arr
-  }
 }
 
 typealias ArrAction<T> = (Array<T>, Int) -> Unit
@@ -40,14 +30,11 @@ class Day06(name: String): Day(name) {
     return Instruction(y0, x0, y1, x1, n, action)
   }
 
-  fun part1(list: List<String>): Int {
-    val arr = Array<Boolean>(n*n){ false }
-    val ops: HashMap<ACTION, ArrAction<Boolean>> = hashMapOf(
-      ACTION.Toggle to { a, i -> a[i] = !a[i] },
-      ACTION.On to { a, i -> a[i] = true },
-      ACTION.Off to { a, i -> a[i] = false }
-    )
-
+  fun <T> part(
+    arr: Array<T>,
+    list: List<String>,
+    ops: HashMap<ACTION, ArrAction<T>>
+  ): Array<T> {
     list
       .map { getInstruction(it) }
       .forEach { ins ->
@@ -55,7 +42,17 @@ class Day06(name: String): Day(name) {
           ops[ins.action]?.invoke(arr, it)
         }
       }
-    return arr.count { it }
+    return arr
+  }
+
+  fun part1(list: List<String>): Int {
+    val arr = Array<Boolean>(n*n){ false }
+    val ops: HashMap<ACTION, ArrAction<Boolean>> = hashMapOf(
+      ACTION.Toggle to { a, i -> a[i] = !a[i] },
+      ACTION.On to { a, i -> a[i] = true },
+      ACTION.Off to { a, i -> a[i] = false }
+    )
+    return part(arr, list, ops).count { it }
   }
 
   fun part2(list: List<String>): Int {
@@ -65,15 +62,7 @@ class Day06(name: String): Day(name) {
       ACTION.On to { a, i -> a[i] += 1 },
       ACTION.Off to { a, i -> if (a[i] > 0) a[i] -= 1 }
     )
-
-    list
-      .map { getInstruction(it) }
-      .forEach { ins ->
-        ins.getPos().forEach {
-          ops[ins.action]?.invoke(arr, it)
-        }
-      }
-    return arr.sum()
+    return part(arr, list, ops).sum()
   }
 
 }
