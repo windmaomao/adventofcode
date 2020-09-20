@@ -60,9 +60,19 @@ class Day06(name: String): Day(name) {
 
   fun part2(list: List<String>): Int {
     val arr = Array<Int>(n*n){ 0 }
+    val ops: HashMap<ACTION, ArrAction<Int>> = hashMapOf(
+      ACTION.Toggle to { a, i -> a[i] += 2 },
+      ACTION.On to { a, i -> a[i] += 1 },
+      ACTION.Off to { a, i -> if (a[i] > 0) a[i] -= 1 }
+    )
+
     list
       .map { getInstruction(it) }
-      .forEach { it.applyArr(arr) }
+      .forEach { ins ->
+        ins.getPos().forEach {
+          ops[ins.action]?.invoke(arr, it)
+        }
+      }
     return arr.sum()
   }
 
