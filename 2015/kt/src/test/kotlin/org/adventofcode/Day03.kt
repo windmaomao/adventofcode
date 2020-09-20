@@ -19,10 +19,10 @@ class Day03() {
 
   @OptIn(ExperimentalStdlibApi::class)
   fun part2(s: String) = s
-    .mapIndexed { i, _ -> i }
-    .groupBy { it % 2 }.values
+    .withIndex()
+    .groupBy { it.index % 2 }.values
     .flatMap { it
-      .map { i -> s[i] }
+      .map { v -> v.value }
       .scan(0, nextPos)
     }
     .distinct()

@@ -21,7 +21,7 @@ so to make it an object?
 
 ### Model
 
-Model the `Box` as a list of integer sizes.
+Model the `Box` as a list of integer sizes which can be extracted via `Regex`.
 
 ```kotlin
 typealias Box = List<Int>
@@ -87,10 +87,15 @@ fun part1(list: List<Box>) = part(list, paper)
 fun part2(list: List<Box>) = part(list, paper2)
 ```
 
+### Highlights
+
+- How to extract info from `regex` expression?
+- How to easily swap a method to the current method?
+
 ---
 
 *Now, ready for the next day?* [*Day 3 — Perfectly Spherical Houses in a Vaccum*](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc)
 
-*Or, revisit the previous day?* [*Day 1 — Not Quite Lisp*](https://me181)
+*Or, revisit the previous day?* [*Day 1 — Not Quite Lisp*](https://medium.com/@windmaomao/kotlin-day-1-up-and-down-38885a5fc2b1)
 
-*For Complete source code, please visit* [*AoC 2015 Kotlin*](https://github.com/windmaomao/adventofcode/tree/master/2015/kt/src/test/kotlin/org/adventofcode)*.*
+*For Complete source code, please visit [*AoC 2015 Kotlin*](https://github.com/windmaomao/adventofcode/tree/master/2015/kt/src/test/kotlin/org/adventofcode)*.

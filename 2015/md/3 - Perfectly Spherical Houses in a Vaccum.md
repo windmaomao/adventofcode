@@ -1,4 +1,4 @@
-### Kotlin Day 3
+## Kotlin Day 3 - Perfectly Spherical Houses in a Vaccum
 
 > From Advent of Code 2015, [*Day 3*](https://adventofcode.com/2015/day/3)
 
@@ -53,28 +53,32 @@ We `scan` all the instructions to get all snapshot of future positions, afterwar
 Given two persons taking turns processing same list of instructions, find out total number of places visited.
 
 ```kotlin
-fun part2(s: String) = s
-  .chunked(2)  // [0, 1], [1, 2], ...
-  .scan(listOf(0,0)) { acc: List<Int>, c: String ->
-    acc.mapIndexed { i, a -> nextPos(a, c[i]) }
-  }
-  .flatten()
-  .distinct()
-	.count()
-}
+fun evenOddGroups(s: String) = s
+  .withIndex()
+  .groupBy { it.index % 2 }.values
+  .map { it.map { v -> v.value }
 ```
 
-After we split the instruction into `chunked`, the  `scan` is written for list of person each of whom goes to next position. After we get two list of position snapshots, we `flatten` them into one list.
-
-This made me think if we are tolerable enough we could use `part1` result.
+We can chop the list into two lists with evens in one and odds in another.
 
 ```kotlin
-fun part2(s: String) = s
-  .groupBy { i % 2 } // [0, 2, ...], [1, 3, ...]
-  .toList()
+fun part2(s: String) = evenOddGroups(s)
   .flatMap { it.scan(0, nextPos) }
   .distinct()
-	.count()
-}
+  .count()
 ```
 
+Each list goes through exactly same `scan` we did in `Part 1`, before their joint efforts `flatMap` back into the same stream to finish the `distinct` `count`.
+
+### Highlights
+
+- How sometimes lower dimension is more cost-effective?
+- How to distribute work while keeping the atomic unit?
+
+---
+
+*Now, ready for the next day?* [*Day 2 — I was Told There Would be No Math*](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc)
+
+*Or, revisit the previous day?* [*Day 4 — The Ideal Stocking Stuffer*](https://me181)
+
+*For Complete source code, please visit [*AoC 2015 Kotlin*](https://github.com/windmaomao/adventofcode/tree/master/2015/kt/src/test/kotlin/org/adventofcode)*.

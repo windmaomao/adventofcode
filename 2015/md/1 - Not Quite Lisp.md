@@ -68,6 +68,11 @@ You might already notice `asSequence` in the above. It's here for saving us goin
 
 >  You might wonder why we can not use `sum` after `asSequence`. The short answer is that `sum` produces `Int` instead of `sequence` , which prevents us taking advantage of sequence of deferring mechanism.
 
+### Highlights
+
+- How to use number to model the stream of data?
+- How to find something and return from the loop right away?
+
 ---
 
 *Now, ready for the next day?* [*Day 2 — I was told there would be no math*](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc)

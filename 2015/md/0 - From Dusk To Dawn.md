@@ -1,4 +1,4 @@
-### Kotlin Day 0
+## Kotlin Day 0 - From Dusk to Dawn
 
 > From Advent of Code [*2015*](https://adventofcode.com/2015)
 
@@ -97,6 +97,10 @@ Of course, you can test the final answer as well,
 Test is an early plan of how you measure the success of the solution, and if better crafted, should reveal how you decouple and assemble all units back to solve the puzzle.
 
 Your driver of writing test early on is mostly driven by your eagerness of having a solid solution in the end. Your reputation is on the line, your money is in the pot, but how can you increase the chance of the success before working towards it? 
+
+### Highlights
+
+- How to approach a problem and increase chance of solving it?
 
 ---
 
