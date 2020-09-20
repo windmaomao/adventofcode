@@ -15,18 +15,6 @@ class Day06Test {
     val ins3 = Instruction(0, 0, 1, 1, 10)
     assertEquals(listOf(0, 1, 10, 11), ins3.getPos())
     val arr: Array<Boolean> = arrayOf(false, true, true, false)
-    assertArrayEquals(
-      arrayOf(true, false, true, false),
-      Instruction(0, 0, 0, 1, 2, ACTION.Toggle).applyArr(arr)
-    )
-    assertArrayEquals(
-      arrayOf(true, true, true, true),
-      Instruction(0, 0, 1, 1, 2, ACTION.On).applyArr(arr)
-    )
-    assertArrayEquals(
-      arrayOf(true, true, true, false),
-      Instruction(1, 1, 1, 1, 2, ACTION.Off).applyArr(arr)
-    )
   }
 
   @Test

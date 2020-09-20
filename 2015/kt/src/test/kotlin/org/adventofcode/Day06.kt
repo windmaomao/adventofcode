@@ -1,6 +1,7 @@
 package org.adventofcode
 
 enum class ACTION { Toggle, On, Off }
+
 data class Instruction(
   val y1: Int, val x1: Int,
   val y2: Int, val x2: Int,
@@ -11,14 +12,6 @@ data class Instruction(
     return (y1..y2).flatMap{ y ->
       (x1..x2).map { x -> y * n + x }
     }
-  }
-  fun applyArr(arr: Array<Boolean>) : Array<Boolean> {
-    when (action) {
-      ACTION.Toggle -> getPos().forEach { arr[it] = !arr[it] }
-      ACTION.On -> getPos().forEach { arr[it] = true }
-      else -> getPos().forEach { arr[it] = false }
-    }
-    return arr
   }
   fun applyArr(arr: Array<Int>) : Array<Int> {
     when (action) {
@@ -31,6 +24,8 @@ data class Instruction(
     return arr
   }
 }
+
+typealias ArrAction<T> = (Array<T>, Int) -> Unit
 
 class Day06(name: String): Day(name) {
   private val n = 1000
@@ -47,9 +42,19 @@ class Day06(name: String): Day(name) {
 
   fun part1(list: List<String>): Int {
     val arr = Array<Boolean>(n*n){ false }
+    val ops: HashMap<ACTION, ArrAction<Boolean>> = hashMapOf(
+      ACTION.Toggle to { a, i -> a[i] = !a[i] },
+      ACTION.On to { a, i -> a[i] = true },
+      ACTION.Off to { a, i -> a[i] = false }
+    )
+
     list
       .map { getInstruction(it) }
-      .forEach { it.applyArr(arr) }
+      .forEach { ins ->
+        ins.getPos().forEach {
+          ops[ins.action]?.invoke(arr, it)
+        }
+      }
     return arr.count { it }
   }
 

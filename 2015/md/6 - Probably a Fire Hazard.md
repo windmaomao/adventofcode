@@ -46,15 +46,16 @@ You can extract `Instruction` from a string,
 Given `0,0` to `999,999` of hourses and a list of instruction text, find out how many lights are lit afterwards?
 
 ```kotlin
+val ops = (
+  Action.Toggle to { arr, i -> arr[i] = !arr[i] },
+  Action.On to { arr, i -> arr[i] = true },
+  Action.Off to { arr, i -> arr[i] = false }
+)
+
 fun part1(list: List<Instruction>, n: Int): Int {
   val arr = Array<Boolean>(n * n){ false }
   list.forEach { ins -> 
-	  val pos = ins.getPos()
-    when(ins.action) {
-      ACTION.Toggle -> pos.forEach { arr[it] = !arr[it] }
-      ACTION.On -> pos.forEach { arr[it] = true }
-      else -> pos.forEach { arr[it] = false }      
-    }
+    ins.pos().forEach { ops[ins.action]?(arr, it) }
   }
   return arr.count { it }
 }
