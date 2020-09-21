@@ -1,4 +1,4 @@
-## Kotlin Day 3 - Perfectly Spherical Houses in a Vaccum
+## Kotlin Day `3` - Perfectly Spherical Houses in a Vaccum
 
 > From Advent of Code 2015, [*Day 3*](https://adventofcode.com/2015/day/3)
 
@@ -10,7 +10,7 @@ v^>^>^>^>^><vvvv<^>^<<^><<<^vvvv>^>^>
 v^^>>><^>^>v<>^<>>^>^^v^><v<v>>><>v<v
 ```
 
-sequence of operations
+
 
 ---
 
@@ -30,7 +30,7 @@ fun nextPos(acc: Int, c: Char) = when(c) {
 }
 ```
 
-Given a instruction `char` and current position `acc`, we can figure out the next position based on one of the instruction up, down, left and right.
+Given a instruction `char` and current position `acc`, we can figure out the next position based on up, down, left and right.
 
 ### Part 1
 
@@ -46,7 +46,7 @@ fun part1(s: String) = s
 }
 ```
 
-We `scan` all the instructions to get all snapshot of future positions, afterwards we find the `distinct` set among them before taking a `count`.
+We `scan` all the instructions to get snapshots of future position, among them we can find the `distinct` set and its `count`.
 
 ### Part 2
 
@@ -59,7 +59,7 @@ fun evenOddGroups(s: String) = s
   .map { it.map { v -> v.value }
 ```
 
-We can chop the list into two lists with evens in one and odds in another.
+We can split the list into two lists with evens in one and odds in another.
 
 ```kotlin
 fun part2(s: String) = evenOddGroups(s)
@@ -68,7 +68,7 @@ fun part2(s: String) = evenOddGroups(s)
   .count()
 ```
 
-Each list goes through exactly same `scan` we did in `Part 1`, before their joint efforts `flatMap` back into the same stream to finish the `distinct` `count`.
+Each list goes through exactly same  process, before their joint efforts go into one stream to finish the `distinct` `count`.
 
 ### Highlights
 

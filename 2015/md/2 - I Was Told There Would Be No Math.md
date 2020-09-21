@@ -1,6 +1,8 @@
-## Day 2 - I was Told There Would Be No Math
-> From Advent of Code 2015, Day 2
+## Kotlin Day `2` - I was Told There Would Be No Math
 
+![I Was Told There Would Be No Math](https://miro.medium.com/max/1400/1*GopytHhQdrhNF8NrTect9A.jpeg)
+
+> From Advent of Code 2015, [Day 2](https://adventofcode.com/2015/day/2)
 
 
 ```fortran
@@ -11,11 +13,7 @@
 6x8x17
 ```
 
-If two wrongs don't make a right,
 
-try three,
-
-so to make it an object?
 
 ---
 
@@ -33,7 +31,7 @@ fun extractBox(s: String): Box = "\\d+".toRegex()
 }
 ```
 
-> If you are not sure why we need a model (object) first, please check Day 0 and also how to get a list of models.
+> If you are not sure why we need a model (object) first, please check [*Day `0`*](https://medium.com/@windmaomao/kotlin-day-0-dusk-till-dawn-b1696e311181) and you can find out how to get a list of models from string (or file) as well.
 
 Type alias is used here to emphasize the `Model` thus simplify the data definition later.
 
@@ -90,12 +88,12 @@ fun part2(list: List<Box>) = part(list, paper2)
 ### Highlights
 
 - How to extract info from `regex` expression?
-- How to easily swap a method to the current method?
+- How to swap a method with another method?
 
 ---
 
-*Now, ready for the next day?* [*Day 3 — Perfectly Spherical Houses in a Vaccum*](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc)
+*Now, ready for the next day?* [*Day `3` — Perfectly Spherical Houses in a Vaccum*](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc)
 
-*Or, revisit the previous day?* [*Day 1 — Not Quite Lisp*](https://medium.com/@windmaomao/kotlin-day-1-up-and-down-38885a5fc2b1)
+*Or, revisit the previous day?* [*Day `1` — Not Quite Lisp*](https://medium.com/@windmaomao/kotlin-day-1-up-and-down-38885a5fc2b1)
 
 *For Complete source code, please visit [*AoC 2015 Kotlin*](https://github.com/windmaomao/adventofcode/tree/master/2015/kt/src/test/kotlin/org/adventofcode)*.

@@ -5,6 +5,7 @@ import org.junit.Test
 
 class Day06Test {
   private val d: Day06 = Day06("06")
+  val ins = parseFile("06").map { d.getInstruction(it) }
 
   @Test
   fun day06Instruction() {
@@ -28,12 +29,12 @@ class Day06Test {
 
   @Test
   fun day06Part1() {
-    assertEquals(543903, d.part1(d.lines))
+    assertEquals(543903, d.part1(ins))
   }
 
   @Test
   fun day06Part2() {
-    assertEquals(14687245, d.part2(d.lines))
+    assertEquals(14687245, d.part2(ins))
   }
 
 }

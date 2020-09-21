@@ -1,6 +1,6 @@
-## Kotlin Day 0 - From Dusk to Dawn
+## Kotlin Day `0` - From Dusk to Dawn
 
-> From Advent of Code [*2015*](https://adventofcode.com/2015)
+> From Advent of Code [*2015*](https://adventofcode.com/2015). `Kotlin` is used for this adventure.
 
 
 
@@ -100,7 +100,8 @@ Your driver of writing test early on is mostly driven by your eagerness of havin
 
 ### Highlights
 
-- How to approach a problem and increase chance of solving it?
+- How to approach a problem?
+- How to increase chance of solving it?
 
 ---
 

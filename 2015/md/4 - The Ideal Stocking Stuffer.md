@@ -1,4 +1,4 @@
-## Kotlin Day 4 - The Ideal Stocking Stuffer
+## Kotlin Day `4` - The Ideal Stocking Stuffer
 
 > From Advent of Code 2015, [*Day 4*](https://adventofcode.com/2015/day/4)
 
@@ -24,7 +24,7 @@ fun matcher(secret: String, n: Int): Matcher {
 }
 ```
 
-We'd like to establish a `Matcher` so that given `secret`, it can provide a way to check whether a number's md5 begins with `n` zeros.
+We'd like to establish a `Matcher` so that given `secret` it can check whether a number's md5 begins with `n` zeros.
 
 ### Part 1
 
@@ -39,7 +39,7 @@ fun part(m: Matcher) = generateSequence(0, Int::inc)
 fun part1(secret: String) = part(matcher(secret, 5))
 ```
 
-Provided by `generateSequence`, we can get an infinite number of integers. For each number, we use the `Matcher` to test against it and then find the first match with `indexOf`.
+Provided by `generateSequence`, we can get an infinite number of integers. For each number, we use the `Matcher` to test against and then find our first match with `indexOf`.
 
 > If you wonder why we are using `sequence` instead of `loop`, please checkout [Day 1 - Part 2](https://medium.com/@windmaomao/kotlin-day-1-up-and-down-38885a5fc2b1) for explanation.
 
@@ -51,9 +51,9 @@ Find the smallest number with md5 encoding starting with `000000`, 6 zeros inste
 fun part2(secret: String) = part(matcher(secret, 6))
 ```
 
-Since we can generate a `Matcher` based on parameters,  `n` of zeros being one of them, we can easily swap in another matcher.
+Since we can generate a `Matcher` based on parameters,  `n` of zeros being one of them, we can easily swap with another matcher.
 
-> Please checkout [Day 2- Part 2](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc) for more example of swapping a method to the current method. 
+> Please checkout [Day 2- Part 2](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc) for more example of swapping a method.s
 
 ### Highlights
 

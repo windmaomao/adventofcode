@@ -16,6 +16,9 @@ data class Instruction(
 }
 
 typealias ArrAction<T> = (Array<T>, Int) -> Unit
+inline fun <reified T> newLights(n: Int, v: T): Array<T> {
+  return Array<T>(n * n) { v }
+}
 
 class Day06(name: String): Day(name) {
   private val n = 1000
@@ -30,39 +33,41 @@ class Day06(name: String): Day(name) {
     return Instruction(y0, x0, y1, x1, n, action)
   }
 
-  fun <T> part(
+  fun <T> applyOps(
     arr: Array<T>,
-    list: List<String>,
+    list: List<Instruction>,
     ops: HashMap<ACTION, ArrAction<T>>
   ): Array<T> {
-    list
-      .map { getInstruction(it) }
-      .forEach { ins ->
-        ins.getPos().forEach {
-          ops[ins.action]?.invoke(arr, it)
-        }
+    list.forEach { ins ->
+      ins.getPos().forEach {
+        ops[ins.action]?.invoke(arr, it)
       }
+    }
     return arr
   }
 
-  fun part1(list: List<String>): Int {
-    val arr = Array<Boolean>(n*n){ false }
-    val ops: HashMap<ACTION, ArrAction<Boolean>> = hashMapOf(
-      ACTION.Toggle to { a, i -> a[i] = !a[i] },
-      ACTION.On to { a, i -> a[i] = true },
-      ACTION.Off to { a, i -> a[i] = false }
-    )
-    return part(arr, list, ops).count { it }
+  val statusOps: HashMap<ACTION, ArrAction<Boolean>> = hashMapOf(
+    ACTION.Toggle to { a, i -> a[i] = !a[i] },
+    ACTION.On to { a, i -> a[i] = true },
+    ACTION.Off to { a, i -> a[i] = false }
+  )
+
+  fun part1(instructions: List<Instruction>): Int {
+    val lights = newLights(n, false)
+    return applyOps(lights, instructions, statusOps)
+      .count { it }
   }
 
-  fun part2(list: List<String>): Int {
-    val arr = Array<Int>(n*n){ 0 }
-    val ops: HashMap<ACTION, ArrAction<Int>> = hashMapOf(
-      ACTION.Toggle to { a, i -> a[i] += 2 },
-      ACTION.On to { a, i -> a[i] += 1 },
-      ACTION.Off to { a, i -> if (a[i] > 0) a[i] -= 1 }
-    )
-    return part(arr, list, ops).sum()
+  val brightOps: HashMap<ACTION, ArrAction<Int>> = hashMapOf(
+    ACTION.Toggle to { a, i -> a[i] += 2 },
+    ACTION.On to { a, i -> a[i] += 1 },
+    ACTION.Off to { a, i -> if (a[i] > 0) a[i] -= 1 }
+  )
+
+  fun part2(instructions: List<Instruction>): Int {
+    val lights = newLights(n, 0)
+    return applyOps(lights, instructions, brightOps)
+      .sum()
   }
 
 }

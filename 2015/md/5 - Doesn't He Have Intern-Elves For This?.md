@@ -1,4 +1,17 @@
-## Kotlin Day 05 - Doesn't He Have Intern-Elves For This?
+## Kotlin Day `5` - Doesn't He Have Intern-Elves For This?
+
+> From Advent of Code 2015, [*Day 5*](https://adventofcode.com/2015/day/5)
+
+
+```fortran
+sszojmmrrkwuftyv
+isaljhemltsdzlum
+fujcyucsrxgatisb
+qiqqlmcgnhzparyg
+oijbmduquhfactbc
+```
+
+
 
 ### Model
 
@@ -12,13 +25,13 @@ val matches1: Matcher = {
 }
 ```
 
-We look for a way to check whether a string is a match.
+We use regular expression to find out if we get a nice string.
 
->  Regular expression was introduced in [Day 2](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc), and proved to be one effective way to extract pattern information out of a text. 
+>  Regular expression was introduced in [Day 2](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc), and proved to be one of effective ways to extract pattern information out of a text. 
 
 ### Part 1
 
-Given list of strings, count the nice ones following some pattern.
+Given list of strings, count the right ones following a pattern.
 
 ```kotlin
 fun part(list: List<String>, m: Matcher) = list.
@@ -42,6 +55,8 @@ val matches2: Matcher = {
 
 fun part2(list: List<String>) = part(list, matches2)
 ```
+
+> Please checkout [Day 2- Part 2](https://medium.com/@windmaomao/kotlin-day-2-i-was-told-there-would-be-no-math-ec0f9e1064cc) for more example of swapping a method.
 
 ### Highlights
 
