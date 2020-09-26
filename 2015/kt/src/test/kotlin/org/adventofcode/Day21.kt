@@ -34,13 +34,28 @@ class Day21 {
   )
 
   val rings = listOf(
-    Item("NN", 0, 0, 0),
-    Item("W1", 25, 1, 0),
-    Item("W2", 50, 2, 0),
-    Item("W3", 100, 3, 0),
-    Item("A1", 20, 0, 1),
-    Item("A2", 40, 0, 2),
-    Item("A3", 80, 0, 3)
+    Item("NNNN", 0, 0, 0),
+    Item("W1NN", 25, 1, 0),
+    Item("W2NN", 50, 2, 0),
+    Item("W3NN", 100, 3, 0),
+    Item("A1NN", 20, 0, 1),
+    Item("A2NN", 40, 0, 2),
+    Item("A3NN", 80, 0, 3),
+    Item("W1W2", 75, 3, 0),
+    Item("W1W3", 125, 4, 0),
+    Item("W1A1", 45, 1, 1),
+    Item("W1A2", 65, 1, 2),
+    Item("W1A3", 105, 1, 3),
+    Item("W2W3", 125, 4, 0),
+    Item("W2A1", 70, 2, 1),
+    Item("W2A2", 90, 2, 2),
+    Item("W2A3", 130, 2, 3),
+    Item("W3A1", 120, 3, 1),
+    Item("W3A2", 140, 3, 2),
+    Item("W3A3", 180, 3, 3),
+    Item("A1A2", 60, 0, 3),
+    Item("A1A3", 100, 0, 4),
+    Item("A2A3", 120, 0, 5)
   )
 
   fun getProfiles(): List<Profile> {
@@ -72,7 +87,7 @@ class Day21 {
     }
   }
 
-  fun part1(): Item? {
+  fun part1(): Int {
     val profiles = getProfiles()
     val boss = Item("Boss", 0, 8, 1)
     val bossMaxHp = 104
@@ -82,7 +97,19 @@ class Day21 {
       .filter { fight(it, meMaxHp, boss, bossMaxHp) }
       .minBy { it.cost }
 
-    return s
+    return s?.cost ?: 0
   }
 
+  fun part2(): Int {
+    val profiles = getProfiles()
+    val boss = Item("Boss", 0, 8, 1)
+    val bossMaxHp = 104
+    val meMaxHp = 100
+    val s = profiles
+      .map { it.toItem() }
+      .filter { !fight(it, meMaxHp, boss, bossMaxHp) }
+      .maxBy { it.cost }
+
+    return s?.cost ?: 0
+  }
 }

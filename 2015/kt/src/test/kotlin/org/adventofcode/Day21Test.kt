@@ -20,7 +20,12 @@ class Day21Test {
 
   @Test
   fun day21Part1() {
-    assertEquals(0, d.part1())
+    assertEquals(78, d.part1())
+  }
+
+  @Test
+  fun day21Part2() {
+    assertEquals(148, d.part2())
   }
 
 }
