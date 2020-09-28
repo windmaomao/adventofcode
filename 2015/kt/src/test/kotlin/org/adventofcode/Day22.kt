@@ -21,12 +21,14 @@ data class Battle(
   var recharge = 0
   var spent = 0
 
+  // effect turn
   fun effect() {
     if (shield > 0) { shield-- } else { armor = 0 }
     if (poison > 0) { poison--; bossHp -= 3 }
     if (recharge > 0) { recharge--; mana += 101 }
   }
 
+  // player turn
   fun player(spell: Int) {
     val cost = costs[spell]
     spent += cost
@@ -41,14 +43,67 @@ data class Battle(
     }
   }
 
+  // boss turn
   fun boss() {
     val damage = bossDamage - armor
     hp -= if (damage > 1) damage else 1
   }
+
+  fun round(spell: Int) {
+    effect()
+    player(spell)
+    effect()
+    boss()
+  }
+
+  fun canCast(spell: Int): Boolean {
+    val cost = costs[spell]
+    if (cost > mana) return false
+    when (spell) {
+      2 -> { return shield == 0 }
+      3 -> { return poison == 0 }
+      4 -> { return recharge == 0 }
+    }
+    return true
+  }
+
 }
 
 
-class Day22 {
+class Day22() {
 
+  fun part(
+    maxHp: Int, maxMana: Int,
+    bossMaxHp: Int, bossDamage: Int,
+    minSpent: Int
+  ): Int {
+    val b = Battle(maxHp, maxMana, bossMaxHp, bossDamage)
+    while (b.bossHp > 0) {
+      if (b.spent > minSpent) return minSpent
+      val spells = (0..4).filter { b.canCast(it) }
+      if (spells.size < 1) return minSpent
+      b.round(spells.random())
+      if (b.bossHp > 0 && b.hp < 1) return minSpent
+    }
+    return b.spent
+  }
 
+  @OptIn(ExperimentalStdlibApi::class)
+  fun part1(
+    maxHp: Int, maxMana: Int,
+    bossMaxHp: Int, bossDamage: Int
+  ): Int {
+    var minSpent = 100000
+    (0..1000000)
+      .forEach {
+        minSpent = part(
+          maxHp, maxMana, bossMaxHp, bossDamage,
+          minSpent
+        )
+      }
+    return minSpent
+//      .scan(100000) { acc: Int, i: Int ->
+//        part(maxHp, maxMana, bossMaxHp, bossDamage, acc)
+//      }
+  }
 }

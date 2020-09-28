@@ -41,6 +41,14 @@ class Day22Test {
   }
 
   @Test
+  fun day22BattleRound1() {
+    val b = Battle(10, 250, 13, 8)
+    b.round(3)
+    b.round(0)
+    assertEquals(0, b.bossHp)
+  }
+
+  @Test
   fun day22Battle2() {
     val b = Battle(10, 250, 14, 8)
     // Player turn
@@ -127,4 +135,24 @@ class Day22Test {
     // End
     assertEquals(-1, b.bossHp)
   }
+
+  @Test
+  fun day22BattleRound2() {
+    val b = Battle(10, 250, 14, 8)
+    b.round(4)
+    b.round(2)
+    b.round(1)
+    b.round(3)
+    b.round(0)
+    assertEquals(-1, b.bossHp)
+  }
+
+  @Test
+  fun day22Part1() {
+    assertEquals(
+      900,
+      d.part1(50, 500, 51, 9)
+    )
+  }
+
 }

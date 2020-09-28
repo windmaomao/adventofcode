@@ -1,6 +1,8 @@
 ## Kotlin Day `0` - From Dusk to Dawn
 
-> From Advent of Code [*2015*](https://adventofcode.com/2015). `Kotlin` is used for this adventure.
+![](https://miro.medium.com/max/1400/1*Aa1rE57N8hbNHMnfOVQyCQ.jpeg)
+
+> From Advent of Code [*2015*](https://adventofcode.com/2015). 
 
 
 
