@@ -16,23 +16,22 @@ data class Registry(
     var i = 0
     while (i >= 0 && i < list.size) {
       val ins = list[i]
+      val p = ins.pos
       when (ins.name) {
-        "hlf" -> { vars[ins.pos] /= 2; i++ }
-        "tpl" -> { vars[ins.pos] *= 3; i++ }
-        "inc" -> { vars[ins.pos] += 1; i++ }
+        "hlf" -> { vars[p] /= 2; i++ }
+        "tpl" -> { vars[p] *= 3; i++ }
+        "inc" -> { vars[p] += 1; i++ }
         "jmp" -> { i+= ins.rel }
         "jie" -> {
-          if (vars[ins.pos].rem(2) == 0) {
-            i += ins.rel
-          } else {
-            i++
+          when (vars[p].rem(2)) {
+            0 -> i += ins.rel
+            else -> i++
           }
         }
         "jio" -> {
-          if (vars[ins.pos] == 1) {
-            i += ins.rel
-          } else {
-            i++
+          when (vars[p]) {
+            1 -> i += ins.rel
+            else -> i++
           }
         }
         else -> {}

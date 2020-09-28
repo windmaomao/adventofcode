@@ -40,7 +40,7 @@ class Day23Test {
 
   @Test
   fun day23Part2() {
-    assertEquals(184, d.part2(instructions))
+    assertEquals(231, d.part2(instructions))
   }
 
 }
