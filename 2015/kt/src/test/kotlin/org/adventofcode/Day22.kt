@@ -51,14 +51,8 @@ data class Battle(
     hp -= if (damage > 1) damage else 1
   }
 
-  fun round(spell: Int) {
-    effect()
-    player(spell)
-    effect()
-    boss()
-  }
-
   fun canCast(spell: Int): Boolean {
+    if (hp < 1) return false
     val cost = costs[spell]
     if (cost > mana) return false
     when (spell) {
@@ -80,18 +74,24 @@ data class Day22(
   fun battleSpent(minSpent: Int, hard: Boolean): Int {
     val b = Battle(maxHp, maxMana, bossMaxHp, bossDamage)
     if (hard) b.hp--
-    while (b.bossHp > 0) {
+    while (b.hp > 0) {
       if (b.spent > minSpent) return minSpent
+
+      b.effect()
       val spells = (0..4).filter { b.canCast(it) }
-      b.round(if (spells.size > 0) spells.random() else -1)
+      if (spells.size < 1) return minSpent
+      b.player(spells.random())
+
+      b.effect()
+      if (b.bossHp < 1) return b.spent
+      b.boss()
       if (hard) b.hp--
-      if (b.bossHp > 0 && b.hp < 1) return minSpent
     }
-    return b.spent
+    return minSpent
   }
 
   @OptIn(ExperimentalStdlibApi::class)
-  fun part(hard: Boolean) = (0..100000)
+  fun part(hard: Boolean) = (0..1000000)
     .scan(100000) { acc, _ -> battleSpent(acc, hard) }
     .last()
 
