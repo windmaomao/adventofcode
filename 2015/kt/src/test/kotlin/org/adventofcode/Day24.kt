@@ -28,8 +28,8 @@ class Day24 {
     .map { it.toLong() }
     .fold(1L) { acc, v -> acc * v }
 
-  fun part(coins: List<Int>): Long {
-    val weight = coins.sum() / 3
+  fun part(coins: List<Int>, n: Int): Long {
+    val weight = coins.sum() / n
     val combos = coinChange(coins, weight).toList()
 
     val minSize = combos.map { it.size }.min() ?: 0
@@ -38,4 +38,7 @@ class Day24 {
       .map { multiple(it) }
       .min() ?: 0
   }
+
+  fun part1(coins: List<Int>) = part(coins, 3)
+  fun part2(coins: List<Int>) = part(coins, 4)
 }
