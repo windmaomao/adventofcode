@@ -30,13 +30,15 @@ data class Battle(
 
   // player turn
   fun player(spell: Int) {
+    if (spell < 0) return
+
     val cost = costs[spell]
     spent += cost
     mana -= cost
     when (spell) {
       0 -> { bossHp -= 4 }
       1 -> { bossHp -= 2; hp += 2 }
-      2 -> { armor += 7; shield = 6 }
+      2 -> { armor = 7; shield = 6 }
       3 -> { poison = 6 }
       4 -> { recharge = 5 }
       else -> {}
@@ -70,40 +72,30 @@ data class Battle(
 }
 
 
-class Day22() {
+data class Day22(
+  val maxHp: Int, val maxMana: Int,
+  val bossMaxHp: Int, val bossDamage: Int
+) {
 
-  fun part(
-    maxHp: Int, maxMana: Int,
-    bossMaxHp: Int, bossDamage: Int,
-    minSpent: Int
-  ): Int {
+  fun battleSpent(minSpent: Int, hard: Boolean): Int {
     val b = Battle(maxHp, maxMana, bossMaxHp, bossDamage)
+    if (hard) b.hp--
     while (b.bossHp > 0) {
       if (b.spent > minSpent) return minSpent
       val spells = (0..4).filter { b.canCast(it) }
-      if (spells.size < 1) return minSpent
-      b.round(spells.random())
+      b.round(if (spells.size > 0) spells.random() else -1)
+      if (hard) b.hp--
       if (b.bossHp > 0 && b.hp < 1) return minSpent
     }
     return b.spent
   }
 
   @OptIn(ExperimentalStdlibApi::class)
-  fun part1(
-    maxHp: Int, maxMana: Int,
-    bossMaxHp: Int, bossDamage: Int
-  ): Int {
-    var minSpent = 100000
-    (0..1000000)
-      .forEach {
-        minSpent = part(
-          maxHp, maxMana, bossMaxHp, bossDamage,
-          minSpent
-        )
-      }
-    return minSpent
-//      .scan(100000) { acc: Int, i: Int ->
-//        part(maxHp, maxMana, bossMaxHp, bossDamage, acc)
-//      }
-  }
+  fun part(hard: Boolean) = (0..100000)
+    .scan(100000) { acc, _ -> battleSpent(acc, hard) }
+    .last()
+
+  fun part1() = part(false)
+  fun part2() = part(true)
+
 }

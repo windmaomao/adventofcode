@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class Day22Test {
-  private val d: Day22 = Day22()
+  private val d: Day22 = Day22(50, 500, 51, 9)
 
   @Test
   fun day22Battle1() {
@@ -149,10 +149,12 @@ class Day22Test {
 
   @Test
   fun day22Part1() {
-    assertEquals(
-      900,
-      d.part1(50, 500, 51, 9)
-    )
+    assertEquals(900, d.part1())
+  }
+
+  @Test
+  fun day22Part2() {
+    assertEquals(1216, d.part2())
   }
 
 }
