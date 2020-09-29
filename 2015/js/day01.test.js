@@ -1,4 +1,4 @@
-import { floor, part1 } from './day01'
+import { floor, part1, part2 } from './day01'
 import read from './read'
 
 const extractOps = strs => strs.split('').map(floor)
@@ -20,6 +20,10 @@ describe('2015 Day 01', () => {
 
   it('part1', () => {
     expect(part1(ops)).toEqual(280)
+  })
+
+  it('part2', () => {
+    expect(part2(ops)).toEqual(1797)
   })
 
 })
