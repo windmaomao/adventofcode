@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
+    "lazy.js": "^0.5.1",
     "lodash": "^4.17.15",
     "md5": "^2.2.1",
     "prompt-sync": "^4.2.0",
