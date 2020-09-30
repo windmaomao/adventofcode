@@ -3,9 +3,10 @@ require_relative "Day01"
 
 class Day01Test < Test::Unit::TestCase
   def setup
+    floor = ->(c) { c == '(' ? 1 : -1 }
     @ops = open("../res/01.input")
       .each_line().to_a[0]
-      .chars.map {|x| floor(x)}
+      .chars.map(&floor)
   end
 
   def test_part1
