@@ -1,4 +1,4 @@
-import { paperSize, bowSize, part1 } from './day02'
+import { paperSize, bowSize, part1, part2 } from './day02'
 import read from './read'
 
 const extractBox = str => str.split('x').map(v => parseInt(v))
@@ -21,8 +21,8 @@ describe('2015 Day 02', () => {
     expect(bowSize([1, 1, 10])).toEqual(14)
   })
 
-  it('part1', () => {
-    expect(part1(boxes)).toEqual(3783758)
+  it('part2', () => {
+    expect(part2(boxes)).toEqual(3783758)
   })
 
 })
