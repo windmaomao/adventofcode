@@ -78,3 +78,11 @@ function scan(array, fn, seed, thisArg) {
 Array.prototype.scan = function (fn, seed) {
   return scan(this, fn, seed)
 }
+
+Array.prototype.flatMap = function (fn) {
+  return _.flatMap(this, fn)
+}
+
+Array.prototype.apply = function (fn) {
+  return fn(this)
+}
