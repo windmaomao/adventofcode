@@ -51,7 +51,7 @@ Array.prototype.remove = function () {
   return this;
 }
 
-// Scan
+// https://github.com/lodash/lodash/issues/1684
 function scan(array, fn, seed, thisArg) {
   if (thisArg) fn = fn.bind(thisArg);
   var size = array.length,

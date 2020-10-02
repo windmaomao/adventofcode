@@ -1,4 +1,3 @@
-import _ from 'lazy.js'
 import './array'
 
 const floor = s => s === '(' ? 1 : -1
