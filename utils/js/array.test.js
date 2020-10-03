@@ -3,7 +3,7 @@ import './array'
 describe('array', () => {
 
   it('range', () => {
-    const arr = [1, 2].range()
+    const arr = Array.range(1, 2)
     expect(arr.length).toEqual(1)
   })
 

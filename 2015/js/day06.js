@@ -12,11 +12,9 @@ const N2 = N * N
 
 const toggleLights = toggleFn => (lights, op) => {
   const [l, t, r, b] = op.box
-  const arrY = [t, b+1].range()
-  arrY.forEach(y => {
+  Array.range(t, b+1).forEach(y => {
     const row = y * N
-    const arrX = [l, r + 1].range()
-    arrX.forEach(x => {
+    Array.range(l, r + 1).forEach(x => {
       const p = row + x
       lights[p] = toggleFn(lights[p], op.type)
     })

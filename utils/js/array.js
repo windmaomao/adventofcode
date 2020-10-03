@@ -5,6 +5,11 @@ Array.new = function (n, v) {
   return new Array(n).fill(v)
 }
 
+// Range
+Array.range = function (start, end) {
+  return _.range(start, end)
+}
+
 // Transform
 Array.prototype.transform = function (iter, acc) {
   return _.transform(this, iter, acc)
