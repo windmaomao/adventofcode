@@ -35,7 +35,8 @@ Array.prototype.takeWhile = function (predicate) {
 }
 
 // Range
-Array.prototype.range = function (start, end, step) {
+Array.prototype.range = function () {
+  const [start, end, step] = this
   return _.range(start, end, step)
 }
 
