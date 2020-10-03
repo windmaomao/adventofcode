@@ -116,3 +116,8 @@ Array.prototype.chunkMod = function (n) {
     .filter((_, j) => j % n == i)
   )
 }
+
+// [true, false] => 0 or 1
+Array.prototype.when = function (b) {
+  return b ? this[0] : this[1]
+}

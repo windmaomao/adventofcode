@@ -1,7 +1,8 @@
 import '../../utils/js/array'
 import '../../utils/js/math'
 
-const floor = s => s == '(' ? 1 : -1
+const symbols = [1, -1]
+const floor = s => symbols.when(s == '(')
 
 const part1 = ops => ops.sum()
 
