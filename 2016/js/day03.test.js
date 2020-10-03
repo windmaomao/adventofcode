@@ -1,4 +1,4 @@
-import { possible, part1 } from './day03'
+import { possible, part1, part2 } from './day03'
 import './string'
 import read from './read'
 
@@ -16,6 +16,10 @@ describe('2016 Day 03', () => {
 
   it('part1', () => {
     expect(part1(list)).toEqual(993)
+  })
+
+  it('part2', () => {
+    expect(part2(list)).toEqual(1849)
   })
 
 

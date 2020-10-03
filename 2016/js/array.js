@@ -99,3 +99,7 @@ Array.prototype.count = function (fn) {
   if (typeof fn === 'function') return this.filter(fn).length
   return this.filter(v => v === fn).length
 }
+
+Array.prototype.chunk = function (n) {
+  return _.chunk(this, n)
+}
