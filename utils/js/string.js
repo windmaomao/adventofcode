@@ -18,3 +18,7 @@ String.prototype.scan = function (re) {
   return scan(this, re)
 }
 
+String.prototype.extractNumbers = function(includeNegative = false) {
+  const regex = /\d+/g
+  return this.match(regex).map(Number)
+}
