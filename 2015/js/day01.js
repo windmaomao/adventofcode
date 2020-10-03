@@ -2,7 +2,7 @@ import '../../utils/js/array'
 import '../../utils/js/math'
 
 const symbols = [1, -1]
-const floor = s => symbols.when(s == '(')
+const floor = s => symbols.pickWhen(s == '(')
 
 const part1 = ops => ops.sum()
 

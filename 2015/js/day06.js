@@ -21,12 +21,13 @@ const toggleLights = toggleFn => (lights, op) => {
   return lights
 }
 
-const toggle = (v, type) => ((type > 1) ? 1 - v : type)
+const toggle = (v, type) => [1 - v, type].pickWhen(type > 1)
 const part1 = ops => ops
   .reduce(toggleLights(toggle), Array.new(N*N, 0))
   .count(1)
 
-const bright = (v, type) => ((type == 0) ? Math.max(0, v - 1) : v + type)
+const bright = (v, type) => [Math.max(0, v - 1), v + type]
+  .pickWhen(type === 0)
 const part2 = ops => ops
   .reduce(toggleLights(bright), Array.new(N*N, 0))
   .sum()

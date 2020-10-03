@@ -118,6 +118,6 @@ Array.prototype.chunkMod = function (n) {
 }
 
 // [true, false] => 0 or 1
-Array.prototype.when = function (b) {
+Array.prototype.pickWhen = function (b) {
   return b ? this[0] : this[1]
 }
