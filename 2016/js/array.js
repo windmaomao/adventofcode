@@ -86,3 +86,16 @@ Array.prototype.flatMap = function (fn) {
 Array.prototype.apply = function (fn) {
   return fn(this)
 }
+
+Array.prototype.max = function () {
+  return Math.max(...this)
+}
+
+Array.prototype.min = function () {
+  return Math.min(...this)
+}
+
+Array.prototype.count = function (fn) {
+  if (typeof fn === 'function') return this.filter(fn).length
+  return this.filter(v => v === fn).length
+}
