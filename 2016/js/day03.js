@@ -1,25 +1,28 @@
-import './array'
+import '../../utils/js/array'
 
 const possible = arr => {
   const m = arr.max()
   return arr.sum() - m > m
 }
 
-const part1 = listOfArr => listOfArr
+const totoalPossible = arr => arr
   .map(possible)
   .count(true)
 
+const part1 = listOfArr => listOfArr
+  .apply(totoalPossible)
+
+// A)
+// const part2 = listOfArr => listOfArr
+//   .chunk(3) // [[1,2,3], [1,2,3], [1,2,3]]
+//   .flatMap(a => [].range(3).map(i => []
+//     .range(3).map(j => a[j][i]
+//   )))
+// B)
 const part2 = listOfArr => listOfArr
-  .chunk(3) // [[1,2,3], [1,2,3], [1,2,3]]
-  .flatMap(a => [].range(3).map(i => []
-    .range(3).map(j => a[j][i]
-  )))
-  // .flatMap(a => ([
-  //   [a[0][0], a[1][0], a[2][0]],
-  //   [a[0][1], a[1][1], a[2][1]],
-  //   [a[0][2], a[1][2], a[2][2]],
-  // ]))
-  .map(possible)
-  .count(true)
+  .flatMap(v => v)
+  .chunkMod(3)  // vertical strip
+  .flatMap(arr => arr.chunk(3))
+  .apply(totoalPossible)
 
 export { possible, part1, part2 }
