@@ -1,4 +1,4 @@
-import './sequence'
+import '../../utils/js/sequence'
 const md5 = require('md5')
 
 const md5Match = (base, n) => {
