@@ -1,4 +1,4 @@
-import { nextDirId, nextDirPos, part1, part2 } from './day01b'
+import { nextDirId, nextDirPos, part1, part2 } from './day01'
 import read from './read'
 
 const extractIns = strs => strs.split(', ')

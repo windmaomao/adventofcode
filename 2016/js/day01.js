@@ -1,56 +1,58 @@
+import './number'
 import './array'
 
-const N = 1000
-const dirs = [N, 1, -N, -1]
-
-const PosDir = (pos, dir) => ({
-  pos, dir,
-  blocks: () => Math.abs(Math.round(pos / N)) + Math.abs(pos % N)
-})
-
-const nextPos = (posDir, ins) => {
-  const { pos, dir } = posDir
-  let dirNew = dir
-  switch(ins[0]) {
-    case 'R': dirNew += 1; break;
-    case 'L': dirNew -= 1; break;
+const nextDirId = (dirId, c) => {
+  let dn = dirId
+  switch(c) {
+    case 'R': dn++; break;
+    case 'L': dn--; break;
   }
-  if (dirNew > 3) dirNew -= 4
-  if (dirNew < 0) dirNew += 4
-
-  return PosDir(
-    pos + dirs[dirNew] * parseInt(ins.slice(1)),
-    dirNew,
-  )
+  return dn.mod(4)
 }
 
-const calcBlocks = posDir => {
-  const p = posDir.pos
-  return Math.abs(Math.round(p / N)) + Math.abs(p % N)
+const nextDirPos = (pos, dirId) => {
+  let pos2 = [...pos]
+  switch(dirId) {
+    case 0: pos2[1]++; break;
+    case 1: pos2[0]++; break;
+    case 2: pos2[1]--; break;
+    case 3: pos2[0]--; break;
+  }
+  return pos2
+}
+
+const allSteps = list => list.flatMap(ins => {
+  const size = parseInt(ins.slice(1))
+  if (size == 1) return [ins[0]]
+  return [ins[0], ...Array.new(size - 1, ' ')]
+})
+
+const nextStep = (acc, c) => {
+  const dirId = nextDirId(acc.dirId, c)
+  const pos = nextDirPos(acc.pos, dirId)
+  return { dirId, pos }
 }
 
 const part1 = list => list
-  .reduce(nextPos, PosDir(0, 0))
-  .blocks()
+  .apply(allSteps)
+  .reduce(nextStep, { dirId: 0, pos: [0, 0] })
+  .pos.sum(Math.abs)
 
-const part2 = list => {
-  const items = list.flatMap(ins => {
-    const size = parseInt(ins.slice(1))
-    if (size == 1) return [ins]
-    return [
-      ins[0] + '1',
-      ...Array.new(size - 1, 1).map(i => ` ${i}`)
-    ]
-  }).scan(nextPos, PosDir(0, 0))
-
+const secondPos = poses => {
   const visited = {}
-  for (const item of items) {
-    if (visited[`${item.pos}`]) {
-      return item.blocks()
-    } else {
-      visited[`${item.pos}`] = true
-    }
+  for (const p of poses) {
+    const k = `${p[0]}x${p[1]}`
+    if (visited[k]) return p
+    visited[k] = true
   }
+  return [0, 0]
 }
 
-export { part1, part2 }
+const part2 = list => list
+  .apply(allSteps)
+  .scan(nextStep, { dirId: 0, pos: [0, 0] })
+  .map(v => v.pos)
+  .apply(secondPos)
+  .sum(Math.abs)
+
+export { nextDirId, nextDirPos, part1, part2 }
