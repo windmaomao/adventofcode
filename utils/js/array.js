@@ -103,3 +103,10 @@ Array.prototype.count = function (fn) {
 Array.prototype.chunk = function (n) {
   return _.chunk(this, n)
 }
+
+// [0, 1, 2, 3] => [0, 2], [1, 3]
+Array.prototype.chunkMod = function (n) {
+  return _.range(n).map(i => this
+    .filter((_, j) => j % n == i)
+  )
+}

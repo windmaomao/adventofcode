@@ -16,12 +16,9 @@ const part1 = dirs => dirs
   .apply(batch)
   .apply(uniqSize)
 
-const modFilter = v => (_, i) => i % 2 === v
-const part2 = dirs => [0, 1]
-  .flatMap(v => dirs
-    .filter(modFilter(v))
-    .apply(batch)
-  )
+const part2 = dirs => dirs
+  .chunkMod(2)
+  .flatMap(batch)
   .apply(uniqSize)
 
 export { dirs, part1, part2 }
