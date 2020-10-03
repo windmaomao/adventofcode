@@ -8,9 +8,11 @@ const dirs = {
 
 const batch = dirs => dirs
   .scan(Math.plusN, [0,0])
-const posKey = p => `${p[0]}x${p[1]}`
 
-const uniqSize = dirs => dirs.uniqBy(posKey).length
+const posKey = p => `${p[0]}x${p[1]}`
+const uniqSize = dirs => dirs
+  .uniqBy(posKey)
+  .length
 
 const part1 = dirs => dirs
   .apply(batch)
