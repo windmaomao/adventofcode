@@ -1,13 +1,13 @@
-import './array'
+import '../../utils/js/array'
+import '../../utils/js/math'
 
 const dirs = {
   '^': [0, 1], 'v': [0, -1],
   '<': [-1, 0], '>': [1, 0]
 }
 
-const batch = dirs => dirs.scan((a, d) => (
-  [a[0] + d[0], a[1] + d[1]]
-), [0, 0])
+const batch = dirs => dirs
+  .scan(Math.plusN, [0,0])
 const posKey = p => `${p[0]}x${p[1]}`
 
 const uniqSize = dirs => dirs.uniqBy(posKey).length
