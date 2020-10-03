@@ -21,7 +21,8 @@ const toggleLights = toggleFn => (lights, op) => {
   return lights
 }
 
-const toggle = (v, type) => [1 - v, type].pickWhen(type > 1)
+const toggle = (v, type) => [1 - v, type]
+  .pickWhen(type > 1)
 const part1 = ops => ops
   .reduce(toggleLights(toggle), Array.new(N*N, 0))
   .count(1)
