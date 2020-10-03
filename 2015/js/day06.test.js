@@ -5,9 +5,9 @@ describe('2015 Day 06', () => {
 
   const ops = read('06').map(extractOp)
 // console.log(ops)
-  // it('part1', () => {
-  //   expect(part1(ops)).toEqual(0)
-  // })
+  it('part1', () => {
+    expect(part1(ops)).toEqual(543903)
+  })
 
 
 })

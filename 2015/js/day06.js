@@ -4,17 +4,19 @@ import '../../utils/js/array'
 const flags = ['f', 'n', ' ']
 const extractOp = str => ({
   type: flags.indexOf(str[6]),
-  range: str.extractNumbers()
+  box: str.extractNumbers()
 })
 
 const N = 1000
 const N2 = N * N
 
 const toggleLights = toggleFn => (lights, op) => {
-  const [l, t, r, b] = op.range
-  range(t, b + 1).forEach(y => {
+  const [l, t, r, b] = op.box
+  const arrY = [t, b+1].range()
+  arrY.forEach(y => {
     const row = y * N
-    range(l, r + 1).forEach(x => {
+    const arrX = [l, r + 1].range()
+    arrX.forEach(x => {
       const p = row + x
       lights[p] = toggleFn(lights[p], op.type)
     })
@@ -22,10 +24,10 @@ const toggleLights = toggleFn => (lights, op) => {
   return lights
 }
 
-const toggle = (v, op) => ((op > 1) ? 1 - v : op)
+const toggle = (v, type) => ((type > 1) ? 1 - v : type)
 const part1 = ops => ops
   .reduce(toggleLights(toggle), Array.new(N2, 0))
-  .count(true)
+  .count(1)
 
 export { extractOp, part1 }
 
