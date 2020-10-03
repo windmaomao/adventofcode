@@ -1,4 +1,4 @@
-import './array'
+import '../../utils/js/array'
 import '../../utils/js/math'
 
 const floor = s => s == '(' ? 1 : -1
