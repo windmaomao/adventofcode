@@ -13,7 +13,7 @@ const bowSize = ([l, w, h]) => {
 }
 
 const part = fn => boxes => boxes.map(fn).sum()
-const part1 = boxes => boxes.apply(part(paperSize))
-const part2 = boxes => boxes.apply(part(bowSize))
+const part1 = boxes => boxes.then(part(paperSize))
+const part2 = boxes => boxes.then(part(bowSize))
 
 export { paperSize, bowSize, part1, part2 }

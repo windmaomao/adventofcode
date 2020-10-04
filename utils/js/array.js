@@ -10,6 +10,11 @@ Array.range = function (start, end) {
   return _.range(start, end)
 }
 
+// Then
+Array.prototype.then = function (fn) {
+  return fn(this)
+}
+
 // Transform
 Array.prototype.transform = function (iter, acc) {
   return _.transform(this, iter, acc)
