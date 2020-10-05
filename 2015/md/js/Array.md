@@ -1,8 +1,8 @@
 # AoC 2015 Javascript
 
-## `Utility` -Array
+## Array Utility
 
-> From Advent of Code 2015, [*Day `1`*](https://adventofcode.com/2015/day/1)
+> For [*Advent of Code 2015*](https://adventofcode.com/2015)
 
 
 
@@ -19,7 +19,7 @@ Array.range(3)
 [4,5,6].chunk(2)
 ```
 
-When I am working for `aoc` competition, I find that I always need to write some utility function to simplify the workflow. This is especially true after I worked with `Ruby`, `Kotlin`, and I realize that the language does not matter too much for simple problems. What matters more is your way of understanding the problem thus drafting the workflow and writing functions.
+When I am working for `aoc` competition, I find that I always need to write some utility function for `Javascript` to simplify the workflow. This is especially true after I worked with `Ruby` and  `Kotlin`. And I realize that the language does not matter too much for simple problems. What matters more is your way of understanding the problem thus drafting the workflow and writing functions.
 
 ---
 
@@ -68,7 +68,7 @@ fn = v => 1
 [0,1].then(fn) -> 1
 ```
 
-This is a quick function which can be used to start/continue the chaining. It simply returns the invoked function result, similar in the `promise` handling.
+This is a quick function which can be used to start/continue the chaining. It simply returns the invoked function result, similar in the `promise` handling. Semantic wise, it fits perfectly into the workflow.
 
 #### Sum
 
@@ -138,7 +138,7 @@ Array.prototype.scan = function (fn, seed) {
 [1,2].scan(Math.plus, 0) -> [0,1,2]
 ```
 
-Scan is a new addition to functional programming community and it's not included by default. But I think it's a must-have, because it meets the gap between `map` and `reduce`. If you rely on any initial condition and need to go through each loop and care about each intermediate result, this is the only way to go. Scan returns the initial condition as the first element.
+Scan is a new addition to functional programming community and it's not included by default. But I think it's a must-have, because it meets the gap between `map` and `reduce`. If you rely on any initial condition and care about each intermediate result, this is the only way to go. Scan returns the initial condition as the first element.
 
 #### Flatmap
 
@@ -151,7 +151,7 @@ Array.prototype.flatMap = function (fn) {
 [0,1].flatmap(v => [1, 2]) -> [1,2,1,2]
 ```
 
-Flatmap is another very useful workflow operation. It will combine all the results of array and then flatten them to the one array. You can think of this as distribute work to other units and then gather them back. Very powerful indeed. 
+Flatmap is another very useful workflow operation. It combines all the results of array and then flatten them to the one array. You can think of it as distributing work to other units and then gathering them back. Very powerful indeed. 
 
 #### Rest
 

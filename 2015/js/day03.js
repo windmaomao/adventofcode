@@ -15,12 +15,12 @@ const uniqSize = dirs => dirs
   .length
 
 const part1 = dirs => dirs
-  .apply(batch)
-  .apply(uniqSize)
+  .then(batch)
+  .then(uniqSize)
 
 const part2 = dirs => dirs
   .chunkMod(2)
   .flatMap(batch)
-  .apply(uniqSize)
+  .then(uniqSize)
 
 export { dirs, part1, part2 }
