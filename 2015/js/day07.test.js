@@ -4,8 +4,18 @@ import read from './read'
 describe('2015 Day 07', () => {
 
   const eqns = read('07').map(extractEqn)
-  const maps = eqnMaps(eqns)
-  const deps = sortDeps(maps, 'a')
+  const eqnsMap = eqnMaps(eqns)
+  const mapDeps = sortDeps(eqnsMap, 'a')
+  const sampleEqnsMap = [
+    "123 -> x",
+    "456 -> y",
+    "x AND y -> d",
+    "x OR y -> e",
+    "x LSHIFT 2 -> f",
+    "y RSHIFT 2 -> g",
+    "NOT x -> h",
+    "NOT y -> i"
+  ].map(extractEqn).then(eqnMaps)
 
   it('part1 extractEqn', () => {
     expect(extractEqn('f -> y').name).toEqual('y')
@@ -15,21 +25,24 @@ describe('2015 Day 07', () => {
   })
 
   it('part1 sortDeps', () => {
-    const m = [
-      "123 -> x",
-      "456 -> y",
-      "x AND y -> d",
-      "x OR y -> e",
-      "x LSHIFT 2 -> f",
-      "y RSHIFT 2 -> g",
-      "NOT x -> h",
-      "NOT y -> i"
-    ].map(extractEqn).apply(eqnMaps)
-    expect(sortDeps(m, 'e')).toEqual(["x", "y", "e"])
+    expect(sortDeps(sampleEqnsMap, 'e'))
+      .toEqual(["x", "y", "e"])
   })
 
   it('part1 expr', () => {
-    const eqn = extractEqn('"123 -> x"')
-    expect(expr(eqn, {})).toEqual(123)
+    const vals = { x: 123, y: 456 }
+    expect(expr(sampleEqnsMap.x, vals)).toEqual(123)
+    expect(expr(sampleEqnsMap.y, vals)).toEqual(456)
+    expect(expr(sampleEqnsMap.d, vals)).toEqual(72)
+    expect(expr(sampleEqnsMap.e, vals)).toEqual(507)
+    expect(expr(sampleEqnsMap.f, vals)).toEqual(492)
+    expect(expr(sampleEqnsMap.g, vals)).toEqual(114)
+    expect(expr(sampleEqnsMap.h, vals)).toEqual(65412)
+    expect(expr(sampleEqnsMap.i, vals)).toEqual(65079)
   })
+
+  it('part1', () => {
+    expect(part1(eqnsMap, mapDeps)).toEqual({})
+  })
+
 })
