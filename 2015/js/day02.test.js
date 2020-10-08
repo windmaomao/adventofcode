@@ -1,7 +1,9 @@
 import { paperSize, bowSize, part1, part2 } from './day02'
 import read from './read'
 
-const extractBox = str => str.split('x').map(v => parseInt(v))
+const extractBox = str => str
+  .split('x')
+  .map(v => parseInt(v))
 
 describe('2015 Day 02', () => {
 
