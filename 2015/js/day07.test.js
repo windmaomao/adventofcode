@@ -1,4 +1,4 @@
-import { extractEqn, eqnMaps, sortDeps, part1 } from './day07'
+import { extractEqn, eqnMaps, sortDeps, expr, part1 } from './day07'
 import read from './read'
 
 describe('2015 Day 07', () => {
@@ -9,7 +9,7 @@ describe('2015 Day 07', () => {
 
   it('part1 extractEqn', () => {
     expect(extractEqn('f -> y').name).toEqual('y')
-    expect(extractEqn('12 -> x').nums).toEqual(['12'])
+    expect(extractEqn('12 -> x').nums).toEqual([12])
     expect(extractEqn('x X 2 -> f').ops).toEqual(['X'])
     expect(extractEqn('N 2 -> f').vars).toEqual([])
   })
@@ -28,8 +28,8 @@ describe('2015 Day 07', () => {
     expect(sortDeps(m, 'e')).toEqual(["x", "y", "e"])
   })
 
-  // it('part1', () => {
-  //   expect(part1(maps, deps)).toEqual(14687245)
-  // })
-
+  it('part1 expr', () => {
+    const eqn = extractEqn('"123 -> x"')
+    expect(expr(eqn, {})).toEqual(123)
+  })
 })

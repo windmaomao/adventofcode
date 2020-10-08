@@ -4,7 +4,7 @@ import '../../utils/js/number'
 
 const extractEqn = str => {
   const vars = str.scan(/[a-z]+/g)
-  const nums = str.scan(/\d+/g)
+  const nums = str.extractNumbers()
   const ops = str.scan(/[A-Z]+/g)
   const name = vars.pop()
   return { ops, vars, nums, name }
@@ -69,4 +69,4 @@ const calcEqns = (maps, deps) => {
 
 const part1 = (maps, deps) => calcEqns(maps, deps)
 
-export { extractEqn, eqnMaps, sortDeps, part1 }
+export { extractEqn, eqnMaps, sortDeps, expr, part1 }
