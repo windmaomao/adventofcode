@@ -3,11 +3,10 @@ import '../../utils/js/array'
 import '../../utils/js/number'
 
 const extractEqn = str => {
-  const vars = str.scan(/[a-z]+/g)
-  const nums = str.extractNumbers()
+  const vars = str.scan(/[a-z]+|\d+/g)
   const ops = str.scan(/[A-Z]+/g)
   const name = vars.pop()
-  return { ops, vars, nums, name }
+  return { ops, vars, name }
 }
 
 const eqnMaps = eqns => {
@@ -43,26 +42,28 @@ const sortDeps = (maps, root) => {
 
 const expr = (eqn, vals) => {
   const { ops, vars, nums } = eqn
-  const vs = vars.map(v => vals[v])
+  const vs = vars.map(v => vals[v] || parseInt(v))
   const res = (op) => {
     switch(op) {
       case 'AND': return vs[0] & vs[1]
       case 'OR': return vs[0] | vs[1]
-      case 'LSHIFT': return vs[0] << nums[0]
-      case 'RSHIFT': return vs[0] >> nums[0]
+      case 'LSHIFT': return vs[0] << vs[1]
+      case 'RSHIFT': return vs[0] >> vs[1]
       case 'NOT': return ~vs[0]
+      default: return vs[0]
     }
   }
-  if (ops.length) return res(ops[0]).mod(65536)
-  if (nums.length) return nums[0]
-  return vs[0]
+  const opm = ops.length ? ops[0] : ''
+  return res(opm).mod(65536)
 }
 
 const calcEqns = (maps, deps) => {
   const vals = {}
   deps.forEach(node => {
     const eqn = maps[node]
-    vals[eqn.name] = expr(eqn, vals)
+    if (eqn) {
+      vals[eqn.name] = expr(eqn, vals)
+    }
   })
   return vals
 }

@@ -19,14 +19,13 @@ describe('2015 Day 07', () => {
 
   it('part1 extractEqn', () => {
     expect(extractEqn('f -> y').name).toEqual('y')
-    expect(extractEqn('12 -> x').nums).toEqual([12])
-    expect(extractEqn('x X 2 -> f').ops).toEqual(['X'])
-    expect(extractEqn('N 2 -> f').vars).toEqual([])
+    expect(extractEqn('x X 2 -> f').vars).toEqual(['x', '2'])
+    expect(extractEqn('N 2 -> f').vars).toEqual(['2'])
   })
 
   it('part1 sortDeps', () => {
     expect(sortDeps(sampleEqnsMap, 'e'))
-      .toEqual(["x", "y", "e"])
+      .toEqual(["123", "456", "x", "y", "e"])
   })
 
   it('part1 expr', () => {
