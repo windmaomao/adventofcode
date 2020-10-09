@@ -61,7 +61,6 @@ const expr = (vals, eqn) => {
 }
 
 const part1 = (maps, deps) => deps
-  // .filter(d => !!maps[d])
   .compact(d => maps[d])
   .reduce(expr, {})
   ['a']
