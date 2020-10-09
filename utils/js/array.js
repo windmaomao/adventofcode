@@ -121,3 +121,8 @@ Array.prototype.chunkMod = function (n) {
     .filter((_, j) => j % n == i)
   )
 }
+
+Array.prototype.compact = function (fn) {
+  const arr = fn ? this.map(fn) : this
+  return _.compact(arr)
+}

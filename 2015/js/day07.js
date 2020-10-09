@@ -40,7 +40,7 @@ const sortDeps = (maps, root) => {
   return visited
 }
 
-const expr = (eqn, vals) => {
+const expr = (vals, eqn) => {
   const { ops, vars, nums } = eqn
   const vs = vars.map(v => vals[v] || parseInt(v))
   const res = (op) => {
@@ -54,16 +54,21 @@ const expr = (eqn, vals) => {
     }
   }
   const opm = ops.length ? ops[0] : ''
-  return res(opm).mod(65536)
+  return {
+    ...vals,
+    [eqn.name]: res(opm).mod(65536)
+  }
 }
 
 const part1 = (maps, deps) => deps
-  .filter(d => !!maps[d])
-  .map(d => maps[d])
-  .reduce((acc, e) => {
-    acc[e.name] = expr(e, acc)
-    return acc
-  }, {})
+  // .filter(d => !!maps[d])
+  .compact(d => maps[d])
+  .reduce(expr, {})
   ['a']
 
-export { extractEqn, eqnMaps, sortDeps, expr, part1 }
+const part2 = (maps, deps, b) => {
+  maps['b'].vars[0] = `${b}`
+  return part1(maps, deps)
+}
+
+export { extractEqn, eqnMaps, sortDeps, expr, part1, part2 }

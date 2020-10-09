@@ -1,4 +1,7 @@
-import { extractEqn, eqnMaps, sortDeps, expr, part1 } from './day07'
+import {
+  extractEqn, eqnMaps, sortDeps, expr,
+  part1, part2
+} from './day07'
 import read from './read'
 
 describe('2015 Day 07', () => {
@@ -30,18 +33,22 @@ describe('2015 Day 07', () => {
 
   it('part1 expr', () => {
     const vals = { x: 123, y: 456 }
-    expect(expr(sampleEqnsMap.x, vals)).toEqual(123)
-    expect(expr(sampleEqnsMap.y, vals)).toEqual(456)
-    expect(expr(sampleEqnsMap.d, vals)).toEqual(72)
-    expect(expr(sampleEqnsMap.e, vals)).toEqual(507)
-    expect(expr(sampleEqnsMap.f, vals)).toEqual(492)
-    expect(expr(sampleEqnsMap.g, vals)).toEqual(114)
-    expect(expr(sampleEqnsMap.h, vals)).toEqual(65412)
-    expect(expr(sampleEqnsMap.i, vals)).toEqual(65079)
+    expect(expr(vals, sampleEqnsMap.x).x).toEqual(123)
+    expect(expr(vals, sampleEqnsMap.y).y).toEqual(456)
+    expect(expr(vals, sampleEqnsMap.d).d).toEqual(72)
+    expect(expr(vals, sampleEqnsMap.e).e).toEqual(507)
+    expect(expr(vals, sampleEqnsMap.f).f).toEqual(492)
+    expect(expr(vals, sampleEqnsMap.g).g).toEqual(114)
+    expect(expr(vals, sampleEqnsMap.h).h).toEqual(65412)
+    expect(expr(vals, sampleEqnsMap.i).i).toEqual(65079)
   })
 
   it('part1', () => {
     expect(part1(eqnsMap, mapDeps)).toEqual(16076)
+  })
+
+  it('part2', () => {
+    expect(part2(eqnsMap, mapDeps, 16076)).toEqual(2797)
   })
 
 })
