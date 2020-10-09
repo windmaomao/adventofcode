@@ -41,7 +41,7 @@ describe('2015 Day 07', () => {
   })
 
   it('part1', () => {
-    expect(part1(eqnsMap, mapDeps)).toEqual({})
+    expect(part1(eqnsMap, mapDeps)).toEqual(16076)
   })
 
 })

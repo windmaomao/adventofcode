@@ -57,17 +57,13 @@ const expr = (eqn, vals) => {
   return res(opm).mod(65536)
 }
 
-const calcEqns = (maps, deps) => {
-  const vals = {}
-  deps.forEach(node => {
-    const eqn = maps[node]
-    if (eqn) {
-      vals[eqn.name] = expr(eqn, vals)
-    }
-  })
-  return vals
-}
-
-const part1 = (maps, deps) => calcEqns(maps, deps)
+const part1 = (maps, deps) => deps
+  .filter(d => !!maps[d])
+  .map(d => maps[d])
+  .reduce((acc, e) => {
+    acc[e.name] = expr(e, acc)
+    return acc
+  }, {})
+  ['a']
 
 export { extractEqn, eqnMaps, sortDeps, expr, part1 }
