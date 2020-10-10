@@ -16,6 +16,16 @@ const buildMap = strs => strs
 
 const permuteCities = locMap => {
 
+  const getWeight = (a, b) => {
+    const cs = locMap[a]
+    if (!cs) return -1
+
+    const w = cs[b]
+    if (!w) return -1
+
+    return w
+  }
+
   const cities = Object.keys(locMap)
   const permutes = []
   const paths = cities.map(v => [v])
@@ -23,11 +33,14 @@ const permuteCities = locMap => {
   while (paths.length) {
     const curPath = paths.pop()
 
-    const curPathLast = curPath[curPath.length - 1]
-    const nbs = locMap[curPathLast]
+    const lastCity = curPath[curPath.length - 1]
+    const nbs = locMap[lastCity]
     if (nbs) {
       Object.keys(nbs).forEach(city => {
-        if (curPath.indexOf(city) < 0) {
+        let cityAllowed = curPath.indexOf(city) < 0
+        const weight = getWeight(lastCity, city)
+
+        if (cityAllowed && (weight > 0)) {
           const nextPath = [...curPath, city]
           if (nextPath.length < cities.length) {
             paths.push(nextPath)
