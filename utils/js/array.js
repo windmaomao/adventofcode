@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import permute from './permute'
 
 // New
 Array.new = function (n, v) {
@@ -125,4 +126,8 @@ Array.prototype.chunkMod = function (n) {
 Array.prototype.compact = function (fn) {
   const arr = fn ? this.map(fn) : this
   return _.compact(arr)
+}
+
+Array.prototype.permute = function () {
+  return permute(this)
 }
