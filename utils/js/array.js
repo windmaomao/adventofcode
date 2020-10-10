@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import permute from './permute'
+import windowed from './windowed'
 
 // New
 Array.new = function (n, v) {
@@ -130,4 +131,8 @@ Array.prototype.compact = function (fn) {
 
 Array.prototype.permute = function () {
   return permute(this)
+}
+
+Array.prototype.windowed = function (size = 2) {
+  return windowed(this, size)
 }
