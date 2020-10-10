@@ -1,4 +1,4 @@
-import { buildMap, mapUtil, part1 } from './day09'
+import { buildMap, mapUtil, part1, part2 } from './day09'
 import read from './read'
 
 describe('2015 Day 09', () => {
@@ -34,6 +34,10 @@ describe('2015 Day 09', () => {
 
   it('part1', () => {
     expect(part1(cities)).toEqual(141)
+  })
+
+  it('part1', () => {
+    expect(part2(cities)).toEqual(736)
   })
 
 })
