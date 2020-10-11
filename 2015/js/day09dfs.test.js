@@ -15,9 +15,7 @@ describe('2015 Day 09', () => {
   })
 
   it('part1', () => {
-    // console.time('start')
     expect(part1(cities)).toEqual(141)
-    // console.timeEnd('start');
   })
 
   it('part2', () => {
