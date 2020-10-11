@@ -1,4 +1,4 @@
-import { buildMap, permuteCities, part1, part2 } from './day09fast'
+import { buildMap, permuteCities, part1, part2 } from './day09dfs'
 import read from './read'
 
 describe('2015 Day 09', () => {
@@ -15,7 +15,9 @@ describe('2015 Day 09', () => {
   })
 
   it('part1', () => {
+    // console.time('start')
     expect(part1(cities)).toEqual(141)
+    // console.timeEnd('start');
   })
 
   it('part2', () => {
