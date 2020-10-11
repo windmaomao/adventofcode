@@ -32,7 +32,7 @@ const permuteCities = locMap => {
   while (paths.length) {
     const curPath = paths.pop()
 
-    const lastCity = curPath[curPath.length - 1]
+    const lastCity = curPath.last()
     const nbs = locMap[lastCity]
     if (nbs) {
       Object.keys(nbs).forEach(city => {

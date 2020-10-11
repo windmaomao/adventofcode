@@ -136,3 +136,9 @@ Array.prototype.permute = function () {
 Array.prototype.windowed = function (size = 2) {
   return windowed(this, size)
 }
+
+Array.prototype.last = function () {
+  const size = this.length
+  if (size < 1) return null
+  return this[size - 1]
+}
