@@ -1,4 +1,4 @@
-import { buildMap, permuteCities } from './day09fast'
+import { buildMap, permuteCities, part1, part2 } from './day09fast'
 import read from './read'
 
 describe('2015 Day 09', () => {
@@ -8,10 +8,18 @@ describe('2015 Day 09', () => {
     "l to b = 518",
     "d to b = 141"
   ])
-  // const cities = buildMap(read('09'))
+  const cities = buildMap(read('09'))
 
-  it('part1 permuteCities', () => {
-    expect(permuteCities(sampleMap)).toEqual(null)
+  it('part1 example', () => {
+    expect(part1(sampleMap)).toEqual(605)
+  })
+
+  it('part1', () => {
+    expect(part1(cities)).toEqual(141)
+  })
+
+  it('part2', () => {
+    expect(part2(cities)).toEqual(736)
   })
 
 })

@@ -36,7 +36,7 @@ describe('2015 Day 09', () => {
     expect(part1(cities)).toEqual(141)
   })
 
-  it('part1', () => {
+  it('part2', () => {
     expect(part2(cities)).toEqual(736)
   })
 
