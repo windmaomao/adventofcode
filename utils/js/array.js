@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import permute from './permute'
+import permute from './permute2'
 import windowed from './windowed'
 
 // New
