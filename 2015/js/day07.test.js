@@ -28,7 +28,7 @@ describe('2015 Day 07', () => {
 
   it('part1 sortDeps', () => {
     expect(sortDeps(sampleEqnsMap, 'e'))
-      .toEqual(["123", "456", "x", "y", "e"])
+      .toEqual(["123", "x", "456", "y", "e"])
   })
 
   it('part1 expr', () => {
