@@ -37,7 +37,7 @@ const part2 = strs => strs
     .uniqBy(objKey)
   )
   .duplicate(objKey)
-  .map(ol => ol.map(o => o.i).sum())
+  .map(ol => ol.sum(o => o.i))
   .min()
 
 export { extractIns, part1, part2 }
