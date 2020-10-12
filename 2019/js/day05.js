@@ -36,12 +36,14 @@ const Intcode = (lines, inputs) => {
     return output
   }
 
+  const halted = () => {
+    if (i >= ops.length) return true
+    return (ops[i] == 99)
+  }
+
   const run = () => {
     let res = 0
-    while (i < ops.length
-      && (ops[i] != 99)
-      && (res == 0)
-    ) {
+    while (!halted() && (res == 0)) {
       res = step()
       outputs.push(res)
     }
@@ -53,7 +55,13 @@ const Intcode = (lines, inputs) => {
     return outputs.last()
   }
 
-  return { step, run, outputs, runOutput }
+  const runIO = ins => {
+    inputs.push(ins)
+    run()
+    return [outputs.last(), halted()]
+  }
+
+  return { step, run, outputs, runOutput, runIO }
 }
 
 export { Intcode }

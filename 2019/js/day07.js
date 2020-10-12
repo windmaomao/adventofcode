@@ -16,4 +16,12 @@ const part1 = ops => {
     .max()
 }
 
-export { Thruster, part1 }
+const part2 = ops => {
+  const sig = Thruster(ops).signal
+  return [5, 6, 7, 8, 9]
+    .permute()
+    .map(sig)
+    .max()
+}
+
+export { Intcode, Thruster, part1, part2 }
