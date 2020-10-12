@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import permute from './permute2'
 import windowed from './windowed'
+import duplicate from './duplicate'
 
 // New
 Array.new = function (n, v) {
@@ -141,4 +142,8 @@ Array.prototype.last = function () {
   const size = this.length
   if (size < 1) return null
   return this[size - 1]
+}
+
+Array.prototype.duplicate = function (keyBy) {
+  return duplicate(this, keyBy)
 }
