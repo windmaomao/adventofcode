@@ -1,3 +1,5 @@
+import '../../utils/js/array'
+
 const Intcode = (lines, inputs) => {
   const ops = lines.slice()
   const outputs = []
@@ -17,12 +19,17 @@ const Intcode = (lines, inputs) => {
 
     const _g = j => modes[j] ? ops[i + j] : ops[ops[i + j]]
     const _s = (j, v) => { ops[ops[i + j]] = v }
+    const _j = v => { i = v }
 
     switch (op) {
-      case 1: { _s(3, _g(1) + _g(2)); i += 4; break; }
-      case 2: { _s(3, _g(1) * _g(2)); i += 4; break; }
-      case 3: { _s(1, inputs.pop()); i += 2; break; }
-      case 4: { output = _g(1); i += 2; break; }
+      case 1: { _s(3, _g(1) + _g(2)); _j(i+4); break; }
+      case 2: { _s(3, _g(1) * _g(2)); _j(i+4); break; }
+      case 3: { _s(1, inputs.pop()); _j(i+2); break; }
+      case 4: { output = _g(1); _j(i+2); break; }
+      case 5: { if (_g(1) != 0) _j(_g(2)); else _j(i+3); break; }
+      case 6: { if (_g(1) == 0) _j(_g(2)); else _j(i+3); break; }
+      case 7: { _s(3, (_g(1) < _g(2)) ? 1 : 0); _j(i+4); break; }
+      case 8: { _s(3, (_g(1) == _g(2)) ? 1 : 0); _j(i+4); break; }
       default: { output = -100; }
     }
 
@@ -41,11 +48,12 @@ const Intcode = (lines, inputs) => {
     return ops
   }
 
-  return { step, run, outputs }
+  const runOutput = () => {
+    run()
+    return outputs.last()
+  }
+
+  return { step, run, outputs, runOutput }
 }
 
-const part1 = (ops) => {
-  return Intcode(ops).run()
-}
-
-export { Intcode, part1 }
+export { Intcode }
