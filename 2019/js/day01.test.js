@@ -1,8 +1,6 @@
 import { fuel, fuelR, part1, part2 } from './day01'
 import read from './read'
 
-// const extractOps = strs => strs.split('').map(floor)
-
 describe('2019 Day 01', () => {
 
   const nums = read('1').map(Number)
