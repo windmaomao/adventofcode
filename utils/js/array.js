@@ -147,3 +147,11 @@ Array.prototype.last = function () {
 Array.prototype.duplicate = function (keyBy) {
   return duplicate(this, keyBy)
 }
+
+Array.prototype.every = function (predicate) {
+  return _.every(this, predicate)
+}
+
+Array.prototype.some = function (predicate) {
+  return _.some(this, predicate)
+}
