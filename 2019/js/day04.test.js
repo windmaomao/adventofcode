@@ -1,4 +1,4 @@
-import { numValid, part1 } from './day04'
+import { numValid, numValid2, part1, part2 } from './day04'
 import read from './read'
 
 describe('2019 Day 04', () => {
@@ -13,6 +13,16 @@ describe('2019 Day 04', () => {
 
   it('part1', () => {
     expect(part1(range)).toEqual(495)
+  })
+
+  it('part2 numValid2', () => {
+    expect(numValid2(112233)).toEqual(true)
+    expect(numValid2(123444)).toEqual(false)
+    expect(numValid2(111122)).toEqual(true)
+  })
+
+  it('part2', () => {
+    expect(part2(range)).toEqual(305)
   })
 
 })
