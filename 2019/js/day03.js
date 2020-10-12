@@ -13,15 +13,31 @@ const dirs = {
   'L': [-1, 0], 'R': [1,  0]
 }
 
+const posKey = p => `${p[0]}x${p[1]}`
 const part1 = strs => strs
   .map(extractIns)
   .flatMap(ins => ins
     .map(i => dirs[i])
     .scan(Math.plusN, [0,0])
     .slice(1)
+    .uniqBy(posKey)
   )
-  .duplicate(p => `${p[0]}x${p[1]}`)
+  .duplicate(posKey)
   .map(p => p[0].sum(Math.abs))
   .min()
 
-export { extractIns, part1 }
+const objKey = o => `${o.p[0]}x${o.p[1]}`
+const part2 = strs => strs
+  .map(extractIns)
+  .flatMap(ins => ins
+    .map(i => dirs[i])
+    .scan(Math.plusN, [0,0])
+    .map((p, i) => ({ p, i }))
+    .slice(1)
+    .uniqBy(objKey)
+  )
+  .duplicate(objKey)
+  .map(ol => ol.map(o => o.i).sum())
+  .min()
+
+export { extractIns, part1, part2 }

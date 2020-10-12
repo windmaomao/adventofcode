@@ -1,4 +1,4 @@
-import { extractIns, part1 } from './day03'
+import { extractIns, part1, part2 } from './day03'
 import read from './read'
 
 describe('2019 Day 03', () => {
@@ -23,12 +23,22 @@ describe('2019 Day 03', () => {
 
   it('part1 example', () => {
     expect(part1(example0)).toEqual(6)
-    expect(part1(example1)).toEqual(157)
+    expect(part1(example1)).toEqual(159)
     expect(part1(example2)).toEqual(135)
   })
 
   it('part1', () => {
     expect(part1(list)).toEqual(266)
+  })
+
+  it('part2 example', () => {
+    expect(part2(example0)).toEqual(30)
+    expect(part2(example1)).toEqual(610)
+    expect(part2(example2)).toEqual(410)
+  })
+
+  it('part2', () => {
+    expect(part2(list)).toEqual(19242)
   })
 
 })
