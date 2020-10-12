@@ -24,8 +24,24 @@ const Intcode = lines => {
   return { step, run }
 }
 
-const part1 = ops => Intcode(ops)
-  .run()
-  [0]
+const part1 = (ops, noun, verb) => {
+  ops[1] = noun
+  ops[2] = verb
+  return Intcode(ops).run()[0]
+}
 
-export { Intcode, part1 }
+const part2 = (ops, m) => {
+  let noun = 0
+  let pv = 0
+  while (true) {
+    const v = part1(ops, noun, 0)
+    if (v > m) {
+      return (noun - 1) * 100 + m - pv
+    }
+    pv = v
+    noun++
+  }
+  return 0
+}
+
+export { Intcode, part1, part2 }

@@ -1,4 +1,4 @@
-import { Intcode, part1 } from './day02'
+import { Intcode, part1, part2 } from './day02'
 import read from './read'
 
 describe('2019 Day 02', () => {
@@ -13,9 +13,11 @@ describe('2019 Day 02', () => {
   })
 
   it('part1', () => {
-    ops[1] = 12
-    ops[2] = 2
-    expect(part1(ops)).toEqual(4690667)
+    expect(part1(ops, 12, 2)).toEqual(4690667)
+  })
+
+  it('part2', () => {
+    expect(part2(ops, 19690720)).toEqual(6255)
   })
 
 })
