@@ -9,15 +9,15 @@ const Intcode = lines => {
     const _s = (j, v) => { ops[ops[i + j]] = v }
 
     switch (op) {
-      case 1: { _s(_g(3), _g(1) + _g(2)); i += 4 }
-      case 2: { _s(_g(3), _g(1) * _g(2)); i += 4 }
+      case 1: { _s(3, _g(1) + _g(2)); i += 4; break; }
+      case 2: { _s(3, _g(1) * _g(2)); i += 4; break; }
     }
 
     return !(op == 99)
   }
 
   const run = () => {
-    step()
+    while(step()) {}
     return ops
   }
 
