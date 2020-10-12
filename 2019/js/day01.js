@@ -6,14 +6,9 @@ const part1 = nums => nums
   .map(fuel)
   .sum()
 
-const fuelR = m => {
-  let total = 0
-  let v = fuel(m)
-  while (v > 0) {
-    total += v
-    v = fuel(v)
-  }
-  return total
+const fuelR = (m) => {
+  const v = fuel(m)
+  return (v > 0) ? v + fuelR(v) : 0
 }
 
 const part2 = nums => nums
