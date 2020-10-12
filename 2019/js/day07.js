@@ -5,7 +5,19 @@ const Thruster = ops => {
   const signal = settings => settings
     .reduce((acc, s) => Intcode(ops, [acc, s]).runOutput(), 0)
 
-  return { signal }
+  const signalR = settings => {
+    const ths = settings.map(s => Intcode(ops, [s]))
+    const outputs = []
+
+    let res2 = [0, false]
+    while (!res2[1]) {
+      res2 = ths.reduce((res, th) => th.runIO(res[0]), res2)
+      if (!res2[1]) outputs.push(res2[0])
+    }
+    return outputs.last()
+  }
+
+  return { signal, signalR }
 }
 
 const part1 = ops => {
