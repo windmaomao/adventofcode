@@ -56,7 +56,7 @@ const Intcode = (lines, inputs) => {
   }
 
   const runIO = ins => {
-    inputs.push(ins)
+    inputs.unshift(ins)
     run()
     return [outputs.last(), halted()]
   }

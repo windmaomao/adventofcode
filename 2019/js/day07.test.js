@@ -29,20 +29,16 @@ describe('2019 Day 07', () => {
   })
 
   it('part2 Intcode', () => {
-    let res = 0
-    const a = Intcode(example4, [res, 9])
-    res = a.runOutput()
-    const b = Intcode(example4, [res, 8])
-    res = b.runOutput()
-    const c = Intcode(example4, [res, 7])
-    res = c.runOutput()
-    const d = Intcode(example4, [res, 6])
-    res = d.runOutput()
-    const e = Intcode(example4, [res, 5])
-    res = e.runOutput()
+    const settings = [9, 8, 7, 6, 5]
+    const outputs = []
+    let res2 = [0, false]
+    // const ths = settings.map(s => Intcode(example4, s))
+    const a = Intcode(example4, [9])
+    const b = Intcode(example4, [8])
+    const c = Intcode(example4, [7])
+    const d = Intcode(example4, [6])
+    const e = Intcode(example4, [5])
 
-    let res2 = [res, false]
-    let outputs = []
     while (!res2[1]) {
       res2 = a.runIO(res2[0])
       res2 = b.runIO(res2[0])
@@ -51,7 +47,7 @@ describe('2019 Day 07', () => {
       res2 = e.runIO(res2[0])
       if (!res2[1]) outputs.push(res2[0])
     }
-    expect(outputs.last()).toEqual(0)
+    expect(outputs.last()).toEqual(139629729)
   })
 
 })
