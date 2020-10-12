@@ -1,8 +1,7 @@
 import '../../utils/js/array'
 
-const Intcode = (lines) => {
+const Intcode = (lines, inputs) => {
   const ops = lines.slice()
-  const inputs = []
   const outputs = []
   let i = 0
 
@@ -44,13 +43,12 @@ const Intcode = (lines) => {
       && (res == 0)
     ) {
       res = step()
-      if (res) outputs.push(res)
+      outputs.push(res)
     }
     return ops
   }
 
-  const runOutput = (a) => {
-    inputs.push(a)
+  const runOutput = () => {
     run()
     return outputs.last()
   }
