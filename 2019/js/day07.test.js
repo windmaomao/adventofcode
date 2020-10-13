@@ -41,8 +41,8 @@ describe('2019 Day 07', () => {
     expect(part2(example5)).toEqual(18216)
   })
 
-  // it('part2', () => {
-  //   expect(part2(ops)).toEqual(14260332)
-  // })
+  it.only('part2', () => {
+    expect(part2(ops)).toEqual(14260332)
+  })
 
 })

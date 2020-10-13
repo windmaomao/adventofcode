@@ -11,11 +11,10 @@ const Thruster = ops => {
 
     let res2 = [0, false]
     while (!res2[1]) {
-      res2 = ths.reduce((res, th) => th.runIO(res[0]), res2)
-
-      if (!res2[1]) {
-        outputs.push(res2[0])
-      }
+      res2 = ths.reduce((res, th) => {
+        return th.runIO(res[0])
+      }, res2)
+      outputs.push(res2[0])
     }
 
     return outputs.last()
