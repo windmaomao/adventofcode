@@ -12,8 +12,12 @@ const Thruster = ops => {
     let res2 = [0, false]
     while (!res2[1]) {
       res2 = ths.reduce((res, th) => th.runIO(res[0]), res2)
-      if (!res2[1]) outputs.push(res2[0])
+
+      if (!res2[1]) {
+        outputs.push(res2[0])
+      }
     }
+
     return outputs.last()
   }
 
@@ -29,11 +33,11 @@ const part1 = ops => {
 }
 
 const part2 = ops => {
-  const sig = Thruster(ops).signal
+  const sig = Thruster(ops).signalR
   return [5, 6, 7, 8, 9]
     .permute()
     .map(sig)
     .max()
 }
 
-export { Intcode, Thruster, part1, part2 }
+export { Thruster, part1, part2 }

@@ -34,6 +34,7 @@ const Intcode = (lines, inputs) => {
     }
 
     if (output !== false) outputs.push(output)
+    return output
   }
 
   const halted = () => {
@@ -53,8 +54,12 @@ const Intcode = (lines, inputs) => {
 
   const runIO = ins => {
     inputs.unshift(ins)
-    run()
-    return [outputs.last(), halted()]
+
+    let res = false
+    while (!halted() && (res === false)) {
+      res = step()
+    }
+    return [res, halted()]
   }
 
   return { step, run, outputs, runOutput, runIO }
