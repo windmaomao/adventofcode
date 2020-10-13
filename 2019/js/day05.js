@@ -15,7 +15,7 @@ const Intcode = (lines, inputs) => {
   const step = (input) => {
     const modes = _modes(ops[i])
     const op = ops[i] % 100
-    let output = 0
+    let output = false
 
     const _g = j => modes[j] ? ops[i + j] : ops[ops[i + j]]
     const _s = (j, v) => { ops[ops[i + j]] = v }
@@ -33,7 +33,7 @@ const Intcode = (lines, inputs) => {
       default: { output = -100; }
     }
 
-    return output
+    if (output !== false) outputs.push(output)
   }
 
   const halted = () => {
@@ -42,11 +42,7 @@ const Intcode = (lines, inputs) => {
   }
 
   const run = () => {
-    let res = 0
-    while (!halted() && (res == 0)) {
-      res = step()
-      outputs.push(res)
-    }
+    while (!halted()) { step() }
     return ops
   }
 
