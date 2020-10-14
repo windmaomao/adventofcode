@@ -15,7 +15,6 @@ const Intcode = (lines, inputs) => {
   const step = (input) => {
     const modes = _modes(ops[i])
     const op = ops[i] % 100
-    let output = false
 
     const _g = j => modes[j] ? ops[i + j] : ops[ops[i + j]]
     const _s = (j, v) => { ops[ops[i + j]] = v }
@@ -25,16 +24,13 @@ const Intcode = (lines, inputs) => {
       case 1: { _s(3, _g(1) + _g(2)); _j(i+4); break; }
       case 2: { _s(3, _g(1) * _g(2)); _j(i+4); break; }
       case 3: { _s(1, inputs.pop()); _j(i+2); break; }
-      case 4: { output = _g(1); _j(i+2); break; }
+      case 4: { outputs.push(_g(1)); _j(i+2); break; }
       case 5: { if (_g(1) != 0) _j(_g(2)); else _j(i+3); break; }
       case 6: { if (_g(1) == 0) _j(_g(2)); else _j(i+3); break; }
       case 7: { _s(3, (_g(1) < _g(2)) ? 1 : 0); _j(i+4); break; }
       case 8: { _s(3, (_g(1) == _g(2)) ? 1 : 0); _j(i+4); break; }
-      default: { output = -100; }
+      default: {}
     }
-
-    if (output !== false) outputs.push(output)
-    return output
   }
 
   const halted = () => {
