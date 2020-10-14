@@ -1,6 +1,6 @@
 import '../../utils/js/array'
 
-const Intcode = (lines, inputs) => {
+const Intcode = (lines, inputs = []) => {
   const ops = lines.slice()
   const outputs = []
   let r = 0
