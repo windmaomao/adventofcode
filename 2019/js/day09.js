@@ -63,7 +63,7 @@ const Intcode = (lines, inputs = []) => {
     return (outputs.length > p) ? outputs.last() : null
   }
 
-  return { step, run, outputs, runOutput, nextOutput }
+  return { step, run, outputs, runOutput, nextOutput, halted }
 }
 
 export { Intcode }
