@@ -36,7 +36,7 @@ describe('2019 Day 07', () => {
     expect(th.signal([9, 8, 7, 6, 5])).toEqual(139629729)
   })
 
-  it('part2 example', () => {
+  it.only('part2 example', () => {
     expect(part2(example4)).toEqual(139629729)
     expect(part2(example5)).toEqual(18216)
   })

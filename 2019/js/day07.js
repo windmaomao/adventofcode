@@ -36,21 +36,12 @@ const Intcode = (lines, inputs) => {
 
   const halted = () => ops[i] == 99
 
-  const nextOutput = () => {
+  const nextOutput = (ins) => {
+    if (ins != undefined) inputs.unshift(ins)
     const p = outputs.length
     while (!halted() && outputs.length == p) { step() }
     return (outputs.length > p) ? outputs.last() : null
   }
-
-  // const runIO = ins => {
-  //   inputs.unshift(ins)
-  //
-  //   let res = false
-  //   while (!halted() && (res === false)) {
-  //     res = step()
-  //   }
-  //   return [res, halted()]
-  // }
 
   return { step, outputs, nextOutput }
 }
@@ -72,17 +63,15 @@ const part1 = ops => {
 const ThrusterR = ops => {
   const signal = settings => {
     const ths = settings.map(s => Intcode(ops, [s]))
-    const outputs = []
+    let pout = null
+    let out = 0
 
-    let res2 = [0, false]
-    while (!res2[1]) {
-      res2 = ths.reduce((res, th) => {
-        return th.runIO(res[0])
-      }, res2)
-      outputs.push(res2[0])
+    while (out != null) {
+      pout = out
+      out = ths.reduce((res, th) => th.nextOutput(res), out)
     }
 
-    return outputs.last()
+    return pout
   }
 
   return { signal }
