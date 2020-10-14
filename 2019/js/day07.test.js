@@ -1,4 +1,4 @@
-import { Thruster, part1, part2 } from './day07'
+import { Thruster, part1, ThrusterR, part2 } from './day07'
 import read from './read'
 
 describe('2019 Day 07', () => {
@@ -16,24 +16,24 @@ describe('2019 Day 07', () => {
 -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
 53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10]
 
-  it('part1 Thruster', () => {
+  it.only('part1 Thruster', () => {
     const th = Thruster(example1)
     expect(th.signal([4, 3, 2, 1, 0])).toEqual(43210)
   })
 
-  it('part1 example', () => {
+  it.only('part1 example', () => {
     expect(part1(example1)).toEqual(43210)
     expect(part1(example2)).toEqual(54321)
     expect(part1(example3)).toEqual(65210)
   })
 
-  it('part1', () => {
+  it.only('part1', () => {
     expect(part1(ops)).toEqual(225056)
   })
 
-  it('part2 Thruster', () => {
-    const th = Thruster(example4)
-    expect(th.signalR([9, 8, 7, 6, 5])).toEqual(139629729)
+  it.only('part2 ThrusterR', () => {
+    const th = ThrusterR(example4)
+    expect(th.signal([9, 8, 7, 6, 5])).toEqual(139629729)
   })
 
   it('part2 example', () => {
