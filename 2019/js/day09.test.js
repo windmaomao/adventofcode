@@ -12,7 +12,11 @@ describe('2019 Day 09', () => {
   })
 
   it('part1', () => {
-    expect(Intcode(ops, []).nextOutput(1)).toEqual(2351176124)
+    expect(Intcode(ops).nextOutput(1)).toEqual(2351176124)
+  })
+
+  it('part2', () => {
+    expect(Intcode(ops, []).nextOutput(2)).toEqual(73110)
   })
 
 })
