@@ -48,17 +48,14 @@ const Intcode = (lines, inputs) => {
     return outputs.last()
   }
 
-  const runIO = ins => {
-    inputs.unshift(ins)
-
-    let res = false
-    while (!halted() && (res === false)) {
-      res = step()
-    }
-    return [res, halted()]
+  const nextOutput = (ins) => {
+    if (ins != undefined) inputs.unshift(ins)
+    const p = outputs.length
+    while (!halted() && outputs.length == p) { step() }
+    return (outputs.length > p) ? outputs.last() : null
   }
 
-  return { step, run, outputs, runOutput, runIO }
+  return { step, run, outputs, runOutput, nextOutput }
 }
 
 export { Intcode }
