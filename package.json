@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "2015-purs": "watchexec -e purs -- spago test --main Test.Day01",
     "start": "DEBUG=day*:* nodemon --exec babel-node 2019/index.js",
     "2018-rb": "nodemon --exec ruby 2018/rb/index.rb",
     "rb": "nodemon --exec ruby 2019/rb/index.rb",

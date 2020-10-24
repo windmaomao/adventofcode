@@ -1,13 +1,15 @@
 module Test.Main where
 
 import Prelude
-
 import Effect (Effect)
-import Effect.Class.Console (log, logShow)
-import Day01 (part1, part2)
+import Effect.Console (log)
+import Node.Encoding (Encoding(..))
+import Node.FS.Sync (readTextFile)
+
+calc :: String -> Int
+calc _ = 456
 
 main :: Effect Unit
 main = do
-  log "🍝"
-  (logShow <<< part1) "(()))"
-  (logShow <<< part2) "(()))"
+  text <- readTextFile ASCII "../res/00.input"
+  log $ "🍝  " <> (show $ calc text)
