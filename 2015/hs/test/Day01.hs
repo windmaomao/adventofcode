@@ -1,4 +1,4 @@
-module Main where
+module Day01 (part) where
 
 toFloor :: Char -> Int
 toFloor '(' = 1
@@ -11,5 +11,5 @@ part n
   where toFloorArr = map toFloor
         toBasement = (takeWhile (>=0)) . (scanl (+) 0)
 
-main :: IO ()
-main = putStrLn $ show $ part 2 "(())))"
+-- main :: IO ()
+-- main = putStrLn $ show $ part 2 "(())))"
