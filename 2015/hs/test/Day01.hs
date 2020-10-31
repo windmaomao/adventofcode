@@ -10,6 +10,3 @@ part n
   | otherwise  = length . toBasement . toFloorArr
   where toFloorArr = map toFloor
         toBasement = (takeWhile (>=0)) . (scanl (+) 0)
-
--- main :: IO ()
--- main = putStrLn $ show $ part 2 "(())))"
