@@ -1,8 +1,9 @@
 module Day01 (part) where
 
 toFloor :: Char -> Int
-toFloor '(' = 1
-toFloor _   = -1
+toFloor c
+  | c == '('  = 1
+  | otherwise = -1
 
 part :: Int -> String -> Int
 part n
