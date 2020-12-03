@@ -8,3 +8,4 @@ function all(strs) {
   }
   return pick(strs.length)
 }
+
