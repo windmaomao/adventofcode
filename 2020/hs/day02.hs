@@ -1,4 +1,5 @@
 module Main where
+import Data.Ix
 
 type Task = (Int, Int, Char, String)
 
@@ -12,7 +13,7 @@ toTask s = (l, h, c, pwd)
         c = head $ parts !! 1
 
 match1 :: Task -> Bool
-match1 (l, h, c, pwd) = n >= l && n <= h
+match1 (l, h, c, pwd) = inRange (l, h) n
   where n = length [x | x <- pwd, x == c]
 
 match2 :: Task -> Bool
@@ -24,6 +25,6 @@ part m tasks = length [t | t <- tasks, (m t)]
 
 main :: IO ()
 main = do
-  fn <- readFile "../res/02.input"
-  let tasks = toTask <$> lines fn
+  fn <- lines <$> readFile "../res/02.input"
+  let tasks = toTask <$> fn
   print $ (part match1 tasks, part match2 tasks)
