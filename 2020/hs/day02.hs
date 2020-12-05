@@ -1,4 +1,3 @@
-module Main where
 import Data.Ix
 
 type Task = (Int, Int, Char, String)
