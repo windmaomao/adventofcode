@@ -19,7 +19,7 @@ match1 (l, h, c, pwd) = inRange (l, h) n
 match2 :: Task -> Bool
 match2 (l, h, c, pwd) = (m l) /=  (m h)
   where m p = pwd !! (p - 1) == c
-	
+
 part :: (Task -> Bool) -> [Task] -> Int
 part m tasks = length [t | t <- tasks, (m t)]
 
