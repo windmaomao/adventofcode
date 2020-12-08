@@ -1,4 +1,6 @@
-## Code
+# Fibonacci sequence
+
+## Javascript
 
 ```javascript
 function f(n) {
@@ -10,7 +12,11 @@ function f(n) {
 }
 ```
 
-```haskel
+## Haskell
+
+### With cache
+
+```haskell
 import Data.Array
 
 fib max = go max
@@ -19,3 +25,12 @@ fib max = go max
         go n = arr ! (n-1) + arr ! (n - 2)
         arr = array (0, max) [(i, go i) | i <- [0..max]]
 ```
+        
+### Without cache
+
+```
+fib = 1 : 1 : [ a+b | (a,b) <- zip fib (tail fib)]
+take 5 fib
+```
+
+
