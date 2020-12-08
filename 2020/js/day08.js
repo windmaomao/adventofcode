@@ -30,25 +30,19 @@ const part1 = arr => {
   return [g,i]
 }
 
-const clone = arr => {
-  return arr.map(a => a.slice())
-}
-
+const clone = arr =>  arr.map(a => a.slice())
+const remaps = { nop: 'jmp', jmp: 'nop' }
 const part2 = arr => {
-  const res = []
   for (let i = 0; i < arr.length; i++) {
     const [ins, num] = arr[i]
-    if (ins == 'nop') {
+    if (remaps[ins]) {
       const arr2 = clone(arr)
-      arr2[i][0] = 'jmp'
-      res.push(part1(arr2))
-    } else if (ins == 'jmp') {
-      const arr2 = clone(arr)
-      arr2[i][0] = 'nop'
-      res.push(part1(arr2))
+      arr2[i][0] = remaps[ins]
+      const res = part1(arr2)
+      if (res[1] == arr.length) return res
     }
   }
-  return res.filter(v => v[1] == arr.length)
+  return null
 }
 
 const inss = instructions(fn)
