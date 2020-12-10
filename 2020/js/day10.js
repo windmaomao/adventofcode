@@ -16,23 +16,31 @@ const part1 = nums => {
 }
 
 let tmp = arr.sort(compare)
-console.log(tmp)
+//console.log(tmp)
 console.log(part1(tmp))
 
-const part2 = nums => {
-  const nums2 = [0, ...nums]
+const part2 = raw => {
+  const nums = [0, ...raw]
   const res = []
-  let i = 1
-  while (i < nums2.length - 1) {
-    const diff = nums2[i+1] - nums2[i-1]
-    if (diff < 3) res.push(nums2[i])
+  let i = 0, pre = -1, k = 0
+  while (i < nums.length) {
+    const j = nums[i]
+    if (j - 1 == pre) {
+      k++
+    } else {
+      res.push(k)
+      k = 1
+    }
+    pre = j
     i++
   }
-  return (res)
+  
+  // array values from the derivation below
+  const cases = [1, 1, 1, 2, 4, 7]
+  return res.reduce((acc, v) => (acc * cases[v]), 1)
 }
 
-//console.log(subset([5,6,11]))
-//console.log(part2(tmp))
+console.log(part2(tmp))
 
 //([]), 1, 4, 5, 6, 7, 10, 11, 12, 15, 16, 19, (22)
 //([11]), 1, 4, 5, 6, 7, 10, 12, 15, 16, 19, (22)
@@ -114,4 +122,3 @@ const part2 = nums => {
 //
 //5*5*3*5*5*5*3*5*5*5*5*5*5*5*4*3*5
 //7*7*2*7*7*7*2*7*7*7*7*7*7*7*4*2*7
-//131,835,937,500 too low
