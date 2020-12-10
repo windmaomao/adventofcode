@@ -14,6 +14,13 @@ function f(n) {
 
 ## Haskell
 
+### Normal
+
+```haskell
+fib = 1 : 1 : [ a+b | (a,b) <- zip fib (tail fib)]
+take 5 fib
+```
+
 ### With cache
 
 ```haskell
@@ -25,12 +32,4 @@ fib max = go max
         go n = arr ! (n-1) + arr ! (n - 2)
         arr = array (0, max) [(i, go i) | i <- [0..max]]
 ```
-        
-### Without cache
-
-```
-fib = 1 : 1 : [ a+b | (a,b) <- zip fib (tail fib)]
-take 5 fib
-```
-
 
