@@ -1,3 +1,6 @@
+# BST Traverse
+
+```javascript
 function Node(key) {
   this.key = key
   this.left = null
@@ -126,3 +129,6 @@ t.add(-3)
 //console.log(t.max())
 //console.log(t.has(10))
 console.log(t.bforder())
+
+```
+
