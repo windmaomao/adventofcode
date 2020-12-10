@@ -15,6 +15,6 @@ function twoNumberSum(arr, target) {
     if (m[k]) return [i, k]
   }
   return []
-  ```
+```
 }
 
