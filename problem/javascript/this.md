@@ -1,3 +1,6 @@
+# This
+
+```javascript
 function Obj() {
   const name = "Fang"
   const getName = function () {
@@ -23,3 +26,5 @@ var pokemon = {
 };
 
 pokemon.getPokeName()
+```
+

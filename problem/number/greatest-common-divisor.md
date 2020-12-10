@@ -1,11 +1,9 @@
 ### GCD - Greatest common divisor
 
 #### Problem
-
 Given a file name, load it into multiple lines of string.
 
 #### Solution
-
 ```kotlin
 package org.adventofcode
 
