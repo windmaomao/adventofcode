@@ -16,17 +16,29 @@ const dirs = [
   [1, -1], [1, 0], [1, 1],
 ]
 
-const part1 = grid => {
+const occupied = (curr, p) => dirs.filter(d => {
+  return curr[p[0]+d[0]][p[1]+d[1]] == '#'
+}).length
+  
+const occupiedFirst = (curr, p) => dirs.filter(d => {
+  let ii = p[0]+d[0], jj = p[1]+d[1]
+  while (ii > 0 && ii < n+1 && jj > 0 && jj < n+1) {
+    if (curr[ii][jj] == 'L') return false
+    if (curr[ii][jj] == '#') return true
+    ii += d[0]
+    jj += d[1]
+  }
+}).length
+  
+const part = (grid, fn, tol) => {
   let curr = clone(grid)
   
   const seat = (i, j) => {
     const me= curr[i][j]
     if (me == '.') return me
-    const ocupied = dirs.filter(d => {
-      return curr[i+d[0]][j+d[1]] == '#'
-    }).length
-    if (me == 'L' && ocupied == 0) return '#'
-    if (me == '#' && ocupied >=4) return 'L'
+    const c = fn(curr, [i, j])
+    if (me == 'L' && c == 0) return '#'
+    if (me == '#' && c >= tol) return 'L'
     return me
   }
   
@@ -43,62 +55,20 @@ const part1 = grid => {
   }
   
   const run = () => {
-    let i = 0, count
-    while (i < 200) {
+    let i = 0, count, pre = -1
+    while (i < 200 && count != pre) {
+      pre = count;
       [curr, count] = step()
-      console.log(count)
       i++
     }
+    return count
   }
   
-  run()
-  return curr.map(v => v.join(''))
+  return run()
+//  return curr.map(v => v.join(''))
 }
 
-const part2 = grid => {
-  let curr = clone(grid)
-  
-  const seat = (i, j) => {
-    const me= curr[i][j]
-    if (me == '.') return me
-    const ocupied = dirs.filter(d => {
-      let ii = i+d[0], jj = j+d[1]
-      while (ii > 0 && ii < n+1 && jj > 0 && jj < n+1) {
-        if (curr[ii][jj] == 'L') return false
-        if (curr[ii][jj] == '#') return true
-        ii += d[0]
-        jj += d[1]
-      }
-    }).length
-    if (me == 'L' && ocupied == 0) return '#'
-    if (me == '#' && ocupied >=5) return 'L'
-    return me
-  }
-  
-  const step = () => {
-    const next = clone(curr)
-    let c = 0
-    for (let i = 1; i < n+1; i++) {
-      for (let j = 1; j < n+1; j++) {
-        next[i][j] = seat(i, j)
-        if (next[i][j] == '#') c++
-      }
-    }
-    return [next, c]
-  }
-  
-  const run = () => {
-    let i = 0, count
-    while (i < 100) {
-      [curr, count] = step()
-      console.log(count)
-      i++
-    }
-  }
-  
-  run()
-  return curr.map(v => v.join(''))
-}
+console.log(part(arr2, occupied, 4))
+console.log(part(arr2, occupiedFirst, 5))
 
-part2(arr2)
 //console.log(part2(arr2))
