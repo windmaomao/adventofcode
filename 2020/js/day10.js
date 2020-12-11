@@ -20,7 +20,8 @@ let tmp = arr.sort(compare)
 console.log(part1(tmp))
 
 const part2 = raw => {
-  const nums = [0, ...raw]
+  const max = Math.max(...raw)
+  const nums = [0, ...raw, max+3]
   const res = []
   let i = 0, pre = -1, k = 0
   while (i < nums.length) {
@@ -34,13 +35,29 @@ const part2 = raw => {
     pre = j
     i++
   }
-  
   // array values from the derivation below
   const cases = [1, 1, 1, 2, 4, 7]
   return res.reduce((acc, v) => (acc * cases[v]), 1)
 }
 
 console.log(part2(tmp))
+
+
+// https://github.com/NLDev/Advent-of-Code-2020/blob/master/Day_10/part_2.js
+
+const part2nl = raw => {
+  const nums = [0, ...raw]
+  const step = [1]
+    
+  nums.forEach((e, i) => {
+    let j = i + 1;
+    while (nums[j] <= e + 3) (step[j] = (step[j] || 0) + step[i]) && j++;
+  });
+  return step.pop()
+}
+
+console.log(part2nl(tmp))
+
 
 //([]), 1, 4, 5, 6, 7, 10, 11, 12, 15, 16, 19, (22)
 //([11]), 1, 4, 5, 6, 7, 10, 12, 15, 16, 19, (22)
