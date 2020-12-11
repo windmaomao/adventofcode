@@ -47,13 +47,16 @@ console.log(part2(tmp))
 
 const part2nl = raw => {
   const nums = [0, ...raw]
-  const step = [1]
-    
+  const step = [1, ...raw.map(v => 0)]
+
   nums.forEach((e, i) => {
-    let j = i + 1;
-    while (nums[j] <= e + 3) (step[j] = (step[j] || 0) + step[i]) && j++;
-  });
-  return step.pop()
+    let j = i + 1
+    while (nums[j] <= e + 3) {
+      step[j] += step[i]
+      j++
+    }
+  })
+  return step
 }
 
 console.log(part2nl(tmp))
