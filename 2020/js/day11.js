@@ -44,6 +44,51 @@ const part1 = grid => {
   
   const run = () => {
     let i = 0, count
+    while (i < 200) {
+      [curr, count] = step()
+      console.log(count)
+      i++
+    }
+  }
+  
+  run()
+  return curr.map(v => v.join(''))
+}
+
+const part2 = grid => {
+  let curr = clone(grid)
+  
+  const seat = (i, j) => {
+    const me= curr[i][j]
+    if (me == '.') return me
+    const ocupied = dirs.filter(d => {
+      let ii = i+d[0], jj = j+d[1]
+      while (ii > 0 && ii < n+1 && jj > 0 && jj < n+1) {
+        if (curr[ii][jj] == 'L') return false
+        if (curr[ii][jj] == '#') return true
+        ii += d[0]
+        jj += d[1]
+      }
+    }).length
+    if (me == 'L' && ocupied == 0) return '#'
+    if (me == '#' && ocupied >=5) return 'L'
+    return me
+  }
+  
+  const step = () => {
+    const next = clone(curr)
+    let c = 0
+    for (let i = 1; i < n+1; i++) {
+      for (let j = 1; j < n+1; j++) {
+        next[i][j] = seat(i, j)
+        if (next[i][j] == '#') c++
+      }
+    }
+    return [next, c]
+  }
+  
+  const run = () => {
+    let i = 0, count
     while (i < 100) {
       [curr, count] = step()
       console.log(count)
@@ -55,5 +100,5 @@ const part1 = grid => {
   return curr.map(v => v.join(''))
 }
 
-part1(arr2)
-//console.log(part1(arr2))
+part2(arr2)
+//console.log(part2(arr2))
