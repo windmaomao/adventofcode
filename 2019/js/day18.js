@@ -49,26 +49,19 @@ const bfs = (pos, keys) => {
   return res
 }
 
-//https://github.com/mapio/advent-of-code-2019/blob/master/day18/sol.py
 const part1 = () => {
   let min = Infinity
   const res = []
-  const cache = {}
   
   const visit = (pos, keys, s) => {
     if (s >= min) return
     if (keys.length == KEYS.length) {
       console.log(s, keys.join(''))
       res.push([s, keys.join('')])
-      if (s < min) min = s
+//      if (s < min) min = s
     }
     
-    const cacheKey = `${pos[0]}:${pos[1]}:${keys.join('')}`
-    let matches = cache[cacheKey]
-    if (!matches) {
-      matches = bfs(pos, keys)
-      cache[cacheKey] = matches
-    }
+    const matches = bfs(pos, keys)
     for (let i = 0; i < matches.length; i++) {
       const [np, nk, ns] = matches[i]
       visit(np, [...keys, nk], 1 + s + ns)
