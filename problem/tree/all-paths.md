@@ -1,4 +1,5 @@
 # All paths between two nodes
+
 Given a graph, find the possible paths from one place to another, ex. find  `7` to `0`.
 ```bash
 7 -> 4
@@ -7,9 +8,32 @@ Given a graph, find the possible paths from one place to another, ex. find  `7` 
 2 -> 1, 0
 1 -> 0
 ```
-![][image-1]
+<img src="https://i.stack.imgur.com/A0hho.png" style="zoom: 33%;" />
 
 ## Code
+
+### DP for count only
+
+```javascript
+const part2nl = raw => {
+  const nums = [0, ...raw]
+  const step = [1, ...raw.map(v => 0)]
+
+  nums.forEach((e, i) => {
+    let j = i + 1
+    while (nums[j] <= e + 3) {
+      step[j] += step[i]
+      j++
+    }
+  })
+  return step
+}
+```
+
+
+
+### BFS
+
 ```js
 const allPaths = graph => {
   const from = '7', to = '0'
@@ -62,5 +86,3 @@ const B = {
 
 console.log(allPaths(B))
 ```
-
-[image-1]:	https://i.stack.imgur.com/A0hho.png
