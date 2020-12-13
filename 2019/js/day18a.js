@@ -27,19 +27,22 @@ const boardPos = () => {
 const board = boardPos()
 
 const search = require('./utils/search.js')
-const pathFound = search.bfs(
-  board['@'],
-  key => {
-    const p = key.split(',').map(v => parseInt(v))
-    const ndirs = dirs
-      .map(d => ([d[0] + p[0], d[1] + p[1]]))
-      .filter(d => !isWall(lines[d[0]][d[1]]))
-      .map(d => posKey(d[0], d[1]))
-    console.log(p, ndirs)
-    return ndirs
-  },
-  key => (Object.values(board).indexOf(key) >= 0)
-)
+const keys = Object.values(board)
+const keysMap = keys.map(thisKey => {
+  const othersFound = search.bfs(
+    thisKey,
+    key => {
+      const p = key.split(',').map(v => parseInt(v))
+      return dirs
+        .map(d => ([d[0] + p[0], d[1] + p[1]]))
+        .filter(d => !isWall(lines[d[0]][d[1]]))
+        .map(d => posKey(d[0], d[1]))
+    },
+    key => (keys.indexOf(key) >= 0)
+  )
+  return othersFound
+})
+
 
 console.log(board)
-console.log(pathFound)
+console.log(keysMap)
