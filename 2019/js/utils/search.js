@@ -26,6 +26,7 @@ function bfs(start, neighbours, goal, num_goals = Infinity) {
     while (cand = current_gen.shift()) {
       if (goal(cand)) {
         goals[cand] = gen
+        console.log(cand, gen)
         if (Object.keys(goals).length >= num_goals) {
           next_gen = []
           break
@@ -33,7 +34,7 @@ function bfs(start, neighbours, goal, num_goals = Infinity) {
       }
       
       neighbours(cand).forEach(neigh => {
-        if (prev[neigh]) return
+        if (prev[neigh] !== undefined) return
         prev[neigh] = cand
         next_gen.push(neigh)
       })
@@ -44,10 +45,10 @@ function bfs(start, neighbours, goal, num_goals = Infinity) {
   return { gen, goals, prev }
 }
 
-const m = { 'a': ['b', 'c'], 'b': ['c'], 'c': ['d'] }
-const founds = bfs('a', p => m[p] || [], p => !!p)
-console.log('BFS')
-console.log(founds)
+//const m = { 'a': ['b', 'c'], 'b': ['c'], 'c': ['d'] }
+//const founds = bfs('a', p => m[p] || [], p => !!p)
+//console.log('BFS')
+//console.log(founds)
 
 function pathOf(prev, target) {
   const path = [target]
@@ -58,10 +59,10 @@ function pathOf(prev, target) {
   return path
 }
 
-console.log('PATH_OF')
-console.log('a', pathOf(founds.prev, 'a'))
-console.log('c', pathOf(founds.prev, 'c'))
-console.log('d', pathOf(founds.prev, 'd'))
+//console.log('PATH_OF')
+//console.log('a', pathOf(founds.prev, 'a'))
+//console.log('c', pathOf(founds.prev, 'c'))
+//console.log('d', pathOf(founds.prev, 'd'))
 
 function astar(start, neighbours, goal) {
   const scores = { [start]: 0 }
@@ -93,14 +94,14 @@ function astar(start, neighbours, goal) {
   return null
 }
 
-const foundStar = astar(
-  'a', 
-  p => (m[p] || []).map(v => [v, 1]), 
-  p => p == 'd'
-)
-console.log('A_STAR')
-console.log(foundStar)
-console.log(pathOf(foundStar.prev, 'd'))
+//const foundStar = astar(
+//  'a', 
+//  p => (m[p] || []).map(v => [v, 1]), 
+//  p => p == 'd'
+//)
+//console.log('A_STAR')
+//console.log(foundStar)
+//console.log(pathOf(foundStar.prev, 'd'))
 
 module.exports = {
   bfs, pathOf
