@@ -11,7 +11,7 @@ const getEqn = l => {
 }
 
 const part1 = () => {
-	let mask = null
+	let masks = null
 	const mem = {}
 	
 	lines.forEach(line => {
@@ -34,4 +34,39 @@ const part1 = () => {
 	return Object.values(mem).reduce((acc, v) => acc + v, 0)
 }
 
+const part2 = () => {
+	let xs = [], ones = []
+	const mem = {}
+	
+	lines.forEach(line => {
+		if (line[1] == 'a') {
+			const mask = line.match(/[X|0|1]+/)[0].split('').reverse()
+			xs = mask.map((c, i) => (c == 'X' ? i : -1)).filter(c => (c >= 0))
+			ones = mask.map((c, i) => (c == '1' ? i : -1)).filter(c => (c >= 0))
+//			console.log(xs, ones)
+		} else {
+			const [addr, num] = getEqn(line)
+			const n = placeholder()
+			addr.toString(2).split('').reverse()
+				.forEach((c, i) => { n[i] = c })
+			ones.forEach(i => { n[i] = '1' })
+			xs.forEach(i => { n[i] = '0' })
+//			console.log('Mask', n)
+
+			let i = 0
+			while (i < Math.pow(2, xs.length)) {
+				const p = i.toString(2).split('').reverse()
+				const n2 = n.slice()
+				xs.forEach((i, j) => { if (p[j] != undefined) n2[i] = p[j] })
+				const addr2 = parseInt(n2.reverse().join(''), 2)
+				mem[addr2] = num
+				i++
+			}
+		}
+	})
+
+	return Object.values(mem).reduce((acc, v) => acc + v, 0)
+}
+
 console.log(part1())
+console.log(part2())
