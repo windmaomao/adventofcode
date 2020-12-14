@@ -26,7 +26,7 @@ function bfs(start, neighbours, goal, num_goals = Infinity) {
     while (cand = current_gen.shift()) {
       if (goal(cand)) {
         goals[cand] = gen
-        console.log(cand, gen)
+//        console.log(cand, gen)
         if (Object.keys(goals).length >= num_goals) {
           next_gen = []
           break

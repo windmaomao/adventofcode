@@ -18,21 +18,24 @@ const boardPos = () => {
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
       const c = lines[i][j]
-      if (isLowercase(c) || isOrigin(c)) res[c] = posKey(i, j)
+      if (isLowercase(c) || isOrigin(c)) res[posKey(i, j)] = c
     }
   }
   return res
 }
 
 const board = boardPos()
+console.log(board)
 
 const search = require('./utils/search.js')
-const keys = Object.values(board)
-const keysMap = keys.map(thisKey => {
+const key2Pos = key => key.split(',').map(v => parseInt(v))
+const keysMap = {}
+const keys = Object.keys(board)
+keys.forEach(thisKey => {
   const othersFound = search.bfs(
     thisKey,
     key => {
-      const p = key.split(',').map(v => parseInt(v))
+      const p = key2Pos(key)
       return dirs
         .map(d => ([d[0] + p[0], d[1] + p[1]]))
         .filter(d => !isWall(lines[d[0]][d[1]]))
@@ -40,9 +43,22 @@ const keysMap = keys.map(thisKey => {
     },
     key => (keys.indexOf(key) >= 0)
   )
-  return othersFound
+  const goals = {}
+  Object.keys(othersFound.goals)
+    .forEach(k => { 
+      goals[board[k]] = {
+        cost: othersFound.goals[k],
+        deps: search.pathOf(othersFound.prev, k)
+          .map(p => {
+            const pos = key2Pos(p)
+            return lines[pos[0]][pos[1]]
+          })
+          .filter(c => isUppercase(c))
+      }
+    })
+  
+  keysMap[board[thisKey]] = goals
 })
 
 
-console.log(board)
-console.log(keysMap)
+console.log(keysMap['@'])
