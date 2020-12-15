@@ -61,4 +61,4 @@ keys.forEach(thisKey => {
 })
 
 
-console.log(keysMap['@'])
+console.log(keysMap)

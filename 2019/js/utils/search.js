@@ -1,4 +1,4 @@
-// https://github.com/petertseng/adventofcode-rb-2019/blob/master/lib/search.rb
+4// https://github.com/petertseng/adventofcode-rb-2019/blob/master/lib/search.rb
 //! BFS search path from start to goal
 //# Input:
 //# - start: starting node
