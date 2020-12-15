@@ -2,12 +2,12 @@ const read = require('./read.js')
 const lines = read('15')[0].split(',').map(v => parseInt(v))
 
 const cacheV = max => {
-  const a = new Uint32Array(max*3).fill(0)
+  const a = new Int32Array(max*2).fill(-1)
 
   return index => {
-    const s = index * 3
-    const unshift = n => { a[s+2]++; a[s+1] = a[s]; a[s] = n }
-    const diff = () => (a[s+2] < 2 ? 0 : a[s] - a[s+1])
+    const s = index * 2
+    const unshift = n => { a[s+1] = a[s]; a[s] = n }
+    const diff = () => (a[s+1] >= 0 ? a[s] - a[s+1] : 0)
     return { unshift, diff }
   }
 }

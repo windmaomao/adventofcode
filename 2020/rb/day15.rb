@@ -2,20 +2,19 @@ fn = open("../res/15.input")
 arr = fn.first.split(',').map(&:to_i)
 
 def part(arr, max)
-	cache = Hash.new([])
+	cache = Array.new(max*2) { |i| -1 }
 	
 	n = 0
 	i = 0
 	while i < arr.length
 		n = arr[i]
-		cache[n] = [i]
+		cache[n*2] = i
 		i += 1
 	end
 	
 	while i < max
-		n = cache[n][1] ? cache[n][0] - cache[n][1] : 0
-		cache[n] = [] if !cache.key?(n)
-		cache[n][1], cache[n][0] = cache[n][0], i
+		n = (cache[n*2+1] >= 0) ? cache[n*2] - cache[n*2+1] : 0
+		cache[n*2+1], cache[n*2] = cache[n*2], i
 		i += 1
 	end
 
