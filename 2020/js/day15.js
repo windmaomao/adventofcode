@@ -16,15 +16,12 @@ const part = (arr, max) => {
   
   let i = 0
   while (i < arr.length - 1) {
-    speak(arr[i], i)
-    i++
+    speak(arr[i], i); i++
   }
   
-  let n = arr[arr.length - 1]
-  i = arr.length
-  
-  while (i < max) { 
-    n = speak(n, i - 1)
+  let n = arr[i]
+  while (i < max - 1) { 
+    n = speak(n, i)
     i++
   }
   
