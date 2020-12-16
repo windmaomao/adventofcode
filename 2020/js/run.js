@@ -1,13 +1,10 @@
-const separator = new Array(32).fill('-').join('')
+const sep = new Array(8).fill('-').join('')
 const run = (fn, ...args) => {
-  const name = 'time' // 
+  const name = ':' 
   console.time(name)
-  console.log(separator)
-  console.log(fn.name)
-  console.log()
+  console.log(`${sep} ${fn.name} ${sep}`)
   const res = fn(...args)
   console.log(res)
-  console.log()
   console.timeEnd(name)
   return res
 }
@@ -22,4 +19,4 @@ module.exports = run
 //  return 0
 //}
 //
-//run(abc, 3000000000)
+//run(abc, 3000000)
