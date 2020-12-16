@@ -31,18 +31,6 @@ const part = (arr, max) => {
   return n
 }
 
-const part1 = () => part(lines, 2020)
-const part2 = () => part(lines, 30000000)
-
 const run = require('./run.js')
-run(part1)
-//run(part2)
-
-
-//0,3,6,0,3,3,1,0,4,0,
-
-//  10k -   19ms
-// 100k -   93ms
-//   1m -    6s
-//  10m -   87s  -> 2s
-//  30m -        -> 6s
+run(part, lines, 2020)
+run(part, lines, 30000000)
