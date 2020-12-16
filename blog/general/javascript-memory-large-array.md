@@ -45,7 +45,7 @@ You can check the following table to get an idea how much memory you need to hol
 | Type      | Lower       | Upper      | Bytes | 1M   |      |
 | --------- | ----------- | ---------- | ----- | ---- | ---- |
 | Int8      | -128        | 127        | 1     | 1MB  |      |
-| Unit8     | 0           | 255        | 1     | 1MB  |      |
+| Uint8     | 0           | 255        | 1     | 1MB  |      |
 | Int16     | -32768      | 32767      | 2     | 2MB  |      |
 | UInt16    | 0           | 65535      | 2     | 2MB  |      |
 | Int32     | -2147483648 | 2147483647 | 4     | 4MB  |      |
@@ -61,7 +61,7 @@ I'll leave the rest of calculation to the reader, but a common sense is that `10
 
 Maybe you think this is some price we have to pay for not having a strong type on the front. It becomes more problematic if we extend to pre-allocate memory for `Map` or `Object`. The key and value could be nested `Object`. It would be a mission impossible to pre-calculate them. 
 
-So one interesting conclusion I can draw here is that for **serious** computational work, we probably should  evaluate `Javascript` more. Here `serious` is a strong word, you need to be dealing with at least one million record in memory at peak time. If you can stay below that number most of the time, you are still safe :) 
+So one interesting conclusion I can draw here is that for **serious** computational work, we probably should  be more careful with `Javascript`. Here `serious` is a strong word, you need to be dealing with at least one million record in memory at peak time. If you can stay below that number most of the time, you should be still safe :) 
 
 
 
