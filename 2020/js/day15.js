@@ -34,10 +34,12 @@ const part = (arr, max) => {
 const part1 = () => part(lines, 2020)
 const part2 = () => part(lines, 30000000)
 
-console.log(part1())
-console.time('part2')
-console.log(part2())
-console.timeEnd('part2')
+const run = require('./run.js')
+run(part1)
+run(part2)
+//console.time('part2')
+//console.log(part2())
+//console.timeEnd('part2')
 
 //0,3,6,0,3,3,1,0,4,0,
 
