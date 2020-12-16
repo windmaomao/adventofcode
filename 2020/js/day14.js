@@ -19,7 +19,6 @@ const part1 = () => {
 			masks = line.match(/[X|0|1]+/)[0].split('').reverse()
 			  .map((c, i) => (c != 'X' ? [i, c] : null))
 				.filter(c => !!c)
-//			console.log('masks', masks)
 		} else {
 			const [addr, num] = getEqn(line)
 			const n = placeholder()
@@ -27,7 +26,6 @@ const part1 = () => {
 			  .forEach((c, i) => { n[i] = c })
 			masks.forEach(m => { n[m[0]] = m[1] })
 			mem[addr] = parseInt(n.reverse().join(''), 2)
-//			console.log(addr, mem[addr])
 		}
 	})
 	
@@ -43,7 +41,6 @@ const part2 = () => {
 			const mask = line.match(/[X|0|1]+/)[0].split('').reverse()
 			xs = mask.map((c, i) => (c == 'X' ? i : -1)).filter(c => (c >= 0))
 			ones = mask.map((c, i) => (c == '1' ? i : -1)).filter(c => (c >= 0))
-//			console.log(xs, ones)
 		} else {
 			const [addr, num] = getEqn(line)
 			const n = placeholder()
@@ -51,7 +48,6 @@ const part2 = () => {
 				.forEach((c, i) => { n[i] = c })
 			ones.forEach(i => { n[i] = '1' })
 			xs.forEach(i => { n[i] = '0' })
-//			console.log('Mask', n)
 
 			let i = 0
 			while (i < Math.pow(2, xs.length)) {
@@ -68,5 +64,6 @@ const part2 = () => {
 	return Object.values(mem).reduce((acc, v) => acc + v, 0)
 }
 
-console.log(part1())
-console.log(part2())
+const run = require('./run.js')
+run(part1)
+run(part2)

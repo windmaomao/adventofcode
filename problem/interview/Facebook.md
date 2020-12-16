@@ -94,4 +94,5 @@ function (ns, ne) {
 - Write animate function(element, duration, distance)
 - Write debounce(fn, duration)
 ### Design Interview
-Design a table component with infinite scrolling.
+
+- Design a table component with infinite scrolling.
