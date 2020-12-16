@@ -1,3 +1,7 @@
+# Visualization
+
+## Array
+
 ```javascript
 const stack = [10, 20]
 const gridSize = 40
