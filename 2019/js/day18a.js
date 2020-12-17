@@ -1,5 +1,5 @@
 const load = require('./load.js')
-const lines = load('18a')
+const lines = load('18b')
 
 const m = lines.length
 const n = lines[0].length
@@ -22,7 +22,7 @@ const boardPos = () => {
 }
 
 const board = boardPos()
-console.log(board)
+//console.log(board)
 
 const search = require('./search.js')
 const key2Pos = key => key.split(',').map(v => parseInt(v))
@@ -66,10 +66,15 @@ const part1 = (graph) => {
       return 0
     }
     
+    const pathOpen = deps => deps
+      .map(d => path.indexOf(d.toLowerCase()) >= 0)
+      .every(v => v)
+    
     const lead = path[path.length - 1]
     const nmap = graph[lead]
     const mins = Object.keys(nmap)
       .filter(k => path.indexOf(k) < 0)
+      .filter(k => pathOpen(nmap[k].deps))
       .map(k => nmap[k].cost + minDist([...path, k]))
     return mins.length ? Math.min(...mins) : Infinity
   }
@@ -78,6 +83,6 @@ const part1 = (graph) => {
 }
 
 
-//console.log(keysMap)
+//console.log(keysMap['a'])
 const run = require('./run.js')
 run(part1, keysMap)
