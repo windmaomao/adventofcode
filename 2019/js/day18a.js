@@ -3,6 +3,13 @@ const lines = [
   "#b.A.@.a#",
   "#########"
 ]
+//const lines = [
+//  "########################",
+//  "#f.D.E.e.C.b.A.@.a.B.c.#",
+//  "######################.#",
+//  "#d.....................#",
+//  "########################"
+//]
 
 const m = lines.length
 const n = lines[0].length
@@ -60,5 +67,26 @@ keys.forEach(thisKey => {
   keysMap[board[thisKey]] = goals
 })
 
+const part1 = () => {
+  const goal = keys.length - 1
+  
+  const minDist = path => {
+    if (path.length === goal) {
+      console.log(path)
+      return 0
+    }
+    
+    const lead = path[path.length - 1]
+    const nmap = keysMap[lead]
+    const mins = Object.keys(nmap)
+      .filter(k => path.indexOf(k) < 0)
+      .map(k => nmap[k].cost + minDist([...path, k]))
+    return mins.length ? Math.min(...mins) : Infinity
+  }
+  
+  return minDist(['@'])
+}
 
-console.log(keysMap)
+
+//console.log(keysMap)
+console.log(part1())
