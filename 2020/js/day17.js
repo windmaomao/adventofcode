@@ -4,18 +4,20 @@ const lines = read('17')
 const _k = pos => pos.map(p => `${p}`).join(',')
 
 const initBoard= d => {
-	const n = lines.length
 	const mat = {}
-	for (let i = 0; i < n; i++) {
-		for (let j = 0; j < n; j++) {
+	const ln = lines.length
+	for (let i = 0; i < ln; i++) {
+		for (let j = 0; j < ln; j++) {
 			if (lines[i][j] == '#') {
-				mat[_k([i, j, 0])] = true
+				const p = new Array(d).fill(0)
+				p[0] = i; p[1] = j
+				mat[_k(p)] = true
 			}
 		}
 	}
 	const sizes = new Array(d).fill([0, 0])
-	sizes[0] = [0, n-1]
-	sizes[1] = [0, n-1]
+	sizes[0] = [0, ln-1]
+	sizes[1] = [0, ln-1]
 	return { mat, sizes }
 }
 
@@ -39,7 +41,7 @@ const visitBoard = (sizes, fn, b = 1) => {
 	}
 }
 
-const part1 = board => {
+const part = board => {
 	let { mat,  sizes } = board
 	const n = sizes.length
 	const nbSizes = new Array(n).fill([0, 0])
@@ -74,17 +76,12 @@ const part1 = board => {
 		j++
 	}
 	
-//	return { mat: nmat, sizes: nsizes }
 	return Object.keys(nmat).length
 }
 
-//console.log(initBoard(3))
-//visitBoard([[0,1],[0,1],[0,1]], console.log, 0)
-//visitCube(2, 3, console.log)
-
-const config = initBoard(3)
 const run = require('./run.js')
-run(part1, config)
+run(part, initBoard(3))
+run(part, initBoard(4))
 
 
 // .#.
