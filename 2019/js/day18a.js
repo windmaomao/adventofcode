@@ -1,15 +1,5 @@
-const lines = [
-  "#########",
-  "#b.A.@.a#",
-  "#########"
-]
-//const lines = [
-//  "########################",
-//  "#f.D.E.e.C.b.A.@.a.B.c.#",
-//  "######################.#",
-//  "#d.....................#",
-//  "########################"
-//]
+const load = require('./load.js')
+const lines = load('18a')
 
 const m = lines.length
 const n = lines[0].length
@@ -34,7 +24,7 @@ const boardPos = () => {
 const board = boardPos()
 console.log(board)
 
-const search = require('./utils/search.js')
+const search = require('./search.js')
 const key2Pos = key => key.split(',').map(v => parseInt(v))
 const keysMap = {}
 const keys = Object.keys(board)
@@ -67,8 +57,8 @@ keys.forEach(thisKey => {
   keysMap[board[thisKey]] = goals
 })
 
-const part1 = () => {
-  const goal = keys.length - 1
+const part1 = (graph) => {
+  const goal = Object.keys(graph).length
   
   const minDist = path => {
     if (path.length === goal) {
@@ -77,7 +67,7 @@ const part1 = () => {
     }
     
     const lead = path[path.length - 1]
-    const nmap = keysMap[lead]
+    const nmap = graph[lead]
     const mins = Object.keys(nmap)
       .filter(k => path.indexOf(k) < 0)
       .map(k => nmap[k].cost + minDist([...path, k]))
@@ -89,4 +79,5 @@ const part1 = () => {
 
 
 //console.log(keysMap)
-console.log(part1())
+const run = require('./run.js')
+run(part1, keysMap)
