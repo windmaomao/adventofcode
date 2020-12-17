@@ -1,8 +1,5 @@
-const lines = [
-	".#.",
-	"..#",
-	"###"
-]
+const read = require('./read.js')
+const lines = read('17')
 
 const _k = pos => pos.map(p => `${p}`).join(',')
 
@@ -44,12 +41,41 @@ const visitBoard = (sizes, fn, b = 1) => {
 
 const part1 = board => {
 	let { mat,  sizes } = board
+	const n = sizes.length
+	const nbSizes = new Array(n).fill([0, 0])
 	
-	visitBoard(sizes, p => {
-		console.log(p)
-	})
+	let j = 0
+	let pmat, nmat = mat
+	let psizes, nsizes = sizes
+	while (j < 6) {
+		pmat = nmat; psizes = nsizes
+		nmat = {}
+		nsizes = new Array(n).fill([Infinity, -Infinity])
+		
+		visitBoard(psizes, p => {
+			let actives = 0
+			visitBoard(nbSizes, rel => {
+				if (!rel.every(v => v == 0)) {
+					const np = p.map((v, i) => v + rel[i])
+					if (pmat[_k(np)]) actives++
+				}
+			})
+			const key = _k(p)
+			const state = (actives == 3) ? true : (
+				((actives == 2) && pmat[key]) ? true : false
+			)
+			if (state) {
+				nmat[key] = true
+				nsizes = nsizes.map(
+					(v, i) => [Math.min(v[0], p[i]), Math.max(v[1], p[i])]
+				)			
+			}
+		})
+		j++
+	}
 	
-	return ''
+//	return { mat: nmat, sizes: nsizes }
+	return Object.keys(nmat).length
 }
 
 //console.log(initBoard(3))
@@ -68,6 +94,6 @@ run(part1, config)
 //
 //01110 .....
 //01121 .....
-//13432 .#.#.
+//13532 .#.#.
 //11322 ..##.
 //12321 ..#..
