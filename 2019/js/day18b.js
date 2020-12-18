@@ -52,16 +52,20 @@ function findNextKeys(map, point, keys) {
 
 function minimumDistance(map, points, keys = [], memo = {}) {
   const memoKey = calcMemoKey(points, keys);
+  console.log('curr', points, keys)
   if (!memo[memoKey]) {
     const nextKeysPerPoint = points.map(point =>
       findNextKeys(map, point, keys),
     );
+//    console.log('nexts', nextKeysPerPoint.map(v => v.map(vv => vv.key)))
+
     if (nextKeysPerPoint.reduce((sum, x) => sum + x.length, 0) === 0) {
       memo[memoKey] = 0;
     } else {
       const distances = nextKeysPerPoint.map((nextKeys, i) => {
         const distances = nextKeys.map(x => {
           const nextPoints = points.map((p, j) => (i === j ? x.point : p));
+          console.log('next', nextPoints)
           return (
             x.distance +
             minimumDistance(map, nextPoints, keys.concat([x.key]), memo)
@@ -71,6 +75,8 @@ function minimumDistance(map, points, keys = [], memo = {}) {
       });
       memo[memoKey] = Math.min(...distances);
     }
+  } else {
+    console.log('cache', memoKey)
   }
   return memo[memoKey];
 }
@@ -80,12 +86,12 @@ const part1 = input => {
     .map((line, y) => line.split('').map((c, x) => ({ c, x, y })));
   const line = map.find(line => line.find(p => p.c === '@'));
   const current = line.find(p => p.c === '@');
-  blockDeadEnds(map, current);
+//  blockDeadEnds(map, current);
   return minimumDistance(map, [current]);
 }
 
 const load = require('./load.js')
 const run = require('./run.js')
 
-const lines = load('18c')
+const lines = load('18b')
 run(part1, lines)
