@@ -25,17 +25,25 @@ const genBoard = () => {
   const key2Pos = key => key.split(',').map(v => parseInt(v))
   const keysMap = {}
   const keys = Object.keys(board)
+
   keys.forEach(thisKey => {
     const othersFound = search.bfs(
       thisKey,
       key => {
         const p = key2Pos(key)
+        // stop at first layer of keys
+//        if (thisKey != key && isLowercase(lines[p[0]][p[1]])) return []
         return dirs
           .map(d => ([d[0] + p[0], d[1] + p[1]]))
           .filter(d => !isWall(lines[d[0]][d[1]]))
           .map(d => posKey(d[0], d[1]))
       },
-      key => (keys.indexOf(key) >= 0)
+      key => {
+        if (key == thisKey) return false
+        const p = key2Pos(key)
+        if (isOrigin(lines[p[0]][p[1]])) return false
+        return keys.indexOf(key) >= 0
+      }
     )
     const goals = {}
     Object.keys(othersFound.goals)
@@ -60,15 +68,21 @@ const part1 = (graph) => {
   const goal = Object.keys(graph).length
   const cache = {}
   
+  const pathKey = path => [
+    path[path.length - 1], 
+    [...path].sort().join('')
+  ].join(':')
+  
   const minDist = path => {
+    const savedKey = pathKey(path)
+    console.log(path.join(''), savedKey)
+
     if (path.length === goal) {
-//      console.log('goal', path.join(''))
       return 0
     }
     
-    const savedKey = path.join('')
-    if (cache[savedKey]) {
-      console.log('cached', path.join(''))
+    if (cache[savedKey] != undefined) {
+      console.log('cached', savedKey)
       return cache[savedKey]
     }
     
@@ -93,10 +107,10 @@ const part1 = (graph) => {
 
 
 const load = require('./load.js')
-const lines = load('18a')
+const lines = load('18b')
 
 const { keysMap } = genBoard()
-console.log(keysMap['@'])
+console.log(keysMap)
 
 const run = require('./run.js')
 run(part1, keysMap)

@@ -52,12 +52,12 @@ function findNextKeys(map, point, keys) {
 
 function minimumDistance(map, points, keys = [], memo = {}) {
   const memoKey = calcMemoKey(points, keys);
-  console.log('curr', points, keys)
-  if (!memo[memoKey]) {
+  console.log(points.map(v => v.c).join(''), memoKey)
+  if (memo[memoKey] == undefined) {
     const nextKeysPerPoint = points.map(point =>
       findNextKeys(map, point, keys),
     );
-//    console.log('nexts', nextKeysPerPoint.map(v => v.map(vv => vv.key)))
+    console.log('nexts', nextKeysPerPoint.map(v => v.map(vv => vv.key)))
 
     if (nextKeysPerPoint.reduce((sum, x) => sum + x.length, 0) === 0) {
       memo[memoKey] = 0;
@@ -65,7 +65,7 @@ function minimumDistance(map, points, keys = [], memo = {}) {
       const distances = nextKeysPerPoint.map((nextKeys, i) => {
         const distances = nextKeys.map(x => {
           const nextPoints = points.map((p, j) => (i === j ? x.point : p));
-          console.log('next', nextPoints)
+//          console.log('next', nextPoints)
           return (
             x.distance +
             minimumDistance(map, nextPoints, keys.concat([x.key]), memo)
