@@ -31,8 +31,6 @@ const genBoard = () => {
       thisKey,
       key => {
         const p = key2Pos(key)
-        // stop at first layer of keys
-//        if (thisKey != key && isLowercase(lines[p[0]][p[1]])) return []
         return dirs
           .map(d => ([d[0] + p[0], d[1] + p[1]]))
           .filter(d => !isWall(lines[d[0]][d[1]]))
@@ -75,14 +73,14 @@ const part1 = (graph) => {
   
   const minDist = path => {
     const savedKey = pathKey(path)
-    console.log(path.join(''), savedKey)
+//    console.log(path.join(''), savedKey)
 
     if (path.length === goal) {
       return 0
     }
     
     if (cache[savedKey] != undefined) {
-      console.log('cached', savedKey)
+//      console.log('cached', savedKey)
       return cache[savedKey]
     }
     
@@ -107,10 +105,10 @@ const part1 = (graph) => {
 
 
 const load = require('./load.js')
-const lines = load('18b')
+const lines = load('18')
 
 const { keysMap } = genBoard()
-console.log(keysMap)
+//console.log(keysMap)
 
 const run = require('./run.js')
 run(part1, keysMap)

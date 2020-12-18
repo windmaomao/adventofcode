@@ -1,85 +1,118 @@
-const load = require('./load.js')
-const lines = load('18')
-const m = lines.length
-const n = lines[0].length
-const dirs = [[-1, 0], [0, 1], [1, 0], [0, -1]]
-
 const isUppercase = c => (c.charCodeAt(0) >= 65 && c.charCodeAt(0) <= 90)
 const isLowercase = c => (c.charCodeAt(0) >= 97 && c.charCodeAt(0) <= 122)
 const isOrigin = c => c == '@'
 const isWall = c =>  c == '#'
-const isRoad = c =>  c == '.'
+const dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+const posKey = (i, j) => `${i},${j}`
 
-const board = () => {
-  const res = []
-  let origin = null
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      const c = lines[i][j]
-      if (isLowercase(c)) res.push(c)
-      if (isOrigin(c)) origin = [i, j]
-    }
-  }
-  return [res, origin]
-}
-
-const bfs = (pos, keys) => {
-  const res = [], visited = {}, queue = [[0, pos]]
-  while (queue.length) {
-    [s, p] = queue.shift()
-    for (let i = 0; i < dirs.length; i++) {
-      const np = [p[0] + dirs[i][0], p[1] + dirs[i][1]]
-      const key = `${np[0]}:${np[1]}`
-      if (visited[key]) continue
-      
-      visited[key] = true
-      const k = lines[np[0]][np[1]]
-      if (isWall(k)) continue
-      
-      if (isLowercase(k) && keys.indexOf(k) < 0) {
-        res.push([np, k, s])
-      } else if (
-        isRoad(k) || isOrigin(k) || 
-        keys.indexOf(k.toLowerCase()) >= 0
-      ) {
-        queue.push([s+1, np])
+const genBoard = () => {
+  const m = lines.length
+  const n = lines[0].length
+  
+  const boardPos = () => {
+    const res = {}
+    for (let i = 0; i < m; i++) {
+      for (let j = 0; j < n; j++) {
+        const c = lines[i][j]
+        if (isLowercase(c) || isOrigin(c)) res[posKey(i, j)] = c
       }
     }
+    return res
   }
-  return res
+  
+  const board = boardPos()  
+  const search = require('./search.js')
+  const key2Pos = key => key.split(',').map(v => parseInt(v))
+  const keysMap = {}
+  const keys = Object.keys(board)
+
+  keys.forEach(thisKey => {
+    const othersFound = search.bfs(
+      thisKey,
+      key => {
+        const p = key2Pos(key)
+        return dirs
+          .map(d => ([d[0] + p[0], d[1] + p[1]]))
+          .filter(d => !isWall(lines[d[0]][d[1]]))
+          .map(d => posKey(d[0], d[1]))
+      },
+      key => {
+        if (key == thisKey) return false
+        const p = key2Pos(key)
+        if (isOrigin(lines[p[0]][p[1]])) return false
+        return keys.indexOf(key) >= 0
+      }
+    )
+    const goals = {}
+    Object.keys(othersFound.goals)
+      .forEach(k => { 
+        goals[board[k]] = {
+          cost: othersFound.goals[k],
+          deps: search.pathOf(othersFound.prev, k)
+            .map(p => {
+              const pos = key2Pos(p)
+              return lines[pos[0]][pos[1]]
+            })
+            .filter(c => isUppercase(c))
+        }
+      })
+    
+    keysMap[board[thisKey]] = goals
+  })
+  return { keysMap }
 }
 
-const part1 = () => {
-  let min = Infinity
-  const res = []
+const part1 = (graph) => {
+  const goal = Object.keys(graph).length
+  const cache = {}
+  let counter = 0
   
-  const visit = (pos, keys, s) => {
-    if (s >= min) return
-    if (keys.length == KEYS.length) {
-      console.log(s, keys.join(''))
-      res.push([s, keys.join('')])
-//      if (s < min) min = s
+  const pathKey = path => [
+    path[path.length - 1], 
+    [...path].sort().join('')
+  ].join(':')
+  
+  const minDist = path => {
+    const savedKey = pathKey(path)
+    console.log(path.join(''), savedKey)
+
+    if (path.length === goal) {
+      counter++
+      return 0
     }
     
-    const matches = bfs(pos, keys)
-    for (let i = 0; i < matches.length; i++) {
-      const [np, nk, ns] = matches[i]
-      visit(np, [...keys, nk], 1 + s + ns)
+    if (cache[savedKey] != undefined) {
+//      console.log('cached', savedKey)
+      return cache[savedKey]
     }
+    
+    const pathOpen = deps => deps
+      .map(d => path.indexOf(d.toLowerCase()) >= 0)
+      .every(v => v)
+    
+    const lead = path[path.length - 1]
+    const nmap = graph[lead]
+    const mins = Object.keys(nmap)
+      .filter(k => path.indexOf(k) < 0)
+      .filter(k => pathOpen(nmap[k].deps))
+      .map(k => nmap[k].cost + minDist([...path, k]))
+      
+    const res = mins.length ? Math.min(...mins) : Infinity
+    cache[savedKey] = res
+    return res
   }
   
-  visit(ORIGIN, [], 0)
-  return Math.min(...res.map(v => v[0]))
+  const mm = minDist(['@'])
+//  console.log('Total', counter)
+  return mm
 }
 
-//console.log(lines)
-const [KEYS, ORIGIN] = board()
-console.log(part1())
-//console.log(KEYS, ORIGIN)
-//console.log(bfs(ORIGIN, []))
-//console.log(bfs([1, 17], ['a']))
-//console.log(bfs([1, 11], ['a', 'b']))
-//console.log(bfs([1, 21], ['a', 'b', 'c']))
-//console.log(bfs([3, 1], ['a', 'b', 'c', 'd']))
-//console.log(bfs([1, 7], ['a', 'b', 'c', 'd', 'e']))
 
+const load = require('./load.js')
+const lines = load('18c')
+
+const { keysMap } = genBoard()
+//console.log(keysMap)
+
+const run = require('./run.js')
+run(part1, keysMap)
