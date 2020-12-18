@@ -1,5 +1,5 @@
 const load = require('./load.js')
-const lines = load('18b')
+const lines = load('18')
 
 const m = lines.length
 const n = lines[0].length
@@ -59,11 +59,18 @@ keys.forEach(thisKey => {
 
 const part1 = (graph) => {
   const goal = Object.keys(graph).length
+  const cache = {}
   
   const minDist = path => {
     if (path.length === goal) {
-      console.log(path)
+//      console.log('goal', path.join(''))
       return 0
+    }
+    
+    const savedKey = path.join('')
+    if (cache[savedKey]) {
+      console.log('cached', path.join(''))
+      return cache[savedKey]
     }
     
     const pathOpen = deps => deps
@@ -76,7 +83,10 @@ const part1 = (graph) => {
       .filter(k => path.indexOf(k) < 0)
       .filter(k => pathOpen(nmap[k].deps))
       .map(k => nmap[k].cost + minDist([...path, k]))
-    return mins.length ? Math.min(...mins) : Infinity
+      
+    const res = mins.length ? Math.min(...mins) : Infinity
+    cache[savedKey] = res
+    return res
   }
   
   return minDist(['@'])
