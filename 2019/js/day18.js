@@ -74,7 +74,7 @@ const part1 = (graph) => {
   
   const minDist = path => {
     const savedKey = pathKey(path)
-    console.log(path.join(''), savedKey)
+//    console.log(path.join(''), savedKey)
 
     if (path.length === goal) {
       counter++
@@ -109,7 +109,7 @@ const part1 = (graph) => {
 
 
 const load = require('./load.js')
-const lines = load('18c')
+const lines = load('18')
 
 const { keysMap } = genBoard()
 //console.log(keysMap)

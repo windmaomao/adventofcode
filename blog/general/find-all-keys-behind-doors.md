@@ -1,4 +1,4 @@
-# How to find keys without getting stuck by the door
+# Search all keys behind doors
 
 ```
 #########
@@ -22,29 +22,27 @@
 ################# (136)
 ```
 
-The problem is pretty real. 
+The problem is too real. 
 
-Imagine there're lots things you'd like to get, but when you rush to the door without the key.
-
-Yeah we realize that we just simply don't have the key. More accurately, we don't have the (right) key (at the right moment). Therefore we can't open the door, thus can only imagine what's behind the door.
+> Imagine there're lots things behind doors, but when you rush to the door you realize that you ain't have the key.
 
 ## Problem
 
-How do I find a way to collect all without getting stuck. Or what is the least effort doing that. Any plan?
+How do I find a way to collect all keys without getting stuck. What is the least effort accomplishing that?
 
-The problem actually was created as a competition question in Advent Of Code 2019  and Day 18. It is to find the minimum steps it takes to collect all keys (`a` to `z`). You start from `@`,   and doors `A-Z` are locked without keys `a-z`. For instance, if you don't have key `b`, you won't be able to open door `B` and move behind it. `#` is a wall, `.` is a path. You can only go in four directions, up, down, left, and right.
+These are the question presented at [Advent Of Code 2019 Day 18 Many-Worlds Interpretation](https://adventofcode.com/2019/day/18). It asks to find the minimum steps it takes to collect all keys (`a` to `z`). You start from location `@`, and the doors `A-Z` are locked unless you have the keys `a-z`. For instance, if you don't have key `b`, you won't be able to open door `B` and move behind it. `#` is a wall, `.` is a path. You can only go in four directions each time, up, down, left, and right.
 
 ## Intuition
 
-We are absolutely looking for a path `a->b->c->d->e->f`  and in order to do that, we need to find out if `a->b` exists and if so what's the cost, here the number of steps. 
+Follow the instinct, we want to look for a path `a->b->c->d->e->f` and in order to do that, we need to find out if where `a` can lead us to and what are all the costs. 
 
-Suppose at one point of time, you have keys `[a,b]` while standing at `b`, you look for your next move, you see `c`, you aslo see `d` but it's behind a door `C`. This is great, you'll go with key `c`, simply that you can't go with `d`. Moreover once you have `c`, door `C` won't be problem.
+Suppose at one point of time, you have keys `[a,b]` while standing at `b`, you look for your next move, you see `c`, and `d` that is behind a door `C`. That's great, you'll go with key `c`, since you only reach `d`  after having key `c`.
 
 Now, you have keys `[a,b,c]` while standing at `c`, you look for your next move, you see `[d,e,f]` are all reachable. You'll need to make a choice. Let us say the costs for them are `[2,20,5]`. You then take `d` by hoping you pick **the best one at the moment** and you'd come back one day for the others `[e,f]`.
 
-You manage to keep track of one route to the end,  `a->b->c->d->e->f` . This gives you the overall cost of `148`. Now you go back to take other choices, especially the ones that you have to park when they were discovered. And you find  there're two other routes, `a->b->d->c->f->e` and `a->b->c->d->f->e`. And one of them actually costs `136`, which is less. I should've taken this route. Of course you didn't know that, but you do now since you've done it now.  
+So far you manage to keep track of one route to the end,  `a->b->c->d->e->f` . This gives you the overall cost of `148`. Now you go back to take other choices and you discover two other routes, `a->b->d->c->f->e` and `a->b->c->d->f->e`. One of them costs `136`, which is less. So you update it as your lowest cost.
 
-This is the right approach. The following is a problem that I believe very close to a real life problem. 
+Let's apply this approach to a case that looks like a real life problem where there are many keys and doors.
 
 ```
 #################
@@ -58,25 +56,27 @@ This is the right approach. The following is a problem that I believe very close
 ################# (136)
 ```
 
-> The reason I think this is closer to real life is that it's so bizarre that everything is actually around you but you fail to find out how to reach them, and/or in which order. 
+If I turn the above into a computer code and run it, it'll take about `5` seconds, the computer then tells me `136` steps is the minimium steps I need to take to collect all keys, approximately I need to back and forth `13` times. And it also tells me it found at least `64` possible valid routes (with caching strategy, termed as *Déjà vu* which we will explain shortly). 
 
-The answer is `136`. It takes only `4` seconds for my old laptop to reach the answer, believe it or not !! 
-
-However, If it had been a real life problem,  it probably won't be solvable, because there's up to `64` possible routes (with caching strategy, termed as *Déjà vu* which we will explain shortly). As a human, it might be rare seeing anyone store this much of information in a systematic order and also keeping track of everything along the way, leaving alone the map isn't available to us from the very beginning.
-
-Now you see, pick the cheapest path at the moment is, for linear problems (ones with only one working path), can play out nicely. But it also breaks down pretty quickly once the path gets little bit more convoluted along the way. It could be one of the issue preventing you reaching solution quickly. This is so true that sometimes you get into some situation that you only wish you can dig yourself out.
-
-Keep in mind this is a global optimization game, not a localized one. We are not looking for one road, as in the "All road lead to Rome", instead we are looking more for the **"Cheapest road to Rome"**.
+> In reality, it's rare seeing anyone store this much of information in a systematic order and keep track of paths along the way. Not to mention, we don't have the complete map to start with most of time. 
 
 ## Déjà vu
 
-If we follow our intuition without some careful consideration, we won't be finish the problem on time. Since roughly speaking, we can have `10^10` possible routes, that is ten-zeros of routes,  compared to `64` we actually end  up with. 
+The intuition has a fatal flaw. The above case happens to be an open case where you can have lots of possibilities. Roughly speaking, we can have about `10^10` possible routes, that is ten-zeros of routes. But you just said the computer found `64` routes, there's some difference in between! Well, the computer actually implemented some sort of caching.
 
-Remember back then, for each step we have a pattern of holding some keys `[a,b,c]` while standing at `c`? Turns out this is not unique. These cases stack up quickly, especially for relatively more open map. Since you want to try out lots of different possibilities, you'll arrive at same position with same set of keys a lot. Let's pause for a second.
+Remember back then, for each step we have a pattern of holding some keys `[a,b,c]` while standing at `c`? Turns out this is not unique. How come? Because you could go different route `b->a->c` to reach same set of keys `[a,b,c]` while arriving at `c`. **The holding and location**, termed as a state, turns out to be same for both cases. 
 
-Yeah, call it Déjà vu, the feeling that one has lived through the present situation before, your personal experience, your life time lesson, or your predication to the future. Whatever you call it, it happened before and you have a strong guts feeling what'll happen if you just let it run with this.  
+These identical states stack up quickly, especially for open map like this. The more you do, the more Déjà vu you are getting, and sooner or later you'll ask the question why we just remember the route we visited before.
 
-The computer knows the map, thus here the Déjà vu is a precise state, where it could have a name, as well as a number associated with the cost to this future. Our job here isn't judging the number, of course if the number is very large or very small, it could becoming interesting. But most importantly we are here to document this number, and make sure we only find out the number once and then next time when we arrive at this exact state, we can pull it out from the rabbit hat right away instead of going through the same computation. Remember, doing `10^10` times of anything is a costly matter.Therefore the saving is tremendous and should be applied at all cost. This is more to say, "Do it once. Do it right."
+> Call it Déjà vu, the feeling that one has lived through the present situation before, your personal experience, your life time lesson, or your predication to the future. Whatever you call it, it happened before and you have a strong guts feeling what'll happen if you just let it run with this again.  
+
+Yes, that's what the computer did, take the Déjà vu as a state, evaluate the cost and then remember it. Anyway we need to evaluate the cost of any routes, so the effort of evaluation is the same, what's new here is to name this state and assign the cost to this name. 
+
+Note: list the states { a: 3, b: 4 }
+
+Our job here isn't judging this list of names and costs, of course if the cost is very large or very small, it could be interesting to note. But most importantly we are here to document the state, and make sure we only do the same state once and then next time when we arrive at this exact state, we can pull it out from the rabbit hat right away instead of going through it again.
+
+> Remember, doing `10^10` times of anything is a costly matter. 
 
 ## Baking
 
@@ -121,7 +121,10 @@ This blocking strategy is, more or less, correct. And practically should be used
 
 ## Learned
 
-- I'll take anything,
-- Do it once and do it right
-- Forget "All roads lead to Rome", there could be too many.
+We are not asking "Every roads lead to Rome" question, instead we are asking cheapest pizza you can ever get. Remember the problem we are solving here.
+
+Belongings and position is a state, remember this. If you can name it and evaluate it, it can save you time in the future.
+
+
+
 
