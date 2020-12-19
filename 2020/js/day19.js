@@ -30,26 +30,33 @@ const getConfig = () => {
 const part1 = config => {
 	const { rules, strs } = config
 	console.log(rules)
-	const curr = rules['0']
 	
-	const isValid = (str, i, rule) => {
-		console.log(str, i, rule)
-		// and operation
-		return rule.map((r, j) => {
-			const nrule = rules[r]
-			console.log('nrule', r, nrule)
-			if (typeof nrule == 'string') {
-				return nrule[0] == str[i+j]
-			}
-			// or operation
-			return nrule.map(nr => {
-				return isValid(str, i+j, nr)	
-				return true
-			}).some(v => v)
-		}).every(v => v)
+	const isRuleValid = (str, i, ruleId) => {
+		const r = rules[ruleId]
+		let res, len = 0
+		if (typeof r == 'string') {
+			len = 1
+			res = str[i] == r
+		} else {
+			res = r.map(ruleOr => {
+				console.log('ruleOr', i, ruleOr)
+				let c = 0
+				ruleOr.map(ruleAnd => {
+					console.log('ruleAnd', i+c, ruleAnd)
+					const { res: res2, len: len2 } = isRuleValid(str, i+c, ruleAnd)
+					c += len2
+					return res2
+				}).every(v => v)
+				len = c
+			}).some(v => v)			
+		}
+		console.log(str, i, ruleId, res, len)
+		return { res, len }
 	}
 	
-	return isValid(strs[1], 0, rules[0][0])
+//	ababbb
+	return isRuleValid(strs[0], 0, 0)
+//	return strs.map(str => isRuleValid(str, 0, 0))
 }
 
 const read = require('./read.js')
