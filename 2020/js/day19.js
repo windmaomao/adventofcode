@@ -65,6 +65,6 @@ const part1 = config => {
 const read = require('./read.js')
 const run = require('./run.js')
 
-const lines = read('19b')
+const lines = read('19c')
 const config = getConfig()
 run(part1, config)
