@@ -39,29 +39,33 @@ const part1 = config => {
 			res = str[i] == r
 		} else {
 			res = r.map(ruleOr => {
-				console.log('ruleOr', i, ruleOr)
+//				console.log('ruleOr', i, ruleOr)
 				let c = 0
-				ruleOr.map(ruleAnd => {
-					console.log('ruleAnd', i+c, ruleAnd)
+				const ruleOrRes = ruleOr.map(ruleAnd => {
+//					console.log('ruleAnd', i+c, ruleAnd)
 					const { res: res2, len: len2 } = isRuleValid(str, i+c, ruleAnd)
 					c += len2
 					return res2
 				}).every(v => v)
 				len = c
+				return ruleOrRes
 			}).some(v => v)			
 		}
-		console.log(str, i, ruleId, res, len)
+//		console.log(`i:${i}`, `r:${ruleId}`, res, len)
 		return { res, len }
 	}
 	
-//	ababbb
-	return isRuleValid(strs[0], 0, 0)
-//	return strs.map(str => isRuleValid(str, 0, 0))
+//	console.log(strs[1])
+//	return isRuleValid(strs[4], 0, 0)
+	return strs.map(str => {
+		const c = isRuleValid(str, 0, 0)
+		return c.res ? (c.len == str.length) : false
+	}).filter(v => v).length
 }
 
 const read = require('./read.js')
 const run = require('./run.js')
 
-const lines = read('19a')
+const lines = read('19')
 const config = getConfig()
 run(part1, config)
