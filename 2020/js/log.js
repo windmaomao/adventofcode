@@ -4,9 +4,9 @@ const settings = {
 //	showHidden: false, 
 	depth: null,
 	colors: true,
-//	maxArrayLength: Infinity,
+	maxArrayLength: Infinity,
 //	maxStringLength: Infinity,
-	breakLength: Infinity,
+//	breakLength: 1,
 //	compact: false
 }
 
