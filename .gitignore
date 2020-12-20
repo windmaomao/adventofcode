@@ -1,3 +1,4 @@
 node_modules
 package-lock.json
 .Ulysses*.*
+.DS_Store
