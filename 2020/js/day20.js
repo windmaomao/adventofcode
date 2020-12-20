@@ -17,7 +17,9 @@ const getTiles = () => lines.map(l => {
 	return { id, pic, borders }
 })
 
-const part1 = tiles => {
+const getBoard = () => {
+	const tiles = getTiles()
+	
 	const m = {}
 	tiles.forEach(tile => {
 		tile.borders.forEach(b => {
@@ -25,17 +27,23 @@ const part1 = tiles => {
 			m[b].push(tile.id)
 		})
 	})
-	const m2 = {};
+	
+	const conns = {};
 	for (let [, ids] of Object.entries(m)) {
-		ids.forEach(id => { if (!m2[id]) m2[id] = new Set() })
+		ids.forEach(id => { if (!conns[id]) conns[id] = new Set() })
 		if (ids.length == 2) {		// assume unique match
-			m2[ids[0]].add(ids[1]); m2[ids[1]].add(ids[0])
+			conns[ids[0]].add(ids[1]); conns[ids[1]].add(ids[0])
 		}
 	}
-	const corners = Object.keys(m2).filter(id => 
-		[...m2[id].values()].length == 2
-	)
 	
+	return { tiles, conns }
+}
+
+const part1 = board => {
+	const { tiles, conns } = board
+	const corners = Object.keys(conns).filter(id => 
+		[...conns[id].values()].length == 2
+	)	
 	return corners.map(v => parseInt(v))
 	  .reduce((acc, v) => acc*v, 1)
 }
@@ -45,4 +53,4 @@ const run = require('./run.js')
 const log = require('./log.js')
 
 const lines = read('20', '\n\n')
-run(part1, getTiles())
+run(part1, getBoard())
