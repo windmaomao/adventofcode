@@ -7,21 +7,26 @@ const getFoods = () => {
     igrs.forEach(v => {
       if (!ingredients[v]) ingredients[v] = {
         count: 0, algs: [], id: v,
+        algs2: new Set()
       }
       ingredients[v].count++
     })
     algs.forEach(v => allergens[v] = true)
     return { igrs, algs }
   })
+  const algs = Object.keys(allergens)
   for (igr in ingredients) {
     ingredients[igr].algs = {...allergens}
+    ingredients[igr].algs2 = new Set(algs)
   }
+  // eliminate possibilities here
   foods.forEach(food => {
     Object.keys(ingredients)
       .filter(i => food.igrs.indexOf(i) < 0)
       .forEach(i => {
         food.algs.forEach(a => { 
-          ingredients[i].algs[a] = false 
+          ingredients[i].algs[a] = false
+          ingredients[i].algs2.delete(a) 
         })
       })
   })
@@ -60,12 +65,13 @@ const part2 = foods => {
     })
     igrs = igrs.filter(i => canSolves.indexOf(i) < 0)
   }
-  return res
+  return res.join(',')
 }
 
 const read = require('./read.js')
-const lines = read('21')
+const lines = read('21a')
 const run = require('./run')
 const foods = getFoods()
+console.log(foods)
 run(part1, foods)
 run(part2, foods)
