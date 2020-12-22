@@ -36,21 +36,63 @@ const getBoard = () => {
 		}
 	}
 	
-	return { tiles, conns }
-}
-
-const part1 = board => {
-	const { tiles, conns } = board
 	const corners = Object.keys(conns).filter(id => 
 		[...conns[id].values()].length == 2
-	)	
-	return corners.map(v => parseInt(v))
-	  .reduce((acc, v) => acc*v, 1)
+	)
+
+	return { tiles, conns, corners }
+}
+
+const part1 = board => board
+  .corners.map(v => parseInt(v))
+  .reduce((acc, v) => acc*v, 1)
+  
+const rotate = p => {  
+  const n = p.length
+  const p2 = new Array(n).fill([]).map(v => new Array(n).fill(' '))
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      p2[j][n-1-i] = p[i][j]
+    }
+  }
+  return p2.map(v => v.join(''))
+}
+      
+const flip = p => {
+  return p
+    .map(line => line.split(''))
+    .reverse()
+    .map(v => v.join(''))
+}
+			
+const part2 = board => {
+  const { conns, corners, tiles, borders } = board
+  const tilesMap = {}
+  tiles.forEach(t => { tilesMap[t.id] = t.pic })
+  
+  log(corners)
+  let curr = corners[0]
+  const n = 3
+  const image = new Array(3).fill([]).map(v => new Array(n).fill([]))
+  image[0][0] = rotate(tilesMap[curr])
+  image[0][1] = tilesMap['2473']
+  image[0][2] = rotate(rotate(rotate(flip(tilesMap['3079']))))
+  image[1][0] = rotate(rotate(rotate(tilesMap['1489'])))
+  image[1][1] = rotate(rotate(rotate(tilesMap['1427'])))
+  image[1][2] = rotate(rotate(rotate(tilesMap['2311'])))
+  image[2][0] = rotate(rotate(rotate(tilesMap['2971'])))
+  image[2][1] = rotate(rotate(rotate(tilesMap['2729'])))
+  image[2][2] = rotate(rotate(rotate(tilesMap['1951'])))
+
+  log(image, { breakLength: 1 })
+//	return image
 }
 
 const read = require('./read.js')
 const run = require('./run.js')
 const log = require('./log.js')
 
-const lines = read('20', '\n\n')
-run(part1, getBoard())
+const lines = read('20a', '\n\n')
+const b = getBoard()
+run(part1, b)
+run(part2, b)
