@@ -1,6 +1,3 @@
-const read = require('./read.js')
-const arr = read('01')
-
 function part1(arr, target) {
 	const m = {}
 	for (const i of arr) {
@@ -11,4 +8,7 @@ function part1(arr, target) {
 	return []
 }
 
-console.log(part1(arr, 2020))
+const read = require('./read.js')
+const arr = read('01')
+const run = require('./run')
+run(part1, arr, 2020)
