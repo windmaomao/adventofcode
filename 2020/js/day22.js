@@ -26,9 +26,17 @@ const part1 = mat => {
   return score(ps[w])
 }
 
+const _key = ps => ps.map(p => p.join(',')).join('|')
+
 const part2 = mat => {
   const play = ps => {
+    const visited = {}
     while (ps[0].length && ps[1].length) {
+      const key = _key(ps)
+      if (visited[key]) {
+        return 0
+      }
+      visited[key] = true
       const startSub = ps.map(p => p.length > p[0])
         .every(v => v)
       let w = 0
@@ -42,7 +50,6 @@ const part2 = mat => {
       winner.push(winner.shift())
       winner.push(loser.shift())
     }
-    
     return ps[0].length ? 0 : 1
   }
 
