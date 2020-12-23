@@ -30,16 +30,20 @@ const dest = (curr, m, max) => {
   }
 }
 
-const part1 = n => {
-  const l = list(nums)
+const play = (arr, n) => {
+  const l = list(arr)
   let i = 1, curr = l.head, next
   while (i <= n) {
-    next = dest(curr, l.map, nums.length)
+    next = dest(curr, l.map, arr.length)
     curr = move(curr, next)
     i++
   }
-  
   while (curr.value != 1) { curr = curr.next }
+  return curr
+}
+
+const part1 = n => {
+  let curr = play(nums, n)
   const res = []
   i = 1
   while (i < nums.length) {
@@ -50,8 +54,16 @@ const part1 = n => {
   return res.join('')
 }
 
+const part2 = n => {
+  const nn = 1000000
+  const numList = new Uint32Array(nn).fill(0).map((_, i) => i+1)
+  for (let i = 0; i < nums.length; i++) { numList[i] = nums[i] }
+  let curr = play(numList, n)
+  return curr.next.value * curr.next.next.value
+}
 
 const read = require('./read.js')
 const nums = read('23')[0].split('').map(v => parseInt(v))
 const run = require('./run')
 run(part1, 100)
+run(part2, 10000000)
