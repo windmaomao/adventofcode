@@ -9,6 +9,17 @@ function list(items) {
   return { root, head }
 }
 
+const move = (curr, dest) => {
+  let pickup = curr.next.next.next
+  const res = pickup.next
+  pickup.next = dest.next
+  dest.next = curr.next
+  curr.next = res
+  return res
+}
+
+
+
 const arr = curr => {
   const res = [curr.value]
   let c = curr.next
@@ -19,14 +30,6 @@ const arr = curr => {
   return res
 }
 
-const move = (curr, dest) => {
-  let pickup = curr.next.next.next
-  const res = pickup.next
-  pickup.next = dest.next
-  dest.next = curr.next
-  curr.next = res
-  return res
-}
 
 const dest = curr => {
   const a = arr(curr)
@@ -44,25 +47,28 @@ const dest = curr => {
   }
 }
 
-const ans = curr => {
-  let c = curr
-  while (c.value != 1) { c = c.next }
-  return arr(c).slice(1).join('')
-}
-
-const part1 = (n) => {
+const part1 = n => {
   const l = list(nums)
-
   let i = 1, curr = l.head, next
   while (i <= n) {
-    // console.log(i, arr(curr).join(''))
     next = dest(curr)
-    // console.log(':', next.value)
     curr = move(curr, next)
     i++
   }
   
-  return ans(curr)
+  while (curr.value != 1) { curr = curr.next }
+  const res = []
+  i = 1
+  while (i < nums.length) {
+    curr = curr.next
+    res.push(curr.value)
+    i++
+  }
+  return res.join('')
+}
+
+const part2 = () => {
+
 }
 
 const read = require('./read.js')
