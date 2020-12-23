@@ -1,12 +1,13 @@
 function list(items) {
-  let root = {}, curr = root
+  let root = {}, curr = root, map = {}
   items.forEach(n => {
     curr.next = { value: n }
     curr = curr.next
+    map[n] = curr
   })
   const head = root.next
   curr.next= head
-  return { root, head }
+  return { root, head, map }
 }
 
 const move = (curr, dest) => {
@@ -18,32 +19,14 @@ const move = (curr, dest) => {
   return res
 }
 
-
-
-const arr = curr => {
-  const res = [curr.value]
-  let c = curr.next
-  while (c != curr) { 
-    res.push(c.value)
-    c = c.next
-  }
-  return res
-}
-
-
-const dest = curr => {
-  const a = arr(curr)
-  const m = a.slice(4, a.length)
-  let v = a[0]
+const dest = (curr, m, max) => {
+  let v = curr.value
+  const ns = [curr.next, curr.next.next, curr.next.next.next]
   while (true) {
     v = v - 1 
-    if (v < 1) v = 9
-    const i = m.indexOf(v) 
-    if (i >= 0) {
-      let n = curr
-      for (let j = 0; j < i + 4; j++) { n = n.next }
-      return n
-    }
+    if (v < 1) v = max
+    const res = m[v]
+    if (ns.indexOf(res) < 0) return res
   }
 }
 
@@ -51,7 +34,7 @@ const part1 = n => {
   const l = list(nums)
   let i = 1, curr = l.head, next
   while (i <= n) {
-    next = dest(curr)
+    next = dest(curr, l.map, nums.length)
     curr = move(curr, next)
     i++
   }
@@ -67,9 +50,6 @@ const part1 = n => {
   return res.join('')
 }
 
-const part2 = () => {
-
-}
 
 const read = require('./read.js')
 const nums = read('23')[0].split('').map(v => parseInt(v))
