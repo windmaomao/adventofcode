@@ -6,44 +6,67 @@ function list(items) {
   })
   const head = root.next
   curr.next= head
-
-  const arr = () => {
-    const res = [head.value]
-    let c = head.next
-    while (c != head) { 
-      res.push(c.value)
-      c = c.next
-    }
-    return res.join('')
-  }
-
-  return { root, arr }
+  return { root, head }
 }
 
-const move = curr => {
+const arr = curr => {
+  const res = [curr.value]
+  let c = curr.next
+  while (c != curr) { 
+    res.push(c.value)
+    c = c.next
+  }
+  return res
+}
+
+const move = (curr, dest) => {
   let pickup = curr.next.next.next
-  let dest = pickup.next
+  const res = pickup.next
   pickup.next = dest.next
   dest.next = curr.next
-  curr.next = dest
-  return dest
+  curr.next = res
+  return res
 }
 
-const part1 = () => {
-  const nums = "389125467".split('')
+const dest = curr => {
+  const a = arr(curr).map(v => parseInt(v))
+  const m = a.slice(4, a.length)
+  let v = a[0]
+  while (true) {
+    v = v - 1 
+    if (v < 1) v = 9
+    const i = m.indexOf(v) 
+    if (i >= 0) {
+      let n = curr
+      for (let j = 0; j < i + 4; j++) { n = n.next }
+      return n
+    }
+  }
+}
+
+const ans = curr => {
+  let c = curr
+  while (c.value != '1') { c = c.next }
+  return arr(c).slice(1).join('')
+}
+
+const part1 = (str, n) => {
+  const nums = str.split('')
   const l = list(nums)
-  let i = 1, curr = l.root.next
-  while (i <= 3) {
-    console.log(i, l.arr())
-    curr = move(curr)
+
+  let i = 1, curr = l.head, next
+  while (i <= n) {
+    // console.log(i, arr(curr).join(''))
+    next = dest(curr)
+    // console.log(':', next.value)
+    curr = move(curr, next)
     i++
   }
   
-  return l.arr()
+  return ans(curr)
 }
 
 const read = require('./read.js')
-const num = read('23')
+const num = read('23')[0]
 const run = require('./run')
-const log = require('./log')
-run(part1, num)
+run(part1, num, 100)
