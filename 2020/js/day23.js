@@ -29,7 +29,7 @@ const move = (curr, dest) => {
 }
 
 const dest = curr => {
-  const a = arr(curr).map(v => parseInt(v))
+  const a = arr(curr)
   const m = a.slice(4, a.length)
   let v = a[0]
   while (true) {
@@ -46,12 +46,11 @@ const dest = curr => {
 
 const ans = curr => {
   let c = curr
-  while (c.value != '1') { c = c.next }
+  while (c.value != 1) { c = c.next }
   return arr(c).slice(1).join('')
 }
 
-const part1 = (str, n) => {
-  const nums = str.split('')
+const part1 = (n) => {
   const l = list(nums)
 
   let i = 1, curr = l.head, next
@@ -67,6 +66,6 @@ const part1 = (str, n) => {
 }
 
 const read = require('./read.js')
-const num = read('23')[0]
+const nums = read('23')[0].split('').map(v => parseInt(v))
 const run = require('./run')
-run(part1, num, 100)
+run(part1, 100)
