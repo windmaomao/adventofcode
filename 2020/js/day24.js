@@ -37,25 +37,26 @@ const getGrid = () => {
   return m
 }
 
-const gameOfLife = m => {
+const part2 = (m, max) => {
   let i = 0
   const rels = Object.values(dirs)
   let g = {...m}, g2
-  while (i < 2) {
-    const neighbours = {}
-
+  while (i < max) {
     const blacks = Object.keys(g).filter(k => g[k])
-    console.log(i, blacks.length)
+
+    const neighbours = {}
     blacks.forEach(b => {
       const p = b.split(',').map(v => parseInt(v))
       rels.forEach(rel => {
         const np = rel.map((r, j) => r + p[j])
         neighbours[_k(np)] = true
       })
+      neighbours[b] = true
     })
 
     g2 = {}
     blacks.forEach(b => { g2[b] = true })
+
     Object.keys(neighbours).forEach(b => {
       const p = b.split(',').map(v => parseInt(v))
       const bn = rels.map(rel => {
@@ -73,16 +74,17 @@ const gameOfLife = m => {
     i++
     g = g2
   }
+  return Object.keys(g).filter(k => g[k]).length
 }
 
 const part1 = m => Object.values(m).filter(v => v).length
 
 const read = require('./read.js')
-const lines = read('24a')
+const lines = read('24')
 const run = require('./run')
 const grid = getGrid()
 run(part1, grid)
-run(gameOfLife, grid)
+run(part2, grid, 100)
 
 // (0,0) (0,1) (0,2) (0,3) (0,4)
 //    (1,0) (1,1) (1,2) (1,3) (1,4)
