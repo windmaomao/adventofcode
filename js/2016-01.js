@@ -1,4 +1,4 @@
-require('./index.js')
+require('./utils/index.js')
 const lines = read('2016', '01')[0].split(', ')
 
 const dirs = [[0, 1], [1, 0],  [0, -1], [-1, 0]]

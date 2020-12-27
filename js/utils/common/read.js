@@ -3,7 +3,7 @@ const input = (
 ) => require('fs')
   .readFileSync(
     __dirname + 
-    '/../' + year + 
+    '/../../../' + year + 
     '/res/' + day + 
     '.input',
     'utf-8'

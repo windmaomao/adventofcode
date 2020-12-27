@@ -1,10 +1,4 @@
-// Number
-Number.prototype.mod = function(n) {
-  return ((this % n) + n) % n
-}
-
-// Array
-Array.new = require('./array')
+Array.new = require('./new')
 Array.indexes = require('./indexes')
 Array.prototype.sum = function (fn) {
   if (!fn) {
