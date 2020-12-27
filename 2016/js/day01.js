@@ -1,58 +1,29 @@
-import './number'
-import './array'
+require('./javascript')
 
-const nextDirId = (dirId, c) => {
-  let dn = dirId
-  switch(c) {
-    case 'R': dn++; break;
-    case 'L': dn--; break;
-  }
-  return dn.mod(4)
+const dirs = [[0, 1], [1, 0],  [0, -1], [-1, 0]]
+const nextFacing = (facing, turnRight) => {
+	let res = turnRight ? facing + 1 : facing - 1
+	return res.mod(4)
 }
 
-const nextDirPos = (pos, dirId) => {
-  let pos2 = [...pos]
-  switch(dirId) {
-    case 0: pos2[1]++; break;
-    case 1: pos2[0]++; break;
-    case 2: pos2[1]--; break;
-    case 3: pos2[0]--; break;
-  }
-  return pos2
+const part1 = () => {
+	const lines = ['R2', 'L3']
+	let p = [0, 0], facing = 0
+	lines.forEach(ins => {
+		const turnRight = ins[0] === 'R'
+		const steps = parseInt(ins.slice(1))
+		facing = nextFacing(facing, turnRight)
+		const dir = dirs[facing]
+		array(steps).forEach(_ => {
+			p = p.map((v, i) => v + dir[i])
+		})
+	})
+	return p.sum(Math.abs)
 }
 
-const allSteps = list => list.flatMap(ins => {
-  const size = parseInt(ins.slice(1))
-  if (size == 1) return [ins[0]]
-  return [ins[0], ...Array.new(size - 1, ' ')]
-})
+const read = require('./read.js')
+const run = require('./run.js') 
+const array = require('./array.js')
+const lines = read('01')
 
-const nextStep = (acc, c) => {
-  const dirId = nextDirId(acc.dirId, c)
-  const pos = nextDirPos(acc.pos, dirId)
-  return { dirId, pos }
-}
-
-const part1 = list => list
-  .apply(allSteps)
-  .reduce(nextStep, { dirId: 0, pos: [0, 0] })
-  .pos.sum(Math.abs)
-
-const secondPos = poses => {
-  const visited = {}
-  for (const p of poses) {
-    const k = `${p[0]}x${p[1]}`
-    if (visited[k]) return p
-    visited[k] = true
-  }
-  return [0, 0]
-}
-
-const part2 = list => list
-  .apply(allSteps)
-  .scan(nextStep, { dirId: 0, pos: [0, 0] })
-  .map(v => v.pos)
-  .apply(secondPos)
-  .sum(Math.abs)
-
-export { nextDirId, nextDirPos, part1, part2 }
+run(part1)

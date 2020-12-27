@@ -1,8 +1,10 @@
+require('./js_array.js')
+
 const part = (ns, target, d) => {
 	const n = ns.length
 	const [k] = indexes(array(d, n))
-	  .filter(is => is.reduce((acc, i) => acc + ns[i], 0) == target)
-	return k.reduce((acc, v) => acc * ns[v], 1)
+	  .filter(is => is.sum(i => ns[i]) == target)
+	return k.multiply(v => ns[v])
 }
 
 const read = require('./read.js')

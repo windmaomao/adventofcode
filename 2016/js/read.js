@@ -6,4 +6,4 @@ const input = (
   // .filter(Boolean)
   .map(n => toNumber ? parseInt(n) : n)
 
-export default input
+module.exports = input
