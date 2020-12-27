@@ -1,39 +1,14 @@
-const part1 = (nums, target) => {
-	const iter = array(nums.length, (_, i) => i)
-	let res = -1
-	iter.forEach(i => {
-		iter.forEach(j => {
-			if (j <= i) return
-			let [a, b] = [nums[i], nums[j]]
-			if (a + b == target) {
-				res = a * b
-			}
-		})
-	})
-	return res
-}
-
-const part2 = (nums, target) => {
-	const iter = array(nums.length, (_, i) => i)
-	let res = -1
-	iter.forEach(i => {
-		iter.forEach(j => {
-			if (j <= i) return
-			iter.forEach(k => {
-				if (k <= j) return
-				let [a, b, c] = [nums[i], nums[j], nums[k]]
-				if (a + b + c == target) {
-					res = a * b * c
-				}
-			})
-		})
-	})
-	return res
+const part = (ns, target, d) => {
+	const n = ns.length
+	const [k] = indexes(array(d, n))
+	  .filter(is => is.reduce((acc, i) => acc + ns[i], 0) == target)
+	return k.reduce((acc, v) => acc * ns[v], 1)
 }
 
 const read = require('./read.js')
 const array = require('./array.js')
-const nums = read('01', '\n', true)
+const indexes = require('./indexes.js')
+const nums = read('01a', '\n', true)
 const run = require('./run')
-run(part1, nums, 2020)
-run(part2, nums, 2020)
+run(part, nums, 2020, 2)
+run(part, nums, 2020, 3)

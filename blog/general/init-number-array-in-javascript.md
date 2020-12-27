@@ -22,24 +22,24 @@ const a = array(10, 3, Uint16Array)
 Just to be more precise,
 
 ```javascript
-const array = (n, v, T = Array) => {
+const array = (n, v = i => i, T = Array) => {
 	const arr = new T(n).fill(0)
 	if (v === undefined) return arr
 	const isFn = typeof v === 'function'
-	return arr.map(isFn ? v : x => v)
+	return arr.map(isFn ? (_, i) => v(i) : _ => v)
 }
 ```
 
 Let's see if we can address some problems with it
 
-- it's filled with `0` across all elements
-- support number with fixed size (see appendix)
-- allow assign initial value (or function)
+- use element index as its default value
+- can assign custom initial value (or function)
+- can set element type with fixed size (see appendix)
 
 ```javascript
 const N = 10000000
-const a = array(N) // [0,0,0]
-const a = array(N, (v,i) => i)  // [0,1,2]
+const a = array(N) // [0,1,2]
+const a = array(N, i => i + 1)  // [1,2,3]
 const a = array(N, 3, Uint16Array) // [3,3,3]
 ```
 
