@@ -10,3 +10,23 @@ const part = (ns, target, d) => {
 
 run(part, nums, 2020, 2)
 run(part, nums, 2020, 3)
+
+// [[0, 3], [0, 3]].runN(
+//   (acc, vs, is, arr) => {}, {}
+//   (acc, vs, is, arr) => false
+// )
+
+//const part1 =  (ns, target) => {
+//  const n = ns.length
+//	const res = Array.new(n*n).run(
+//		(_, k) => {
+//			const j = k % n
+//			const i = (k - j) / n
+//			return [i, j]
+//		}, null, 
+//		([i, j]) => (ns[i] + ns[j] == target)
+//	)
+//	return res[0].multiply(v => ns[v])
+//}
+//
+//run(part1, nums, 2020)
