@@ -1,5 +1,5 @@
 require('./utils/index')
-const nums = read('2019', '01', '\n', true)
+const nums = read('2019', '1', '\n', true)
 
 const fuel = m => Math.floor(m / 3) - 2
 const part1 = ns => ns.map(fuel).sum()
