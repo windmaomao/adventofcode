@@ -14,4 +14,7 @@ Array.prototype.multiply = function (fn) {
     return this.reduce((acc, v, i) => acc * fn(v, i), 1) 
   }
 }
+Array.prototype.scan = function (fn, seed) {
+  return require('./scan')(this, fn, seed)
+}
 
