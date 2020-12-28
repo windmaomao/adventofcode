@@ -9,7 +9,6 @@ const exts = {
   '2017': '.input',
   '2016': '.input',
   '2015': '.input',
-
 }
 const input = (
   year, day, separator = '\n', toNumber = false
