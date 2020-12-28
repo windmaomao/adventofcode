@@ -8,10 +8,8 @@ const nextFacing = (facing, turnRight) => {
 }
 
 const part = (outputFirst) => {
-	let p = [0, 0], facing = 0, first = null
-	const visited = {}
-	lines.forEach(ins => {
-		if (first) return
+	const runs = lines.run((acc, ins) => {
+		let { p, facing, visited, first } = acc
 		const turnRight = ins[0] === 'R'
 		const steps = parseInt(ins.slice(1))
 		facing = nextFacing(facing, turnRight)
@@ -24,10 +22,14 @@ const part = (outputFirst) => {
 				visited[key] = true
 			}
 		})
-	})
-	const res = first || p
+		return { p, facing, visited, first }
+	}, { 
+		p: [0, 0], facing: 0, visited: {}, first: null
+	}, outputFirst ? acc => acc.first : undefined)
+	
+	const res = runs[0].first || runs[0].p
 	return res.sum(Math.abs)
 }
 
-run(part, false) 
+run(part)
 run(part, true)
