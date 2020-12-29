@@ -17,6 +17,10 @@ Array.prototype.multiply = function (fn) {
 Array.prototype.scan = function (fn, seed) {
   return require('./scan')(this, fn, seed)
 }
-Array.prototype.run = function (fn, init, until, limitSteps) {
-  return require('./run')(this, fn, init, until, limitSteps)
+Array.prototype.run = function (fn, init, until) {
+  return require('./run')(this, fn, init, until)
 }
+Array.prototype.runN = function (fn, init, until) {
+  return require('./runN')(this, fn, init, until)
+}
+
