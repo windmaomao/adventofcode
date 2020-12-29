@@ -4,9 +4,8 @@ const nums = read('2020', '01a', '\n', true)
 const part = (ns, target, d = 2) => {
 	const n = ns.length
 	const res = Array.new(d, ns).runN(
-		(acc, vs) => {
-			return vs.sum() == target ? vs : null
-		}, null, acc => acc
+		(acc, vs) => vs, null, 
+		acc => (acc.sum() == target)
 	)
 	return res[0].multiply()
 }
