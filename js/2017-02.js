@@ -6,16 +6,14 @@ const part1 =() => lines.map(l => l.max() - l.min()).sum()
 
 const part2 = () => {
 	return lines.map(l => {
-		const index = Array.new(l.length)
-		const res = Array.new(2, index).runN(
-			(acc, is) => is, null, 
-			is => {
-				if (is[0] == is[1]) return false
-				return l[is[0]] % l[is[1]] == 0
+		const res = Array.new(2, l).runN(
+			(_, vs, is) => vs, null, 
+			(_, vs, is) => {
+				if (vs[0] >= vs[1]) return false
+				return vs[1] % vs[0] == 0
 			}
-		)
-		const is = res[0]
-		return l[is[0]] / l[is[1]]
+		)[0]
+		return res[1] / res[0]
 	}).sum()
 }
 
