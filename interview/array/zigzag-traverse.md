@@ -16,11 +16,11 @@ Zigzag order starts at the top left corner of the two-dimensional array, goes do
 
 Aim for diagnoals, and solve 
 ```bash
-  i+j = d
-  0 =< i <= n - 1
-  0 =< j <= m - 1
-therefore for each d,
-  max(d+1-m, 0) =< i <= min(d, n-1)  
+                    i + j = d
+                  0 =< i <= n - 1
+                  0 =< j <= m - 1
+thus for each d,
+  max(d + 1 - m, 0) =< i <= min(d, n - 1)  
 ```
 ## Code
 
