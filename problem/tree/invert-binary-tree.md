@@ -24,7 +24,7 @@ Each BinaryTree node has an integer value , a left child node, and a right child
 
 ## Hint
 
-```haskell
+```xquery
 swap (node)
 	if (not valid), do nothing
 	swap node.left and node.right

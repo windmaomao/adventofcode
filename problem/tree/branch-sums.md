@@ -8,7 +8,7 @@ Each Binary Tree node has an integer value , a left child node, and a right chil
 
 https://www.algoexpert.io/questions/Branch%20Sums
 
-```bash
+```xquery
             1
          /     \
         2       3
