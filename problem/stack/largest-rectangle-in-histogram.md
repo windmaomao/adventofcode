@@ -7,6 +7,8 @@ Given an array of integers **A** of size **N**. **A** represents a histogram i.e
 
 [Medium Explanation](https://medium.com/@dimko1/largest-rectangle-in-histogram-bbd7c1e1158)
 
+https://www.danielleskosky.com/largest-rectangle-in-histogram/
+
 ## Hint
 
 if next item is smaller, then the information can be gathered up til now
