@@ -1,3 +1,3 @@
-require('./js_array')
-exports.read = require('./read.js')
+require('./array')
+exports.read = require('./read')
 exports.run = require('./run')
