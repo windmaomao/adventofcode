@@ -1,22 +1,14 @@
 const Graph = require('./graph')
 
 const dfsFrom = (g, src) => {
-	const marked = {}
 	const vertices = []
 	const from = {}
-	
-	const dfs = (v) => {
-		marked[v] = true
+	const marked = g.traverse(src, v => {
 		vertices.push(`${v}`)
-		for (const w of (g.adj[v] || [])) {
-			if (!marked[w]) {
-				from[w] = v
-				dfs(w)
-			}
-		}
-	}
+	}, { nextCb: (v, w, visited) => {
+		if (!visited) from[w] = v
+	}})
 	
-	dfs(src)
 	const visits = Object.keys(marked)
 	const hasVisited = v => !!marked[v]
 	const pathTo = v => {
@@ -31,8 +23,8 @@ const dfsFrom = (g, src) => {
 	return { visits, hasVisited, vertices, pathTo }
 }
 
-const g = Graph([[0,2], [2,1], [2,3], [3,4], [3,5]])
+const g = Graph({0: [1, 3], 1: [2], 3: [4], 4: [5]})
 const p = dfsFrom(g, 0)
 console.log(p.hasVisited(5))
 console.log(p.vertices)
-console.log(p.pathTo(5))
+//console.log(p.pathTo(5))

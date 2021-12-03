@@ -1,23 +1,29 @@
 const Graph = require('./graph')
-const dfsCycle = require('./dfs-cycle')
 
-const hasSingleCycle = (array) => {
-	const n = array.length
-	
-	const edges = array.map((v, i) => {
+const hasSingleCycle = (arr) => {
+	const n = arr.length
+	const next = i => {
+		const v = arr[i]
 		let j = (i + v) % n
 		if (j < 0) j += n
 		if (j >= n) j -= n
-		return [i, j]
-	}).filter(([i, j]) => i !== j)
-	
-	const g = Graph(edges)
-	const c = dfsCycle(g)
-	
-	return c.components
+		return j
+	}
+
+	const g = Graph(i => [next(i)])
+	const visited = []
+	const hasCycle = g.cycle(0, v => { 
+		visited.push(v) 
+	})
+	const last = visited.pop()
+
+	return hasCycle 
+		&& visited.length === n - 1
+		&& next(last) === 0
 }
 
-//console.log(hasSingleCycle([2,3,1,-4,-4,2]))
-//console.log(hasSingleCycle([0,1,1,1,1]))
-//console.log(hasSingleCycle([1,1,0,1,1]))
+console.log(hasSingleCycle([2,3,1,-4,-4,2]))
+console.log(hasSingleCycle([0,1,1,1,1]))
+console.log(hasSingleCycle([1,1,0,1,1]))
 console.log(hasSingleCycle([1,1,1,1,2]))
+console.log(hasSingleCycle([3,5,5,-5,-2,-5,-12,-2,-1,2,-6,1,1,2,-5,2]))

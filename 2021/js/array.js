@@ -8,6 +8,16 @@ Array.prototype.sum = function (fn) {
   }
 }
 
+// a.multiply()
+// a.multiply((v, i) => v + fn(i))
+Array.prototype.multiply = function (fn) {
+  if (!fn) {
+    return this.reduce((acc, v) => acc * v, 1)
+  } else {
+    return this.reduce((acc, v, i, arr) => acc * fn(v, i, arr), 1) 
+  }
+}
+
 // a.range(2)
 // a.range(1, 4)
 // a.range(1, -1)
