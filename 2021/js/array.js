@@ -1,3 +1,7 @@
+// a.new(n)
+Array.prototype.new = function (n) {
+  return new Array(n).fill(0)
+}
 // a.sum()
 // a.sum((v, i) => v + fn(i))
 Array.prototype.sum = function (fn) {

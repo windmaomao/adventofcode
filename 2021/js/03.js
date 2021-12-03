@@ -1,52 +1,47 @@
 const bundle = require('./bundle')
-const inputs = bundle.read('03', '\n', false)
-  .map(v => v.split(''))
+const inputs = bundle.read('03a', '\n', false)
+  .map(v => v.split('').map(c => parseInt(c)))
 
-const part1 = ns => {
-  const n = ns[0].length
-  const gs = new Array(n).fill(0)
+const b2d = a => [...a]
+  .reverse()
+  .reduce((acc, v, i) => acc + 2 ** i * v, 0)
 
-  ns.forEach(bits => {
-    for (let i = 0; i < n; i++) {
-      if (bits[i] === '1') {
-        gs[i]++
-      } else {
-        gs[i]--
-      }
-    }
-  })
+const bitFreq = (res, i) => res
+  .reduce((c, bits) => bits[i] ? ++c : --c, 0)
   
-  const gamma = gs.map(v => (v > 0 ? 1 : 0)).join('')
-  const epsilon = gs.map(v => (v < 0 ? 1 : 0)).join('')
+const gammaRule = v => v >= 0 ? 1: 0
+const epsilonRule = v => v < 0 ? 1 : 0
 
-  return [gamma, epsilon]
+const part1 = (ns) => {
+  const n = ns[0].length
+  const fs = [].new(n).map((_, i) => bitFreq(ns, i))
+  const gamma = b2d(fs.map(gammaRule))
+  const epsilon = b2d(fs.map(epsilonRule))
+  return gamma * epsilon
 }
 
 bundle.run(part1, inputs)
 
-const part2 = ns => {
+const calculate = (ns, rule) => {
   const n = ns[0].length
   let res = [...ns]
   
   let i = 0
-  
   while ((res.length > 1) && i < n) {
-    let k = 0
-    res.forEach(bits => {
-      if (bits[i] === '1') {
-        k++
-      } else {
-        k--
-      }
-    })
-    const picked = k >= 0 ? '1' : '0'
-//  const picked = k < 0 ? '1' : '0'
+    const k = bitFreq(res, i)
+    const picked = rule(k)
     res = res.filter(bits => bits[i] == picked)
     i++
   }
   
-  return 1616 * 3005
-  return res
+  return res[0]
+}
+
+
+const part2 = (ns, n) => {
+  const gamma = b2d(calculate(ns, gammaRule))
+  const epsilon = b2d(calculate(ns, epsilonRule))
+  return gamma * epsilon
 }
 
 bundle.run(part2, inputs)
