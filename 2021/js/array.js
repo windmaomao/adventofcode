@@ -3,6 +3,15 @@ Array.prototype.new = function (n) {
   return new Array(n).fill(0)
 }
 
+// a.clone()
+Array.prototype.clone = function() {
+  return this.map(v => {
+    if (Array.isArray(v)) return v.clone()
+    if (typeof v === 'object') return { ...v }
+    return v
+  })
+}
+
 // a.sum()
 // a.sum((v, i) => v + fn(i))
 Array.prototype.sum = function (fn) {
