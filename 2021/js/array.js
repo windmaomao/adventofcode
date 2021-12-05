@@ -1,6 +1,13 @@
-// a.new(n)
+const _ = require('./lodash')
+
+// [].new(n)
 Array.prototype.new = function (n) {
   return new Array(n).fill(0)
+}
+
+// [].range(2)
+Array.prototype.range = function (from, to, step) {
+  return _.range(from, to, step)
 }
 
 // a.clone()
@@ -31,25 +38,6 @@ Array.prototype.multiply = function (fn) {
     return this.reduce((acc, v, i, arr) => acc * fn(v, i, arr), 1) 
   }
 }
-
-// a.range(2)
-// a.range(1, 4)
-// a.range(1, -1)
-Array.prototype.range = function (from, to) {
-  if (to === undefined) {
-    to = from
-    from = 0
-  }
-  if (to < 0) {
-    to += this.length
-  }
-  const arr = []
-  for (let i = from; i < to; i ++) {
-    arr.push(this[i])
-  }
-  return arr
-}
-
 
 // a.uniq()
 // a.uniq((v, i) => ...)
