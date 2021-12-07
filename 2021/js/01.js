@@ -1,5 +1,5 @@
 const bundle = require('./bundle')
-const nums = bundle.read('01a', '\n', true)
+const nums = bundle.read('01', '\n', true)
 
 const part1 = ns => ns.sum((v, i, arr) =>
   i > 0 && v > arr[i-1] ? 1 : 0
