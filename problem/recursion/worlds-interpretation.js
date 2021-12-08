@@ -77,12 +77,13 @@ const runWorld = (lines) => {
 		const [x, y] = key2Pos(u)
 		m[x][y] = '.'
 		visited.push(char)
+		let destSteps = Infinity
 		
-
 		if (visited.filter(isKey).length == keysCount) {
 			if (dist < minSteps) {
 				minSteps = dist
 			}
+			destSteps = 0
 			console.log(dist, visited.join(''))
 		} else {
 			const [keys, dists] = findKeys(m, u)
@@ -95,27 +96,30 @@ const runWorld = (lines) => {
 				if (visited.indexOf(k) < 0
 					&& canOpen(k, visited)
 				) {
-					const md = visit(
+					const childDestSteps = visit(
 						keys[k], k, dist+dists[k], cloneMap(m)
 					)
+					const tmp = childDestSteps + dists[k]
+					if (tmp < destSteps) destSteps = tmp
 				}
 			})
 		}
 
-		
+		console.log('pop', char, destSteps)
 		visited.pop()
+		return destSteps
 	}
 	
 	const visited = []
-	visit(root, '@', 0, cloneMap(charsMap))
-	console.log(minSteps)
+	const totalMinSteps = visit(root, '@', 0, cloneMap(charsMap))
+	console.log(totalMinSteps)
 }
 
-//runWorld([
-//"#########",
-//"#b.A.@.a#",
-//"#########",
-//])
+runWorld([
+	"#########",
+	"#b.A.@.a#",
+	"#########",
+])
 
 //runWorld([
 //"########################",
@@ -125,17 +129,17 @@ const runWorld = (lines) => {
 //"########################"
 //])
 
-runWorld([
-	"#################",
-	"#i.G..c...e..H.p#",
-	"########.########",
-	"#j.A..b...f..D.o#",
-	"########@########",
-	"#k.E..a...g..B.n#",
-	"########.########",
-	"#l.F..d...h..C.m#",
-	"#################",
-])
+//runWorld([
+//"#################",
+//"#i.G..c...e..H.p#",
+//"########.########",
+//"#j.A..b...f..D.o#",
+//"########@########",
+//"#k.E..a...g..B.n#",
+//"########.########",
+//"#l.F..d...h..C.m#",
+//"#################",
+//])
 
 //runWorld([
 //"########################",
