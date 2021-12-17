@@ -68,7 +68,6 @@ const runWorld = (lines) => {
 	const charsMap = lines.map(l => l.split(''))
 	const keysCount = getKeyCount(charsMap)
 	const root = findRoot(charsMap)
-	let minSteps = Infinity
 	console.log('@', root, keysCount)
 	console.log(charsMap.map(a => a.join('')))
 	const memo = {}
@@ -78,33 +77,36 @@ const runWorld = (lines) => {
 		m[x][y] = '.'
 		visited.push(char)
 		let destSteps = Infinity
+		const memoKey = visited.sort().join('')
+			+ '|' + visited[visited.length - 1]
 		
-		if (visited.filter(isKey).length == keysCount) {
-			if (dist < minSteps) {
-				minSteps = dist
+//	if (!memo[memoKey]) {
+			if (visited.filter(isKey).length == keysCount) {
+				destSteps = 0
+				console.log(dist, visited.join(''))
+			} else {
+				const [keys, dists] = findKeys(m, u)
+				const nexts = Object.keys(keys).filter(k => 
+					visited.indexOf(k) < 0 && canOpen(k, visited)
+				)
+				
+				//			console.log('nexts', nexts)
+				nexts.forEach(k => {
+					if (visited.indexOf(k) < 0 && canOpen(k, visited)) {
+						const childDestSteps = visit(
+							keys[k], k, dist+dists[k], cloneMap(m)
+						)
+						const tmp = childDestSteps + dists[k]
+						if (tmp < destSteps) destSteps = tmp
+					}
+				})
 			}
-			destSteps = 0
-			console.log(dist, visited.join(''))
-		} else {
-			const [keys, dists] = findKeys(m, u)
-			const nexts = Object.keys(keys).filter(k => 
-				visited.indexOf(k) < 0 && canOpen(k, visited)
-			)
-			
-//			console.log('nexts', nexts)
-			nexts.forEach(k => {
-				if (visited.indexOf(k) < 0
-					&& canOpen(k, visited)
-				) {
-					const childDestSteps = visit(
-						keys[k], k, dist+dists[k], cloneMap(m)
-					)
-					const tmp = childDestSteps + dists[k]
-					if (tmp < destSteps) destSteps = tmp
-				}
-			})
-		}
-
+			memo[memoKey] = destSteps
+//	} else {
+//		destSteps = memo[memoKey]
+//		console.log('hit', destSteps, memoKey)
+//	}
+		
 		console.log('pop', char, destSteps)
 		visited.pop()
 		return destSteps
@@ -115,19 +117,19 @@ const runWorld = (lines) => {
 	console.log(totalMinSteps)
 }
 
-runWorld([
-	"#########",
-	"#b.A.@.a#",
-	"#########",
-])
-
 //runWorld([
-//"########################",
-//"#f.D.E.e.C.b.A.@.a.B.c.#",
-//"######################.#",
-//"#d.....................#",
-//"########################"
-//])
+//"#########",
+//"#b.A.@.a#",
+//"#########",
+//]) // 8
+
+runWorld([
+	"########################",
+	"#f.D.E.e.C.b.A.@.a.B.c.#",
+	"######################.#",
+	"#d.....................#",
+	"########################"
+]) //  86
 
 //runWorld([
 //"#################",
