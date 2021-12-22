@@ -20,7 +20,6 @@ const dijkstra = (src) => {
 	distTo[src] = 0.0
 
 	pq[src] = 0.0
-	let k = 0
 	while (Object.keys(pq).length) {
 		const s = Object.keys(pq).sort((a, b) => pq[a] - pq[b])
 		const u = s[0]
@@ -35,8 +34,6 @@ const dijkstra = (src) => {
 				pq[v] = weight
 			}
 		})
-		
-		k++
 	}
 	
 	console.log(distTo)

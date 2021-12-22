@@ -1,137 +1,138 @@
-// AdventOfCode 2019 day18
-const isDoor = c => c >= 'A' && c <= 'Z'
-const isKey = c => c >= 'a' && c <= 'z'
+// working solution of advent 2019, day 18
+const { log } = console
+const DIRS = [[-1,0], [0,1], [1,0], [0,-1]]
+const isKey = c => (c >= 'a' && c <= 'z')
+const isDoor = c => (c >= 'A' && c <= 'Z')
 
-const findRoot = (m) => {
-	const i = m.findIndex(l => l.indexOf('@') >= 0)
-	const j = m[i].findIndex(c => c == '@')
-	m[i][j] = '.'
-	return `${i},${j}`
+// find out maze origin and num of keys
+const mazeStats = (maze) => {
+  let startPos = [0, 0], numKeys = 0
+  for (let i = 0; i < maze.length; i++) {
+    const row = maze[i]
+    const j = row.indexOf('@')
+    if (j >= 0) {
+      startPos = [i, j]
+    }
+    numKeys += row.filter(isKey).length
+  }
+  return { startPos, numKeys }
 }
 
-const getKeyCount = (m) => {
-	return m.reduce((acc, l) => acc + l.filter(isKey).length, 0)
+// given maze, start position and num of keys
+function World(_maze) {
+  // create a char maze
+  const maze = _maze.map(s => s.split(''))
+  // set maze char
+  const setMazeChar = ([i, j], c) => { maze[i][j] = c }	
+
+  const { startPos, numKeys } = mazeStats(maze)
+  const char = ([i, j]) => maze[i][j]
+  const posKey = (pos) => pos.join(',')
+  const dirs = ([i, j]) => {
+    if (maze[i][j] != '.') return []
+    return DIRS.map(([di, dj]) => [i+di, j+dj])
+    .filter(([i, j]) => maze[i][j] != '#')
+  }
+  
+  // given a source pos
+  // find all possible destinations
+  const findDests = (srcPos) => {
+    const queue = [[srcPos, 0]]
+    const marked = {}
+    const dests = {} 
+    
+    const mark = pos => { marked[posKey(pos)] = true }
+    const isMarked = pos => marked[posKey(pos)] || false
+    const hit = pos => char(pos) != '.' 
+    
+    while (queue.length) {
+      const [pos, k] = queue.shift()
+      mark(pos)
+      if (hit(pos)) {
+        dests[char(pos)] = { pos, k }
+      }
+      
+      dirs(pos).forEach(nextPos => {
+        if (!isMarked(nextPos)) {
+          queue.push([nextPos, k+1])
+        }
+      })
+    }
+    
+    return dests
+  }
+  
+  const hasDoorKey = (keys, door) => 
+    keys.indexOf(door.toLowerCase()) >= 0
+  const genMemoKey = (objs, pos) => 
+    [...objs].sort().join('') + ':' + pos.join(',')
+  
+  // given keys/doors taken, source pos
+  //  find min total steps
+  const visit = (objsTaken, srcPos) => {
+    const numObjs = objsTaken.length
+    let res = Infinity
+    setMazeChar(srcPos, '.')
+    const keys = objsTaken.filter(isKey)
+    const memoKey = genMemoKey(keys, srcPos)
+    
+    if (memo[memoKey] != undefined) {
+//    console.log('hit', memoKey)
+      res = memo[memoKey]
+    } else {
+      if (keys.length == numKeys) {
+        log('>', objsTaken.join(''))
+        res = 0
+      } else {
+        const dests = findDests(srcPos)
+        //		console.log(srcPos, dests)
+        const nextObjs = Object.keys(dests)
+        .filter(c => isKey(c) || hasDoorKey(keys, c))
+        nextObjs.forEach(o => {
+          const { pos, k } = dests[o]
+          const nextSteps = visit([...objsTaken, o], pos)
+          if (nextSteps != Infinity) {
+            res = Math.min(res, nextSteps + k)
+          }
+        })
+      }
+      memo[memoKey] = res
+    }
+    
+    setMazeChar(srcPos, objsTaken[numObjs - 1])
+    return res
+  }
+  
+  const memo = {}
+  const minSteps = visit(['@'], startPos)
+  console.log(minSteps)
+  //console.log(memo)
+  return minSteps
 }
 
-const key2Pos = s => s.split(',').map(v => parseInt(v))
-const getAdjs = (m, u) => {
-	const [i, j] = key2Pos(u)
-	return [[i-1,j], [i+1,j], [i,j-1],[i,j+1]]
-		.filter(([x, y]) => {
-			const c = m[x][y]
-			if (c == '#') return false
+//World([
+//"#########",
+//"#b.A.@.a#",
+//"#########",
+//])  // 8
 
-			return true
-	  })
-		.map(([x,y]) => `${x},${y}`)
-}
-
-const findKeys = (m, src) => {
-	const parent = {}
-	const marked = { [src]: true }
-	const queue = [src]
-	const keys = {}
-
-	while (queue.length) {
-		const u = queue.shift()
-		const [x, y] = key2Pos(u)
-		const char = m[x][y]
-		if (char != '.') keys[char] = u
-
-		if (!isDoor(char)) {
-			getAdjs(m, u).forEach(v => {
-				if (!marked[v]) {
-					marked[v] = true
-					parent[v] = u
-					queue.push(v)
-				}
-			})
-		}
-	}
-
-	const dists = {}
-	Object.keys(keys).forEach(k => {
-		let j = 0
-		for (let x = keys[k]; x != src; x = parent[x]) { j++ }
-		dists[k] = j
-	})
-	return [keys, dists]
-}
-
-const canOpen = (char, keys) => {
-	if (!isDoor(char)) return true
-	return keys.indexOf(char.toLowerCase()) >= 0
-}
-const cloneMap = m => m.map(arr => arr.slice())
-
-const runWorld = (lines) => {
-	const charsMap = lines.map(l => l.split(''))
-	const keysCount = getKeyCount(charsMap)
-	const root = findRoot(charsMap)
-	console.log('@', root, keysCount)
-	console.log(charsMap.map(a => a.join('')))
-	const memo = {}
-	
-	const visit = (u, char, dist, m) => {
-		const [x, y] = key2Pos(u)
-		m[x][y] = '.'
-		visited.push(char)
-		let destSteps = Infinity
-		const memoKey = visited.sort().join('')
-			+ '|' + visited[visited.length - 1]
-		
-//	if (!memo[memoKey]) {
-			if (visited.filter(isKey).length == keysCount) {
-				destSteps = 0
-				console.log(dist, visited.join(''))
-			} else {
-				const [keys, dists] = findKeys(m, u)
-				const nexts = Object.keys(keys).filter(k => 
-					visited.indexOf(k) < 0 && canOpen(k, visited)
-				)
-				
-				//			console.log('nexts', nexts)
-				nexts.forEach(k => {
-					if (visited.indexOf(k) < 0 && canOpen(k, visited)) {
-						const childDestSteps = visit(
-							keys[k], k, dist+dists[k], cloneMap(m)
-						)
-						const tmp = childDestSteps + dists[k]
-						if (tmp < destSteps) destSteps = tmp
-					}
-				})
-			}
-			memo[memoKey] = destSteps
-//	} else {
-//		destSteps = memo[memoKey]
-//		console.log('hit', destSteps, memoKey)
-//	}
-		
-		console.log('pop', char, destSteps)
-		visited.pop()
-		return destSteps
-	}
-	
-	const visited = []
-	const totalMinSteps = visit(root, '@', 0, cloneMap(charsMap))
-	console.log(totalMinSteps)
-}
-
-runWorld([
-	"#########",
-	"#b.A.@.a#",
-	"#########",
-]) // 8
-
-//runWorld([
+//World([
 //"########################",
 //"#f.D.E.e.C.b.A.@.a.B.c.#",
 //"######################.#",
 //"#d.....................#",
 //"########################"
-//]) //  86
+//])  // 86
 
-//runWorld([
+//World([
+//"########################",
+//"#...............b.C.D.f#",
+//"#.######################",
+//"#.....@.a.B.c.d.A.e.F.g#",
+//"########################"
+//])  // 132
+
+//World([
 //"#################",
 //"#i.G..c...e..H.p#",
 //"########.########",
@@ -141,18 +142,18 @@ runWorld([
 //"########.########",
 //"#l.F..d...h..C.m#",
 //"#################",
-//]) // 136
+//])  // 136
 
-//runWorld([
+//World([
 //"########################",
 //"#@..............ac.GI.b#",
 //"###d#e#f################",
 //"###A#B#C################",
 //"###g#h#i################",
-//"########################	",
-//])
+//"########################"
+//])  // 81
 
-//runWorld([
+//World([
 //"#################################################################################",
 //"#.....#.....#z#...C.....#.........#.....#.#.....#.......V.#.....#.........#b....#",
 //"###.#.###.#.#.#.#####.###.#.#######.###.#.#.#.#.#.#######.#####.#.#######.#.#.###",
