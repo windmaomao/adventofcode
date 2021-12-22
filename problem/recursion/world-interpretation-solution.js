@@ -93,4 +93,4 @@ const problem2 = `
 #d.....................#
 ########################`
 
-console.log(part1(problem1))
+console.log(part1(problem2))
