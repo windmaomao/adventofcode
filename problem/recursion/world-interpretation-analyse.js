@@ -52,43 +52,63 @@ const findMazeKeys = (maze, srcPos, keysTaken) => {
   return dests
 }
 
-const genMemoKey = (keys, p) => 
-  [...keys].sort().join('') + `:(${p})`
-
-
 const findMazeSteps = (maze, startPos, numKeys) => {
-  // starting at a source pos with keys taken
-  // find the minimium steps to collect rest keys
-  const minMazeSteps = (srcPos, keysTaken) => {
-    const memoKey = genMemoKey(keysTaken, srcPos)
-    let res = Infinity
-    console.log('> @' + keysTaken.join(''))
-    
-    if (memo[memoKey] == undefined) {
-      if (keysTaken.length == numKeys) {
-        res = 0
-      } else {
-        const ks = findMazeKeys(maze, srcPos, keysTaken)
-        Object.entries(ks).forEach(([c, { pos, k }]) => {
-          console.log(':', keysTaken.join(''), c, k)
-          res = Math.min(
-            res,
-            minMazeSteps(pos, [...keysTaken, c]) + k
-          )
-        })
+  const stacks = {}
+  let links = 0, usages = 0
+
+  const stackId = ([i, j], keys) => 
+  '@' + [...keys].sort().join('') + `>${maze[i][j]}`
+  
+  const createStack = (srcPos, keysTaken) => {
+    const id = stackId(srcPos, keysTaken)
+    if (!stacks[id]) {
+      stacks[id] = {
+        id, srcPos, keysTaken,
+        done: false,
+        res: Infinity,
+        stacks: [],
+        nodes: 1      // total nodes
       }
-      memo[memoKey] = res
-      console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey])
-    } else {
-      console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey], 'memo')
     }
-    
-    return memo[memoKey]
+    return stacks[id]
   }
   
-  const memo = {}
-  const tmp = minMazeSteps(startPos, [])
-  return tmp
+  const runStack = (stack) => {
+    if (!stack.done) {
+      const { srcPos, keysTaken } = stack
+      if (keysTaken.length == numKeys) {
+        stack.res = 0
+      } else {
+        const ks = findMazeKeys(maze, srcPos, keysTaken)
+        stack.stacks = Object.entries(ks)
+          .map(([c, { pos, k }]) => {
+            const nextStack = createStack(
+              pos, [...keysTaken, c]
+            )
+            runStack(nextStack)
+            stack.res = Math.min(
+              stack.res, nextStack.res + k
+            )
+            stack.nodes += nextStack.nodes
+            return nextStack.id
+          })
+      }
+      stack.done =true
+      usages += 1
+    }
+    links += stack.nodes
+    return stack
+  }
+  
+  
+  const root = createStack(startPos, [])
+  runStack(root)
+//for (let id in stacks) {
+//  const s = stacks[id]
+//  console.log(s.id, s.stacks, s.paths)
+//}
+  console.log(root, links, usages)
+  return root.res
 }
 
 function World(data) {
@@ -102,7 +122,7 @@ const {log} = console
 const world1 = `
 #########
 #b.A.@.a#
-#########`                // 8
+#########`                // 8 // nodes: 6 actual: 3
 log(World(world1))
 
 const world2 = `
@@ -110,8 +130,8 @@ const world2 = `
 #f.D.E.e.C.b.A.@.a.B.c.#
 ######################.#
 #d.....................#
-########################` // 86
-//log(World(world2))
+########################` // 86 // nodes: 46 actual: 9
+log(World(world2))
 
 const world3 = `
 #################
@@ -122,8 +142,8 @@ const world3 = `
 #k.E..a...g..B.n#
 ########.########
 #l.F..d...h..C.m#
-#################`        // 136
-//log(World(world3))
+#################`        // 136 // nodes: 200793976665 actual: 10053
+log(World(world3))
 
 const world4 = `
 ########################
@@ -131,8 +151,8 @@ const world4 = `
 ###d#e#f################
 ###A#B#C################
 ###g#h#i################
-########################` // 81
-//log(World(world4))
+########################` // 81 // nodes: 7544 actual: 90
+log(World(world4))
 
 worldN = `
 #################################################################################
@@ -215,4 +235,5 @@ worldN = `
 #...#...#.#...#...#.#.#...#.#...#...#.#.#.....#.......#...#...#.#...#.#.....#...#
 #.###.###.#.#.#####.#.###.#.#.#.#####.#.#.#######.###.#.#####.#.#.#.###.###.###.#
 #.....#.....#.......#...#...#.#.........#.....U...#.....#.....#...#....h#.......#
-#################################################################################`  //4700
+#################################################################################`  //4700 // nodes: 2637240221573 actual: 6689
+//log(World(worldN))
