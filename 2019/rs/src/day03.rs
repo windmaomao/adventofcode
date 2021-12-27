@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use super::point::Point;
 
 pub fn run() {
   let strs: Vec<&str> = include_str!("../../inputs/day3.data")
@@ -8,6 +9,9 @@ pub fn run() {
 
   println!("part1: {}", dist1);
   println!("part2: {}", dist2);
+
+  let p0 = Point(1,2);
+  println!("{:?}", p0);
 }
 
 fn intersect_wires(
