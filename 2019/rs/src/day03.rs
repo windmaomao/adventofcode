@@ -10,7 +10,7 @@ pub fn run() {
   println!("part1: {}", dist1);
   println!("part2: {}", dist2);
 
-  let p0 = Point(1,2);
+  let p0 = Point::<i32>(1,2);
   println!("{:?}", p0);
 }
 
@@ -53,9 +53,11 @@ struct Distance {
   steps: usize,
 }
 
+type HashPointDist = HashMap<Point<i32>, Distance>;
+
 fn calc_intersect_dist(
-  m1: HashMap<String, Distance>,
-  m2: HashMap<String, Distance>,
+  m1: HashPointDist,
+  m2: HashPointDist,
   dist_or_steps: bool
 ) -> usize {
   let mut min = 100000; 
@@ -75,32 +77,28 @@ fn calc_intersect_dist(
   min
 }
 
-fn build_wiremap(w: &str) -> HashMap<String,Distance> {
+fn build_wiremap(w: &str) -> HashPointDist {
   let mut hmap = HashMap::new();
-  let mut pos: (i32, i32) = (0, 0);
+  let mut pos = Point(0_i32, 0_i32);
   let mut k: usize = 0;
   let parts = w.split(',');
   for p in parts {
     let op  = p.to_string();
     let c = &op[..1];
     let n: usize = op[1..].parse().unwrap();
-    let dir: (i32, i32) = match c {
-      "R" => (1, 0), "L" => (-1, 0),
-      "U" => (0, 1), "D" => (0, -1),
-      _ => (0, 0)
+    let dir: Point::<i32> = match c {
+      "R" => Point(1, 0), "L" => Point(-1, 0),
+      "U" => Point(0, 1), "D" => Point(0, -1),
+      _ => Point(0, 0)
     };
     for _i in 0..n {
-      pos.0 += dir.0;
-      pos.1 += dir.1;
+      pos = pos + dir;
       k += 1;
-      let key = format!("{:?}", pos);
-      hmap.insert(key, Distance {
+      hmap.insert(pos, Distance {
         manhattan: (pos.0.abs() + pos.1.abs()) as usize,
         steps: k
       });
     }
-    
-    // println!("{} {} {:?} -> {:?}", c, n, dir, pos);
   }
   hmap
 }
