@@ -1,16 +1,18 @@
-const fib = (n) => {
-	if (n <= 1) return 0
-	if (n <= 3) return 1
+function fib(n) {
+	const m = {}
 	
-	return fib(n - 1) + fib(n - 2)
+	const fn = (i) => {
+		if (i == 1) return 0
+		if (i < 4) return 1
+		
+		if (!m[i]) {
+			m[i] = fn(i-1) + fn(i-2)
+		}
+		
+		return m[i]
+	}
+	
+	return fn(n)
 }
 
-const m = {}
-const fibWithCache = n => {
-	if (m[n] === undefined) m[n] = fib(n)
-
-	return m[n]
-}
-
-console.log(fibWithCache(6))
-
+console.log(fib(6))
