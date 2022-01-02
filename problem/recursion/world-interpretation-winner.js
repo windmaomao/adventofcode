@@ -62,7 +62,7 @@ const findMazeSteps = (maze, startPos, numKeys) => {
   const minMazeSteps = (srcPos, keysTaken) => {
     const memoKey = genMemoKey(keysTaken, srcPos)
     let res = Infinity
-    console.log('> @' + keysTaken.join(''))
+//  console.log('> @' + keysTaken.join(''))
     
     if (memo[memoKey] == undefined) {
       if (keysTaken.length == numKeys) {
@@ -70,7 +70,7 @@ const findMazeSteps = (maze, startPos, numKeys) => {
       } else {
         const ks = findMazeKeys(maze, srcPos, keysTaken)
         Object.entries(ks).forEach(([c, { pos, k }]) => {
-          console.log(':', keysTaken.join(''), c, k)
+//        console.log(':', keysTaken.join(''), c, k)
           res = Math.min(
             res,
             minMazeSteps(pos, [...keysTaken, c]) + k
@@ -78,9 +78,9 @@ const findMazeSteps = (maze, startPos, numKeys) => {
         })
       }
       memo[memoKey] = res
-      console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey])
+//    console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey])
     } else {
-      console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey], 'memo')
+//    console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey], 'memo')
     }
     
     return memo[memoKey]
@@ -103,7 +103,7 @@ const world1 = `
 #########
 #b.A.@.a#
 #########`                // 8
-log(World(world1))
+//log(World(world1))
 
 const world2 = `
 ########################
