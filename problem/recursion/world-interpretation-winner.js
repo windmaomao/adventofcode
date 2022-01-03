@@ -93,7 +93,7 @@ const findMazeSteps = (maze, startPos, numKeys) => {
 
 function World(data) {
   const { maze, startPos, numKeys } = buildMaze(data)
-  console.log('maze', startPos, numKeys)
+//console.log('maze', startPos, numKeys)
 //console.log(findMazeKeys(maze, [1, 7], ['a']))
   return findMazeSteps(maze, startPos, numKeys)
 }
@@ -103,7 +103,7 @@ const world1 = `
 #########
 #b.A.@.a#
 #########`                // 8
-//log(World(world1))
+log(World(world1))
 
 const world2 = `
 ########################
@@ -111,7 +111,7 @@ const world2 = `
 ######################.#
 #d.....................#
 ########################` // 86
-//log(World(world2))
+log(World(world2))
 
 const world3 = `
 #################
@@ -123,7 +123,7 @@ const world3 = `
 ########.########
 #l.F..d...h..C.m#
 #################`        // 136
-//log(World(world3))
+log(World(world3))
 
 const world4 = `
 ########################
@@ -132,7 +132,7 @@ const world4 = `
 ###A#B#C################
 ###g#h#i################
 ########################` // 81
-//log(World(world4))
+log(World(world4))
 
 worldN = `
 #################################################################################
@@ -216,3 +216,4 @@ worldN = `
 #.###.###.#.#.#####.#.###.#.#.#.#####.#.#.#######.###.#.#####.#.#.#.###.###.###.#
 #.....#.....#.......#...#...#.#.........#.....U...#.....#.....#...#....h#.......#
 #################################################################################`  //4700
+log(World(worldN))
