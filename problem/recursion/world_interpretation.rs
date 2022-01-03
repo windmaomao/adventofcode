@@ -101,7 +101,9 @@ impl Maze {
     format!("{}:({},{})", s, p.0, p.1)
   }
   
-  fn min_steps(&self, p: &Pos, keys: &Vec<char>) -> usize {
+  fn min_steps(
+    &mut self, p: &Pos, keys: &Vec<char>
+  ) -> usize {
     let mut steps = 100000;
     let mkey = Maze::memo_key(&p, &keys);
     
@@ -117,25 +119,26 @@ impl Maze {
         if qsteps < steps { steps = qsteps; }
       }
     }
-//  self.memo.insert(mkey, steps);
+    self.memo.insert(mkey, steps);
     
     steps
   }
   
-  fn solve(&self) -> usize {
-    self.min_steps(&self.origin, &vec![])
+  fn solve(&mut self) -> usize {
+    let o = self.origin.clone();
+    self.min_steps(&o, &vec![])
   }
 }
 
 fn main() {
-  let w1 = Maze::new("\
+  let mut w1 = Maze::new("\
 #########
 #b.A.@.a#
 #########"
   );
   println!("{}", w1.solve());
-  
-  let w2 = Maze::new("\
+
+  let mut w2 = Maze::new("\
 ########################
 #f.D.E.e.C.b.A.@.a.B.c.#
 ######################.#
@@ -143,9 +146,6 @@ fn main() {
 ########################"
   );
   println!("{}", w2.solve());
-  
-  println!("{}", Maze::memo_key(&Pos(1,1), &vec!['b', 'a']))
-  
   
 
 //let w3 = Maze::new("\
