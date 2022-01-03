@@ -3,9 +3,14 @@ use std::collections::HashMap;
 #[derive(Debug,Hash,PartialEq,Eq,Copy,Clone)]
 struct Pos(i8, i8);
 
+type CharMat = Vec<Vec<char>>;
+type MemoHash = HashMap<String, usize>;
+
 struct Maze {
-  mat: Vec<Vec<char>>,
-  keys_len: usize
+  mat: CharMat,
+  origin: Pos,
+  keys_len: usize,
+  memo: MemoHash
 }
 
 impl Maze {
@@ -13,14 +18,29 @@ impl Maze {
     let mat = strs.lines()
       .map(String::from)
       .map(|l| l.chars().collect())
-      .collect();
-    
+      .collect::<CharMat>();
+      
+    let mut origin = Pos(0,0);
+    let mut keys_len = 0;
+      
+    for (i, line) in mat.iter().enumerate() {
+      if let Some(j) = line.iter()
+        .position(|&c| c == '@')
+      {
+        origin = Pos(i as i8, j as i8)
+      }
+      keys_len = keys_len + line.iter()
+        .filter(|&c| c.is_lowercase()).count();
+    }
+      
     Maze {
       mat,
-      keys_len: 2
+      origin,
+      keys_len,
+      memo: HashMap::new()
     }
   }
-  
+    
   fn char(&self, p: &Pos) -> char {
     self.mat[p.0 as usize][p.1 as usize]
   }
@@ -72,10 +92,19 @@ impl Maze {
     dest
   }
   
-  fn min_steps(
-    &self, p: &Pos, keys: &Vec<char>
-  ) -> usize {
+  fn memo_key<'a>(
+    p: &'a Pos, keys: &'a Vec<char>
+  ) -> String {
+    let mut ordered = keys.clone();
+    ordered.sort();
+    let s: String = ordered.into_iter().collect();
+    format!("{}:({},{})", s, p.0, p.1)
+  }
+  
+  fn min_steps(&self, p: &Pos, keys: &Vec<char>) -> usize {
     let mut steps = 100000;
+    let mkey = Maze::memo_key(&p, &keys);
+    
     if keys.len() == self.keys_len {
       steps = 0
     } else {
@@ -84,24 +113,52 @@ impl Maze {
         let mut qkeys = keys.clone();
         qkeys.push(qc.clone());
         let qsteps = self.min_steps(&q, &qkeys)+qdist;
-        println!("{} {:?} {}", qc, q, qdist);
+//      println!("{} {:?} {}", qc, q, qdist);
         if qsteps < steps { steps = qsteps; }
       }
     }
+//  self.memo.insert(mkey, steps);
     
     steps
+  }
+  
+  fn solve(&self) -> usize {
+    self.min_steps(&self.origin, &vec![])
   }
 }
 
 fn main() {
-  let m = Maze::new("\
+  let w1 = Maze::new("\
 #########
 #b.A.@.a#
-#########");
-    
-  println!("{}, {:?}, {}", 
-    m.char(&Pos(1,5)), 
-    m.locate_keys(&Pos(1,5), &vec!['a']),
-    m.min_steps(&Pos(1,5), &vec![])
-  )
+#########"
+  );
+  println!("{}", w1.solve());
+  
+  let w2 = Maze::new("\
+########################
+#f.D.E.e.C.b.A.@.a.B.c.#
+######################.#
+#d.....................#
+########################"
+  );
+  println!("{}", w2.solve());
+  
+  println!("{}", Maze::memo_key(&Pos(1,1), &vec!['b', 'a']))
+  
+  
+
+//let w3 = Maze::new("\
+//#################
+//#i.G..c...e..H.p#
+//########.########
+//#j.A..b...f..D.o#
+//########@########
+//#k.E..a...g..B.n#
+//########.########
+//#l.F..d...h..C.m#
+//#################"
+//);
+//println!("{}", w3.solve());
+  
 }
