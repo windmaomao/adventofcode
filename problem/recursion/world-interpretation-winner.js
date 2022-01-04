@@ -25,13 +25,14 @@ const findMazeKeys = (maze, srcPos, keysTaken) => {
   const queue = [[srcPos, 0]]
   const marked = {}
   const dests = {}
+  let ii = 0
   
   const char = ([i, j]) => maze[i][j]
   const canOpen = c => keysTaken
     .indexOf(c.toLowerCase()) >= 0
   
-  while (queue.length) {
-    const [pos, k] = queue.shift()
+  while (ii < queue.length) {
+    const [pos, k] = queue[ii++]
     marked[pos] = true
     const c = char(pos)
 //  console.log(pos, k, c)
@@ -77,17 +78,19 @@ const findMazeSteps = (maze, startPos, numKeys) => {
           )
         })
       }
+      actual += 1
       memo[memoKey] = res
 //    console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey])
     } else {
 //    console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey], 'memo')
     }
-    
+    usage += 1
     return memo[memoKey]
   }
   
-  const memo = {}
+  let memo = {}, usage = 0, actual = 0
   const tmp = minMazeSteps(startPos, [])
+  console.log('usage:', usage, actual)
   return tmp
 }
 
@@ -216,4 +219,4 @@ worldN = `
 #.###.###.#.#.#####.#.###.#.#.#.#####.#.#.#######.###.#.#####.#.#.#.###.###.###.#
 #.....#.....#.......#...#...#.#.........#.....U...#.....#.....#...#....h#.......#
 #################################################################################`  //4700
-log(World(worldN))
+//log(World(worldN))

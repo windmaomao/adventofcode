@@ -10,7 +10,9 @@ struct Maze {
   mat: CharMat,
   origin: Pos,
   keys_len: usize,
-  memo: MemoHash
+  memo: MemoHash,
+  usage: usize,
+  actual: usize
 }
 
 impl Maze {
@@ -37,7 +39,9 @@ impl Maze {
       mat,
       origin,
       keys_len,
-      memo: HashMap::new()
+      memo: HashMap::new(),
+      usage: 0,
+      actual: 0
     }
   }
     
@@ -122,14 +126,18 @@ impl Maze {
         }
       }
       self.memo.insert(mkey, steps);
+      self.actual += 1;
     }
     
+    self.usage += 1;
     steps
   }
   
   fn solve(&mut self) -> usize {
     let o = self.origin.clone();
-    self.min_steps(&o, &vec![])
+    let res = self.min_steps(&o, &vec![]);
+    println!("usage: {} {}", self.usage, self.actual);
+    res
   }
 }
 
