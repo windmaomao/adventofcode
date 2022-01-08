@@ -19,37 +19,58 @@ const buildMaze = (data) => {
   return { maze, startPos, numKeys }
 }
 
+// add a global storage
+function vec(n) {
+  const values = new Array(n).fill([[0,0], 0])
+  let length = 0
+  
+  const len = () => length
+  const value = (i) => values[i]
+  const clear = () => { length = 0 }
+  const push = v => {
+    values[length] = v
+    length += 1
+    if (length >= n) {
+      console.error(`memory overflow at ${length}`)
+    }
+  }
+  
+  return { value, clear, push, len, values }
+}
+const queue = vec(8000)
+
 // starting at a source pos with keys taken
 // find next keys
+const dirs = [[-1,0], [0,1], [1,0], [0,-1]]
 const findMazeKeys = (maze, srcPos, keysTaken) => {
-  const queue = [[srcPos, 0]]
+  queue.clear()
+  queue.push([srcPos, 0])
   const marked = {}
   const dests = {}
   let ii = 0
-  
-  const char = ([i, j]) => maze[i][j]
+
   const canOpen = c => keysTaken
     .indexOf(c.toLowerCase()) >= 0
-  
-  while (ii < queue.length) {
-    const [pos, k] = queue[ii++]
+
+  while (ii < queue.len()) {
+    const [pos, k] = queue.value(ii++)
     marked[pos] = true
-    const c = char(pos)
-//  console.log(pos, k, c)
+    const c = maze[pos[0]][pos[1]]
     if (c.match(/[a-z]/) 
       && keysTaken.indexOf(c) < 0) {
       dests[c] = { pos, k }
     } else {
-      [[-1,0], [0,1], [1,0], [0,-1]]
-        .map(dp => move(pos, dp))
-        .filter(p => !marked[p])
-        .filter(p => char(p) !== '#')
-        .filter(p => !(
-          char(p).match(/[A-Z]/) && !canOpen(char(p))
-        )).forEach(p => { queue.push([p, k + 1]) })
+      for (let dp of dirs) {
+        const p = move(pos, dp)
+        const pc = maze[p[0]][p[1]]
+        if (!marked[p] && (pc !== '#') &&
+          !(pc.match(/[A-Z]/) && !canOpen(pc))) {
+          queue.push([p, k + 1])
+        }
+      }
     }
   }
-  
+
   return dests
 }
 
@@ -63,7 +84,6 @@ const findMazeSteps = (maze, startPos, numKeys) => {
   const minMazeSteps = (srcPos, keysTaken) => {
     const memoKey = genMemoKey(keysTaken, srcPos)
     let res = Infinity
-//  console.log('> @' + keysTaken.join(''))
     
     if (memo[memoKey] == undefined) {
       if (keysTaken.length == numKeys) {
@@ -71,7 +91,6 @@ const findMazeSteps = (maze, startPos, numKeys) => {
       } else {
         const ks = findMazeKeys(maze, srcPos, keysTaken)
         Object.entries(ks).forEach(([c, { pos, k }]) => {
-//        console.log(':', keysTaken.join(''), c, k)
           res = Math.min(
             res,
             minMazeSteps(pos, [...keysTaken, c]) + k
@@ -80,24 +99,21 @@ const findMazeSteps = (maze, startPos, numKeys) => {
       }
       actual += 1
       memo[memoKey] = res
-//    console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey])
-    } else {
-//    console.log('< @' + keysTaken.join(''), srcPos.join(','), memo[memoKey], 'memo')
     }
     usage += 1
     return memo[memoKey]
   }
   
   let memo = {}, usage = 0, actual = 0
+  console.time('time')
   const tmp = minMazeSteps(startPos, [])
   console.log('usage:', usage, actual)
+  console.timeEnd('time')
   return tmp
 }
 
 function World(data) {
   const { maze, startPos, numKeys } = buildMaze(data)
-//console.log('maze', startPos, numKeys)
-//console.log(findMazeKeys(maze, [1, 7], ['a']))
   return findMazeSteps(maze, startPos, numKeys)
 }
 
