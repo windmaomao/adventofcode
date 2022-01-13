@@ -23,7 +23,9 @@ const buildMaze = (data) => {
 // find next keys
 const findMazeKeys = (maze, srcPos, keysTaken) => {
   const queue = [[srcPos, 0]]
-  const marked = {}
+  const marked = new Array(100*100)
+  const posIndex = pos => pos[0]*100 + pos[1]
+  
   const dests = {}
   let ii = 0
   
@@ -33,7 +35,7 @@ const findMazeKeys = (maze, srcPos, keysTaken) => {
   
   while (ii < queue.length) {
     const [pos, k] = queue[ii++]
-    marked[pos] = true
+    marked[posIndex(pos)] = true
     const c = char(pos)
 //  console.log(pos, k, c)
     if (c.match(/[a-z]/) 
@@ -42,7 +44,7 @@ const findMazeKeys = (maze, srcPos, keysTaken) => {
     } else {
       [[-1,0], [0,1], [1,0], [0,-1]]
         .map(dp => move(pos, dp))
-        .filter(p => !marked[p])
+        .filter(p => !marked[posIndex(p)])
         .filter(p => char(p) !== '#')
         .filter(p => !(
           char(p).match(/[A-Z]/) && !canOpen(char(p))

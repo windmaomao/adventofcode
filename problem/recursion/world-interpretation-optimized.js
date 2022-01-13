@@ -37,6 +37,7 @@ function vec(n) {
   
   return { value, clear, push, len, values }
 }
+
 const queue = vec(8000)
 
 // starting at a source pos with keys taken
@@ -45,7 +46,8 @@ const dirs = [[-1,0], [0,1], [1,0], [0,-1]]
 const findMazeKeys = (maze, srcPos, keysTaken) => {
   queue.clear()
   queue.push([srcPos, 0])
-  const marked = {}
+  const marked = new Array(100*100)
+  const posIndex = pos => pos[0]*100 + pos[1]
   const dests = {}
   let ii = 0
 
@@ -54,7 +56,7 @@ const findMazeKeys = (maze, srcPos, keysTaken) => {
 
   while (ii < queue.len()) {
     const [pos, k] = queue.value(ii++)
-    marked[pos] = true
+    marked[posIndex(pos)] = true
     const c = maze[pos[0]][pos[1]]
     if (c.match(/[a-z]/) 
       && keysTaken.indexOf(c) < 0) {
@@ -63,7 +65,7 @@ const findMazeKeys = (maze, srcPos, keysTaken) => {
       for (let dp of dirs) {
         const p = move(pos, dp)
         const pc = maze[p[0]][p[1]]
-        if (!marked[p] && (pc !== '#') &&
+        if (!marked[posIndex(p)] && (pc !== '#') &&
           !(pc.match(/[A-Z]/) && !canOpen(pc))) {
           queue.push([p, k + 1])
         }

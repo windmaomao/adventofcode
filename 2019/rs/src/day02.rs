@@ -1,16 +1,6 @@
-pub fn run() {
-  let mut nums = include_str!("../../inputs/day2.data")
-  .split(",")
-  .map(|n| n.parse().unwrap())
-  .collect::<Vec<usize>>();
+type Code = Vec<usize>;
 
-  nums[1] = 12;
-  nums[2] = 2;
-  intcode(&mut nums);
-  println!("part1: {}", nums[0]);
-}
-
-fn intcode(a: &mut Vec<usize>) {
+pub fn intcode(a: &mut Code) {
   let mut i = 0;
   loop {
     let op = a[i];
@@ -34,7 +24,7 @@ fn intcode(a: &mut Vec<usize>) {
 
 #[test]
 fn test_intcode() {
-  let mut nums: Vec<usize> = [
+  let mut nums: Code = [
     1,9,10,3,
     2,3,11,0,
     99,
@@ -43,4 +33,29 @@ fn test_intcode() {
 
   intcode(&mut nums);
   assert_eq!(nums[0], 3500);
+}
+
+fn run_code(
+  codes: &Code, noun: usize, verb: usize
+) -> usize {
+  let mut vs = codes.clone();
+  vs[1] = noun;
+  vs[2] = verb;
+  intcode(&mut vs);
+  vs[0]
+}
+
+pub fn part1(code: &Code) -> usize {
+  run_code(code, 12, 2)
+}
+
+pub fn part2(code: &Code) -> (usize, usize) {
+  for n in 0..100 {
+    for v in 0..100 {
+      if run_code(code, n, v) == 19690720 {
+        return (n, v);
+      }
+    }
+  }
+  (0, 0)
 }
