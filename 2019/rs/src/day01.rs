@@ -2,7 +2,6 @@ fn fuel(m: i32) -> i32 {
   m / 3 - 2
 }
 
-#[test]
 fn test_fuel() {
   assert_eq!(fuel(12), 2);
   assert_eq!(fuel(14), 2);
@@ -23,7 +22,6 @@ fn fuel_r(m: i32) -> i32 {
   if v <= 0 { 0 } else { v + fuel_r(v) }
 }
 
-#[test]
 fn test_fuel_r() {
   assert_eq!(fuel_r(14), 2);
   assert_eq!(fuel_r(1969), 966);
@@ -38,3 +36,16 @@ pub fn part2(arr: &Vec<i32>) {
   println!("part2: {}", fuels);
 }
 
+pub fn run() {
+  let nums = include_str!("../../inputs/day1.data")
+    .lines()
+    .map(|n| n.parse().unwrap())
+    .collect::<Vec<i32>>();
+  
+  test_fuel();
+  part1(&nums);
+  test_fuel_r();
+  part2(&nums);
+}
+
+fn main() { run() }

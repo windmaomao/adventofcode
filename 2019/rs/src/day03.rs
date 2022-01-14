@@ -1,20 +1,8 @@
+mod point;
+use point::Point;
 use std::collections::HashMap;
-use super::point::Point;
 
-pub fn run() {
-  let strs: Vec<&str> = include_str!("../../inputs/day3.data")
-    .lines().collect();
-  let dist1 = intersect_wires(strs[0], strs[1], false);
-  let dist2 = intersect_wires(strs[0], strs[1], true);
-
-  println!("part1: {}", dist1);
-  println!("part2: {}", dist2);
-
-  let p0 = Point::<i32>(1,2);
-  println!("{:?}", p0);
-}
-
-fn intersect_wires(
+pub fn intersect_wires(
   w1: &str, w2: &str, dist_or_steps: bool
 ) -> usize {
   calc_intersect_dist(
@@ -24,7 +12,6 @@ fn intersect_wires(
   )
 }
 
-#[test]
 fn test_intersect_wires() {
   assert_eq!(intersect_wires(
     "R8,U5,L5,D3", "U7,R6,D4,L4", false
@@ -102,3 +89,18 @@ fn build_wiremap(w: &str) -> HashPointDist {
   }
   hmap
 }
+
+fn run() {
+  let s: Vec<&str> = 
+    include_str!("../../inputs/day3.data")
+    .lines().collect();
+  let dist1 = intersect_wires(s[0], s[1], false);
+  let dist2 = intersect_wires(s[0], s[1], true);
+  
+  test_intersect_wires();
+  println!("part1: {}", dist1);
+  println!("part2: {}", dist2);
+}
+
+fn main() { run() }
+

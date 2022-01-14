@@ -15,14 +15,12 @@ pub fn intcode(a: &mut Code) {
         a[v.2] = a[v.0] * a[v.1];
         i = i + 4;
       },
-      99 | _ => {
-        break;
-      },
+      99 => break,
+      _ => panic!("Unknown OP")
     }
   }
 }
 
-#[test]
 fn test_intcode() {
   let mut nums: Code = [
     1,9,10,3,
@@ -49,13 +47,27 @@ pub fn part1(code: &Code) -> usize {
   run_code(code, 12, 2)
 }
 
-pub fn part2(code: &Code) -> (usize, usize) {
+pub fn part2(code: &Code) -> usize {
   for n in 0..100 {
     for v in 0..100 {
       if run_code(code, n, v) == 19690720 {
-        return (n, v);
+        return n * 100 + v;
       }
     }
   }
-  (0, 0)
+  0
 }
+
+fn run() {
+  let nums = include_str!("../../inputs/day2.data")
+    .split(",")
+    .map(|n| n.parse().unwrap())
+    .collect::<Vec<usize>>()
+  ;
+  
+  test_intcode();
+  println!("part1: {}", part1(&nums));
+  println!("part2: {}", part2(&nums));
+}
+
+fn main() { run() }
