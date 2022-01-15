@@ -47,19 +47,21 @@ pub fn part1(code: &Code) -> usize {
   run_code(code, 12, 2)
 }
 
+use itertools::Itertools;
+
 pub fn part2(code: &Code) -> usize {
-  for n in 0..100 {
-    for v in 0..100 {
-      if run_code(code, n, v) == 19690720 {
-        return n * 100 + v;
-      }
-    }
-  }
-  0
+  let (noun, verb) = (0..100)
+    .cartesian_product(0..100)
+    .into_iter()
+    .find(|(n, v)| run_code(code, *n, *v) == 19690720)
+    .unwrap()
+  ;
+  
+  noun * 100 + verb
 }
 
 pub fn run() {
-  let nums = include_str!("../../inputs/day2.data")
+  let nums = include_str!("../../../inputs/day2.data")
     .split(",")
     .map(|n| n.parse().unwrap())
     .collect::<Vec<usize>>()

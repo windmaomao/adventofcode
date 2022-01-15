@@ -92,7 +92,7 @@ fn build_wiremap(w: &str) -> HashPointDist {
 
 fn run() {
   let s: Vec<&str> = 
-    include_str!("../../inputs/day3.data")
+    include_str!("../../../inputs/day3.data")
     .lines().collect();
   let dist1 = intersect_wires(s[0], s[1], false);
   let dist2 = intersect_wires(s[0], s[1], true);

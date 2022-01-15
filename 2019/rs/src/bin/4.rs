@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 type Password = [usize; 6];
 
 fn valid(a: &Password) -> bool {
@@ -31,6 +29,8 @@ fn test_valid_password() {
 fn part1(vs: &Vec<usize>) -> usize {
   vs.iter().filter(|&&v| valid_password(v)).count()
 }
+
+use itertools::Itertools;
 
 fn valid2(a: &Password) -> bool {
   let mut grouped = Vec::new();
