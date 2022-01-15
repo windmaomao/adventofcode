@@ -58,7 +58,7 @@ pub fn part2(code: &Code) -> usize {
   0
 }
 
-fn run() {
+pub fn run() {
   let nums = include_str!("../../inputs/day2.data")
     .split(",")
     .map(|n| n.parse().unwrap())
