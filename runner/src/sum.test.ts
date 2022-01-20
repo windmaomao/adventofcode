@@ -11,14 +11,30 @@ let delimiter = /[,]/
 let parse = Number
 
 class SumAlgo extends Algo {
-  run(inputs: string[]): string {
-    super.run(inputs)
-    const nums = inputs[0]
+  #arr: number[] = []
+  #res: number
+
+  parse(inputs: string[]) {
+    this.#arr = inputs[0]
       .split(delimiter)
       .map(s => parse(s))
-    const res = nums.reduce((acc, v) => acc + v)
-    return `${res}`
+   }
+
+  execute() {
+    this.#res = this.#arr.reduce((acc, v) => acc + v)
   }
+
+  report(): string {
+    return `${this.#res}`
+  }
+
+  run(inputs: string[]): string {
+    super.run(inputs)
+    this.parse(inputs)
+    this.execute()
+    return this.report()
+  }
+
 }
 
 const sum = (line: string): string => {
