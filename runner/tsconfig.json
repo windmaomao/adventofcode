@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,      // parameters need type
+    "noImplicitReturns": true, 
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "esModuleInterop": true
+  }
+}
