@@ -1,78 +1,84 @@
 class Algo {
-  run(inputs: string[]): string {
-    if (inputs.length == 0) {
-      throw 'empty'
+  delimiter = /[,]/
+  parse(inputs: string[]): void {}
+  *generate(): any {}
+  debug(inputs: string[]): string[] {
+    this.parse(inputs)
+    const res = []
+    for (let o of this.generate()) {
+      res.push(o)
     }
-    return ''
+    return res
   }
 }
-
-let parse = Number
 
 class FibAlgo extends Algo {
   #n: number
-  #fibs: number[]
 
   parse(inputs: string[]) {
-    this.#n = parse(inputs[0])
+    this.#n = Number(inputs[0])
   }
 
-  execute() {
-    const res = [], n = this.#n
-    if (n > 0) { res.push(1) }
-    if (n > 1) { res.push(1) }
+  *generate() {
+    const arr = [], n = this.#n
+    if (n <= 0) return
+
+    if (n > 0) { 
+      arr.push(1) 
+      yield `set arr.0 1`
+    }
+    if (n > 1) { 
+      arr.push(1)
+      yield `set arr.1 1`
+    }
     if (n > 2) {
       for (let i = 2; i < n; i++) {
-        res.push(res[i - 2] + res[i - 1])
+        let p = i - 2, q = i -1
+        yield `get arr.${p} ${arr[p]}`
+        yield `get arr.${q} ${arr[q]}`
+        let v: number = arr[p] + arr[q]
+        arr.push(v)
+        yield `set arr.${i} ${v}`
       }
     }
-    this.#fibs = res
   }
-
-  print(): string {
-    return `${this.#fibs}`
-  }
-
-  run(inputs: string[]): string {
-    super.run(inputs)
-    this.parse(inputs)
-    this.execute()
-    return this.print()
-  }
-
 }
 
-const fib = (line: string): string => {
-  const al = new FibAlgo()
-  return al.run([line])
-}
+const debug = (line: string): string => new FibAlgo()
+  .debug([line]).join('\n')
 
 describe('Fib Algo', () => {
-  describe('run', () => {
-    it('should gen no number', () => {
-      expect(fib('0')).toBe('')
-    })
+  it('should gen no number', () => {
+    expect(debug('0')).toBe('')
+  })
 
-    it('should gen 1 number', () => {
-      expect(fib('1')).toBe('1')
-    })
+  it('should gen one number', () => {
+    expect(debug('1')).toBe(`set arr.0 1`)
+  })
 
-    it('should gen 2 numbers', () => {
-      expect(fib('2')).toBe('1,1')
-    })
+  it('should gen two numbers', () => {
+    expect(debug('2')).toBe(`set arr.0 1
+set arr.1 1`)
+  })
 
-    it('should gen 3 numbers', () => {
-      expect(fib('3')).toBe('1,1,2')
-    })
-   
-    it('should gen 4 numbers', () => {
-      expect(fib('4')).toBe('1,1,2,3')
-    })
-   
-    it('should gen 5 numbers', () => {
-      expect(fib('5')).toBe('1,1,2,3,5')
-    })
-})
+  it('should gen three numbers', () => {
+    expect(debug('3')).toBe(`set arr.0 1
+set arr.1 1
+get arr.0 1
+get arr.1 1
+set arr.2 2`)
+  })
   
+  it('should gen four numbers', () => {
+    expect(debug('4')).toBe(`set arr.0 1
+set arr.1 1
+get arr.0 1
+get arr.1 1
+set arr.2 2
+get arr.1 1
+get arr.2 2
+set arr.3 3`)
+  })
+
 })
 
