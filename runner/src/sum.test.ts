@@ -69,4 +69,21 @@ describe('Sum Algo', () => {
       logSet('sum', 3)
     ].join('\n'))
   })
+
+  it('should add three numbers', () => {
+    const inputs = '489,-5,200'
+    expect(debug(inputs)).toBe(['',
+      logSet('arr', inputs),
+      logSet('sum', 0),
+      logSet('i', 0),
+      logGet('arr.0', 489),
+      logSet('sum', 489),
+      logSet('i', 1),
+      logGet('arr.1', -5),
+      logSet('sum', 489-5),
+      logSet('i', 2),
+      logGet('arr.2', 200),
+      logSet('sum', 489-5+200)
+    ].join('\n'))
+  })
 })

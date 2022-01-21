@@ -20,10 +20,16 @@ const logSet = (addr: string, v: string | number) =>
   log(AlgoAction.Set, addr, v)
 const logGet = (addr: string, v: string | number) =>
   log(AlgoAction.Get, addr, v)
+const logArrSet = (arr: string, index: number, v: string | number) =>
+  log(AlgoAction.Set, `${arr}.${index}`, v)
+const logArrGet = (arr: string, index: number, v: string | number) =>
+  log(AlgoAction.Get, `${arr}.${index}`, v)
 
 export {
   AlgoAction,
-  log, logInit, logSet, logGet
+  log, logInit,
+  logSet, logGet,
+  logArrSet, logArrGet
 }
 
 class Algo {
