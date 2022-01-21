@@ -2,7 +2,8 @@ enum AlgoAction {
   Init = '',
   Get = 'get',
   Set = 'set',
-  Call = 'cal',  
+  Enter = 'enter',  
+  Leave = 'leave'
 }
 
 function log(
@@ -24,12 +25,17 @@ const logArrSet = (arr: string, index: number, v: string | number) =>
   log(AlgoAction.Set, `${arr}.${index}`, v)
 const logArrGet = (arr: string, index: number, v: string | number) =>
   log(AlgoAction.Get, `${arr}.${index}`, v)
+const logEnter = (fn: string, v: string | number) =>
+  log(AlgoAction.Enter, fn, v)
+const logLeave = (fn: string, v: string | number) =>
+  log(AlgoAction.Leave, fn, v)
 
 export {
   AlgoAction,
   log, logInit,
   logSet, logGet,
-  logArrSet, logArrGet
+  logArrSet, logArrGet,
+  logEnter, logLeave
 }
 
 class Algo {
