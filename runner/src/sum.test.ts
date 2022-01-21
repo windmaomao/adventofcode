@@ -1,4 +1,4 @@
-import Algo from './algo'
+import Algo, { logSet, logGet } from './algo'
 
 class SumAlgo extends Algo {
   #arr: number[] = []
@@ -15,14 +15,22 @@ class SumAlgo extends Algo {
   }
 
   *generate() {
-    let res = 0, v
-    yield 'set out 0'
+    yield* super.generate()
+
     const arr = this.#arr
+    yield logSet('arr', `${arr}`)
+
+    let sum = 0, v
+    yield logSet('sum', 0)
+
     for (let i = 0; i < arr.length; i++) {
+      yield logSet('i', i)
+
       v = arr[i]
-      yield `get in.${i} ${v}`
-      res += v
-      yield `set out ${res}`
+      yield logGet(`arr.${i}`, v)
+
+      sum += v
+      yield logSet('sum', sum)
     }
   }
 }
@@ -33,21 +41,32 @@ const debug = (line: string): string => {
 
 describe('Sum Algo', () => {
   it('should add no number', () => {
-    expect(debug('')).toBe(`set out 0`)
+    expect(debug('')).toBe(['',
+      logSet('arr', ''),
+      logSet('sum', 0)
+    ].join('\n'))
   })
 
   it('should add one number', () => {
-    expect(debug('1')).toBe(`set out 0
-get in.0 1
-set out 1`)
+    expect(debug('1')).toBe(['',
+      logSet('arr', '1'),
+      logSet('sum', 0),
+      logSet('i', 0),
+      logGet('arr.0', 1),
+      logSet('sum', 1)
+    ].join('\n'))
   })
 
   it('should add two numbers', () => {
-    expect(debug('1,2')).toBe(`set out 0
-get in.0 1
-set out 1
-get in.1 2
-set out 3`)
+    expect(debug('1,2')).toBe(['',
+      logSet('arr', '1,2'),
+      logSet('sum', 0),
+      logSet('i', 0),
+      logGet('arr.0', 1),
+      logSet('sum', 1),
+      logSet('i', 1),
+      logGet('arr.1', 2),
+      logSet('sum', 3)
+    ].join('\n'))
   })
-
 })
