@@ -79,7 +79,6 @@ describe('Fib Recursion Algo', () => {
   })
 
   it.only('should gen three numbers', () => {
-    console.log(debug('3'))
     expect(debug('3')).toBe(['',
       logSet('m', '0,0,0,0'),
       logArrSet('m', 1, 1),

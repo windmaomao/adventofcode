@@ -1,4 +1,4 @@
-import Algo, { logSet, logGet } from './algo'
+import Algo, { logSet, logGet, logArrGet } from './algo'
 
 class SumAlgo extends Algo {
   #arr: number[] = []
@@ -27,7 +27,7 @@ class SumAlgo extends Algo {
       yield logSet('i', i)
 
       v = arr[i]
-      yield logGet(`arr.${i}`, v)
+      yield logArrGet('arr', i, v)
 
       sum += v
       yield logSet('sum', sum)
@@ -52,7 +52,7 @@ describe('Sum Algo', () => {
       logSet('arr', '1'),
       logSet('sum', 0),
       logSet('i', 0),
-      logGet('arr.0', 1),
+      logArrGet('arr', 0, 1),
       logSet('sum', 1)
     ].join('\n'))
   })
@@ -62,10 +62,10 @@ describe('Sum Algo', () => {
       logSet('arr', '1,2'),
       logSet('sum', 0),
       logSet('i', 0),
-      logGet('arr.0', 1),
+      logArrGet('arr', 0, 1),
       logSet('sum', 1),
       logSet('i', 1),
-      logGet('arr.1', 2),
+      logArrGet('arr', 1, 2),
       logSet('sum', 3)
     ].join('\n'))
   })
