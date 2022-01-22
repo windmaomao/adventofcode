@@ -16,21 +16,22 @@ class SumAlgo extends Algo {
 
   *generate() {
     yield* super.generate()
+    const log = this.logger
 
     const arr = this.#arr
-    yield logSet('arr', `${arr}`)
+    yield log.set('arr', `${arr}`)
 
     let sum = 0, v
-    yield logSet('sum', 0)
+    yield log.set('sum', 0)
 
     for (let i = 0; i < arr.length; i++) {
-      yield logSet('i', i)
+      yield log.set('i', i)
 
       v = arr[i]
       yield logArrGet('arr', i, v)
 
       sum += v
-      yield logSet('sum', sum)
+      yield log.set('sum', sum)
     }
   }
 }

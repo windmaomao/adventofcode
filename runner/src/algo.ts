@@ -30,8 +30,30 @@ const logEnter = (fn: string, v: string | number) =>
 const logLeave = (fn: string, v: string | number) =>
   log(AlgoAction.Leave, fn, v)
 
+class AlgoLogger {
+  log(
+    a: AlgoAction, 
+    addr?: string, 
+    v?: string | number
+  ) {
+    let s = `${a}`
+    if (addr) s += ` ${addr}`
+    if (v != undefined) s += ` ${v}`
+    return s
+  }
+  init() {
+    return this.log(AlgoAction.Init)
+  }
+  set(addr: string, v: string | number) {
+    return this.log(AlgoAction.Set, addr, v)
+  }
+  get(addr: string, v: string | number) {
+    return this.log(AlgoAction.Get, addr, v)
+  }
+}
+
 export {
-  AlgoAction,
+  AlgoAction, AlgoLogger,
   log, logInit,
   logSet, logGet,
   logArrSet, logArrGet,
@@ -40,8 +62,11 @@ export {
 
 class Algo {
   delimiter = /[,]/
+  logger = new AlgoLogger()
   parse(inputs: string[]): void {}
-  *generate(): any { yield logInit() }
+  *generate(): any {
+    yield this.logger.init()
+  }
   debug(inputs: string[]): string[] {
     this.parse(inputs)
     const res = []
