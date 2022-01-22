@@ -32,11 +32,7 @@ const logLeave = (fn: string, v: string | number) =>
 
 type strOrNum = string | number
 class AlgoLogger {
-  log(
-    a: AlgoAction, 
-    addr?: string, 
-    v?: strOrNum 
-  ) {
+  log(a: AlgoAction, addr?: string, v?: strOrNum) {
     let s = `${a}`
     if (addr) s += ` ${addr}`
     if (v != undefined) s += ` ${v}`
@@ -58,9 +54,18 @@ class AlgoLogger {
     return this.read(addrs.join('.'), v)
   }
 }
+class AlgoObjLogger extends AlgoLogger {
+  obj: { [key: string]: string } = {}
+  log(a: AlgoAction, addr?: string, v?: strOrNum) {
+    if (addr) {
+      this.obj[addr] = `${v}`
+    }
+    return super.log(a, addr, v)
+  }
+}
 
 export {
-  AlgoAction, AlgoLogger,
+  AlgoAction, AlgoLogger, AlgoObjLogger,
   log, logInit,
   logSet, logGet,
   logArrSet, logArrGet,
@@ -70,6 +75,7 @@ export {
 class Algo {
   delimiter = /[,]/
   logger = new AlgoLogger()
+  setLogger(_log: AlgoLogger) { this.logger = _log }
   parse(inputs: string[]): void {}
   *generate(): any {
     yield this.logger.init()
