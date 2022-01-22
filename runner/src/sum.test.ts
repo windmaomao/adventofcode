@@ -1,4 +1,4 @@
-import Algo, { logSet, logGet, logArrGet } from './algo'
+import Algo from './algo'
 
 class SumAlgo extends Algo {
   #arr: number[] = []
@@ -19,22 +19,24 @@ class SumAlgo extends Algo {
     const log = this.logger
 
     const arr = this.#arr
-    yield log.set('arr', `${arr}`)
+    yield log.write('arr', `${arr}`)
 
     let sum = 0, v
-    yield log.set('sum', 0)
+    yield log.write('sum', 0)
 
     for (let i = 0; i < arr.length; i++) {
-      yield log.set('i', i)
+      yield log.write('i', i)
 
       v = arr[i]
-      yield logArrGet('arr', i, v)
+      yield log.reads(['arr', `${i}`], v)
 
       sum += v
-      yield log.set('sum', sum)
+      yield log.write('sum', sum)
     }
   }
 }
+
+import { logSet, logGet, logArrGet } from './algo'
 
 const debug = (line: string): string => {
   return (new SumAlgo()).debug([line]).join('\n')

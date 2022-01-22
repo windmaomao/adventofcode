@@ -30,11 +30,12 @@ const logEnter = (fn: string, v: string | number) =>
 const logLeave = (fn: string, v: string | number) =>
   log(AlgoAction.Leave, fn, v)
 
+type strOrNum = string | number
 class AlgoLogger {
   log(
     a: AlgoAction, 
     addr?: string, 
-    v?: string | number
+    v?: strOrNum 
   ) {
     let s = `${a}`
     if (addr) s += ` ${addr}`
@@ -44,11 +45,17 @@ class AlgoLogger {
   init() {
     return this.log(AlgoAction.Init)
   }
-  set(addr: string, v: string | number) {
+  write(addr: string, v: strOrNum) {
     return this.log(AlgoAction.Set, addr, v)
   }
-  get(addr: string, v: string | number) {
+  read(addr: string, v: strOrNum) {
     return this.log(AlgoAction.Get, addr, v)
+  }
+  writes(addrs: string[], v: strOrNum) {
+    return this.write(addrs.join('.'), v)
+  }
+  reads(addrs: string[], v: strOrNum) {
+    return this.read(addrs.join('.'), v)
   }
 }
 
