@@ -1,4 +1,5 @@
 import Algo from './algo'
+import log from './logger'
 
 class SumAlgo extends Algo {
   #arr: number[] = []
@@ -16,7 +17,6 @@ class SumAlgo extends Algo {
 
   *generate() {
     yield* super.generate()
-    const log = this.logger
 
     const arr = this.#arr
     yield log.write('arr', `${arr}`)
@@ -28,7 +28,7 @@ class SumAlgo extends Algo {
       yield log.write('i', i)
 
       v = arr[i]
-      yield log.reads(['arr', `${i}`], v)
+      yield log.read(['arr', `${i}`].join('.'), v)
 
       sum += v
       yield log.write('sum', sum)
@@ -36,57 +36,55 @@ class SumAlgo extends Algo {
   }
 }
 
-import { logSet, logGet, logArrGet } from './algo'
-
 const debug = (line: string): string => {
   return (new SumAlgo()).debug([line]).join('\n')
 }
 
 describe('Sum Algo', () => {
-  it('should add no number', () => {
+  it.only('should add no number', () => {
     expect(debug('')).toBe(['',
-      logSet('arr', ''),
-      logSet('sum', 0)
+      log.write('arr', ''),
+      log.write('sum', 0)
     ].join('\n'))
   })
 
   it('should add one number', () => {
     expect(debug('1')).toBe(['',
-      logSet('arr', '1'),
-      logSet('sum', 0),
-      logSet('i', 0),
-      logArrGet('arr', 0, 1),
-      logSet('sum', 1)
+      log.write('arr', '1'),
+      log.write('sum', 0),
+      log.write('i', 0),
+      log.read('arr.0', 1),
+      log.write('sum', 1)
     ].join('\n'))
   })
 
   it('should add two numbers', () => {
     expect(debug('1,2')).toBe(['',
-      logSet('arr', '1,2'),
-      logSet('sum', 0),
-      logSet('i', 0),
-      logArrGet('arr', 0, 1),
-      logSet('sum', 1),
-      logSet('i', 1),
-      logArrGet('arr', 1, 2),
-      logSet('sum', 3)
+      log.write('arr', '1,2'),
+      log.write('sum', 0),
+      log.write('i', 0),
+      log.read('arr.0', 1),
+      log.write('sum', 1),
+      log.write('i', 1),
+      log.read('arr.1', 2),
+      log.write('sum', 3)
     ].join('\n'))
   })
 
   it('should add three numbers', () => {
     const inputs = '489,-5,200'
     expect(debug(inputs)).toBe(['',
-      logSet('arr', inputs),
-      logSet('sum', 0),
-      logSet('i', 0),
-      logGet('arr.0', 489),
-      logSet('sum', 489),
-      logSet('i', 1),
-      logGet('arr.1', -5),
-      logSet('sum', 489-5),
-      logSet('i', 2),
-      logGet('arr.2', 200),
-      logSet('sum', 489-5+200)
+      log.write('arr', inputs),
+      log.write('sum', 0),
+      log.write('i', 0),
+      log.read('arr.0', 489),
+      log.write('sum', 489),
+      log.write('i', 1),
+      log.read('arr.1', -5),
+      log.write('sum', 489-5),
+      log.write('i', 2),
+      log.read('arr.2', 200),
+      log.write('sum', 489-5+200)
     ].join('\n'))
   })
 })
