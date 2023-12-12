@@ -16,11 +16,11 @@ const findAll = (strs) => {
   return res;
 };
 
-const part1 = (strs) => Math.max(...findAll(strs));
+const part1 = (strs) => findAll(strs).max();
 const part2 = (strs) =>
   findAll(strs)
     .sort((a, b) => b - a)
-    .slice(0, 3)
+    .take(3)
     .sum();
 
 const strs = read("01", "\n");
