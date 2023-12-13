@@ -25,6 +25,5 @@ const part2 = (strs) =>
 
 const strs = read("01", "\n");
 strs.push("");
-
 run(part1, strs);
 run(part2, strs);
