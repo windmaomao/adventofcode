@@ -27,4 +27,22 @@ const part1 = (strs) => {
 
 run(part1, strs);
 
-const part2 = (strs) => {};
+const part2 = (strs) => {
+  const n = strs.length;
+  const winnning = cardWinning(strs);
+  const cards = [].new(n);
+
+  for (let i = 0; i < n; i++) {
+    const l = winnning[i].length;
+    cards[i]++;
+    if (l < 1) continue;
+    for (let j = 0; j < l; j++) {
+      const k = i + j + 1;
+      cards[k] += cards[i];
+    }
+  }
+
+  return cards.sum();
+};
+
+run(part2, strs);
