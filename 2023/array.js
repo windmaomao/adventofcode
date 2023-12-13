@@ -1,6 +1,6 @@
 // [].new(n)
-Array.prototype.new = function (n) {
-  return new Array(n).fill(0);
+Array.prototype.new = function (n, v = 0) {
+  return new Array(n).fill(v);
 };
 
 // a.max()
@@ -36,4 +36,9 @@ Array.prototype.multiply = function (fn) {
   } else {
     return this.reduce((acc, v, i, arr) => acc * fn(v, i, arr), 1);
   }
+};
+
+// [].matrix(m, n, v)
+Array.prototype.matrix = function (m, n, v = 0) {
+  return new Array(m).fill(0).map(() => new Array(n).fill(v));
 };
