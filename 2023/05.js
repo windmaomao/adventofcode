@@ -2,7 +2,7 @@ require("./array");
 const read = require("./read");
 const run = require("./run");
 
-const strs = read("05.a", "\n");
+const strs = read("05", "\n");
 strs.push("");
 
 const parseStrs = (strs) => {
@@ -71,7 +71,7 @@ const intersect = (rmin, rmax, levels) => {
   return ranges;
 };
 
-const part2 = ({ nums, maps }) => {
+const part2debug = ({ nums, maps }) => {
   console.log(0);
   console.log(intersect(79, 79 + 14 - 1, maps[0]));
   console.log(1);
@@ -90,8 +90,40 @@ const part2 = ({ nums, maps }) => {
   console.log(intersect(46, 46 + 11 - 1, maps[6]));
 };
 
+const part2 = ({ nums, maps }) => {
+  let i = 0,
+    queue = [];
+  while (i < nums.length) {
+    let rmin = nums[i];
+    let rmax = nums[i] + nums[i + 1] - 1;
+    queue.push({ id: 0, seed: [rmin, rmin, rmax - rmin + 1, rmax] });
+    i += 2;
+  }
+
+  let curr,
+    lowest = Infinity;
+
+  while ((curr = queue.shift())) {
+    const { id, seed } = curr;
+    // console.log(id, seed);
+    if (id === 7) {
+      lowest = Math.min(lowest, seed[0]);
+      continue;
+    }
+    const ranges = intersect(seed[0], seed[0] + seed[2] - 1, maps[id]);
+    ranges.forEach((range) => {
+      queue.push({
+        id: id + 1,
+        seed: range,
+      });
+    });
+  }
+
+  return lowest;
+};
+
 const parsed = parseStrs(strs);
-console.log(parsed.nums);
-console.log(parsed.maps);
-// run(part1, parsed);
+// console.log(parsed.nums);
+// console.log(parsed.maps);
+run(part1, parsed);
 run(part2, parsed);
