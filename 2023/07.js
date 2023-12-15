@@ -15,12 +15,13 @@ const calcType = (card, ranks, hasJ = false) => {
     extra = m.J || 0;
     delete m.J;
   }
-  const cs = Object.values(m).sort((a, b) => {
-    if (a != b) return b - a;
-    return ranks[b] - ranks[a];
-  });
+  const cs = Object.values(m).sort((a, b) => b - a);
   if (hasJ) {
-    cs[0] += extra;
+    if (cs.length) {
+      cs[0] += extra;
+    } else {
+      cs.push(extra);
+    }
   }
 
   let type = 0;
@@ -64,9 +65,7 @@ const sortAndCalc = (cards, ranks) => {
       return 0;
     }
   });
-  sorted.forEach((card) => {
-    console.log(card.card, card.type);
-  });
+
   return sorted.map((card, i) => card.bid * (i + 1)).sum();
 };
 
