@@ -1,7 +1,7 @@
 require("./array");
 const read = require("./read");
 const run = require("./run");
-const strs = read("10.f", "\n");
+const strs = read("10", "\n");
 const m = strs.length;
 const n = strs[0].length;
 
@@ -132,7 +132,7 @@ const calcSegments = (str) => {
         break;
     }
   }
-
+  // console.log(segments);
   let inside = false,
     prev = 0;
   let res = [];
@@ -149,10 +149,16 @@ const calcSegments = (str) => {
   return res;
 };
 
-const part2 = ({ graph, origin }) => {
+const part2 = ({ graph, dist, origin }) => {
   const g = graph.map((str) => str.split(""));
   const [x, y] = origin;
   g[x][y] = "7";
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      const k = `${i}:${j}`;
+      if (!(k in dist)) g[i][j] = ".";
+    }
+  }
   return g
     .map(calcSegments)
     .map((arr) => arr.length)
