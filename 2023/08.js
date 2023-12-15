@@ -20,11 +20,11 @@ const parseNetwork = (strs) => {
 const parsed = parseNetwork(strs);
 
 const lr = { L: 0, R: 1 };
-const part1 = ({ insts, map }) => {
+const runSteps = ({ insts, map }, from) => {
   let i = 0;
-  let curr = "AAA";
+  let curr = from;
   let count = 0;
-  while (curr != "ZZZ") {
+  while (curr[2] != "Z") {
     const inst = insts.at(i);
     curr = map[curr][lr[inst]];
     i++;
@@ -34,4 +34,13 @@ const part1 = ({ insts, map }) => {
   return count;
 };
 
-run(part1, parsed);
+const part1 = (parsed) => runSteps(parsed, "AAA");
+
+// run(part1, parsed);
+
+const part2 = ({ insts, map }) => {
+  const starts = Object.keys(map).filter((v) => v[2] == "A");
+  return starts.map((from) => runSteps({ insts, map }, from));
+};
+
+run(part2, parsed);
