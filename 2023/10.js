@@ -1,7 +1,7 @@
 require("./array");
 const read = require("./read");
 const run = require("./run");
-const strs = read("10", "\n");
+const strs = read("10.f", "\n");
 const m = strs.length;
 const n = strs[0].length;
 
@@ -19,8 +19,6 @@ const parseMap = (strs) => {
     origin,
   };
 };
-
-const parsedMap = parseMap(strs);
 
 const originDirs = (x, y, graph) => {
   let dirs = [];
@@ -57,11 +55,11 @@ const connectorDirs = {
   ],
 };
 
-const part1 = ({ graph, origin }) => {
+const runPipes = ({ graph, origin }) => {
   let longest = 0;
-  const _k = (i, j) => `${i}:${j}`;
   let mark = {};
   let dist = {};
+  const _k = (i, j) => `${i}:${j}`;
 
   let heap = [origin];
   let start = _k(...origin);
@@ -92,8 +90,73 @@ const part1 = ({ graph, origin }) => {
       heap.push([vx, vy]);
     });
   }
-  //console.log(dist);
-  return longest;
+
+  return {
+    graph,
+    origin,
+    dist,
+    longest,
+  };
 };
 
-run(part1, parsedMap);
+const parsedPipes = runPipes(parseMap(strs));
+
+const part1 = (res) => res.longest;
+run(part1, parsedPipes);
+
+const doubles = { F: "7", L: "J" };
+
+const calcSegments = (str) => {
+  let start = null;
+  let segments = [];
+  for (let i = 0; i < n; i++) {
+    const c = str[i];
+    switch (c) {
+      case "F":
+      case "7":
+      case "L":
+      case "J":
+        if (start == null) {
+          start = [c, i];
+        } else {
+          let [prev, j] = start;
+          segments.push([j, i, doubles[prev] == c ? 2 : 1]);
+          start = null;
+        }
+        break;
+      case "|":
+        start = null;
+        segments.push([i, i, 1]);
+        break;
+      default:
+        break;
+    }
+  }
+
+  let inside = false,
+    prev = 0;
+  let res = [];
+  for (let k = 0; k < segments.length; k++) {
+    const [from, to, changes] = segments[k];
+    if (from > prev) {
+      for (let i = prev; i < from; i++) {
+        if (inside) res.push(i);
+      }
+    }
+    prev = to + 1;
+    if (changes == 1) inside = !inside;
+  }
+  return res;
+};
+
+const part2 = ({ graph, origin }) => {
+  const g = graph.map((str) => str.split(""));
+  const [x, y] = origin;
+  g[x][y] = "7";
+  return g
+    .map(calcSegments)
+    .map((arr) => arr.length)
+    .sum();
+};
+
+run(part2, parsedPipes);
