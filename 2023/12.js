@@ -2,7 +2,7 @@ require("./array");
 const read = require("./read");
 const run = require("./run");
 const permute = require("./permute");
-const strs = read("12.c", "\n");
+const strs = read("12", "\n");
 
 const parseLine = (str) => {
   const parts = str.split(" ");
@@ -85,6 +85,7 @@ const part2 = (strs) => {
   });
 
   const doubles = strs.map(parseLine2).map((o, i) => {
+    console.log(i, ")", o.fills.length, o.count);
     const c = permute(o.fills, o.count)
       .map((perm) => matchPattern([...o.pattern], perm, o.records))
       .filter((v) => v).length;
