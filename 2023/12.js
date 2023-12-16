@@ -21,14 +21,11 @@ const parseLine = (str) => {
 };
 
 const matchPattern = (template, perm, records) => {
-  perm.forEach((i) => {
-    if (template[i] != "?") {
-      console.error(template, i);
-    }
-    template[i] = "#";
-  });
   template.forEach((c, i) => {
     if (c == "?") template[i] = ".";
+  });
+  perm.forEach((i) => {
+    template[i] = "#";
   });
 
   const res = template
@@ -37,9 +34,10 @@ const matchPattern = (template, perm, records) => {
     .filter((c) => c != "");
   // console.log(template.join(""), res);
 
-  if (res.length != records.length) return false;
-  for (let i = 0; i < res.length; i++) {
-    if (res[i].length != records[i]) return false;
+  const match = res.map((v) => v.length);
+  if (match.length != records.length) return false;
+  for (let i = 0; i < records.length; i++) {
+    if (match[i] != records[i]) return false;
   }
   // console.log(template.join(""));
   return true;
@@ -48,17 +46,11 @@ const matchPattern = (template, perm, records) => {
 const part1 = (strs) => {
   return strs
     .map(parseLine)
-    .map((o, i) => {
-      // console.log(o);
-      const p = permute(o.fills, o.count);
-
-      const c = p
+    .map((o) => {
+      const c = permute(o.fills, o.count)
         .map((perm) => matchPattern([...o.pattern], perm, o.records))
         .filter((v) => v).length;
-
-      // console.log(i, ")", o.fills.length, o.count, p.length, c);
-
-      return c;
+      return c ? c : 1;
     })
     .sum();
 };
