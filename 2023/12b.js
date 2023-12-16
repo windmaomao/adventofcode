@@ -50,33 +50,70 @@ const matchRecord = (template, records, full = false) => {
 // given current filled template, start to work on ith ?
 // and see if can be matched with next records
 const permute = ({ records, fills, count, pattern }) => {
-  let total = 0;
+  const m = {};
 
-  const solve = (template, index) => {
+  const find = (template, index) => {
     if (index == fills.length) {
       if (matchRecord(template, records, true)) {
-        console.log(template.join(""));
-        total++;
+        // console.log(template.join(""));
+        return 1;
       }
-      return;
+      return 0;
     }
 
     let i = fills[index];
+    let total = 0;
     ["#", "."].forEach((c) => {
       const newTemplate = [...template];
       newTemplate[i] = c;
       if (matchRecord(newTemplate, records)) {
-        solve(newTemplate, index + 1);
+        total += find(newTemplate, index + 1);
       }
     });
+
+    return total;
   };
 
-  solve(pattern, 0);
-  return total;
+  return find(pattern, 0);
 };
 
 const part1 = (strs) => {
-  return strs.map(parseLine).map((o) => permute(o));
+  return strs
+    .map(parseLine)
+    .map((o) => permute(o))
+    .sum();
 };
 
 run(part1, strs);
+
+const parseLine2 = (str) => {
+  const parts = str.split(" ");
+  const _pattern = parts[0].split("");
+  const pattern = [..._pattern, "?", ..._pattern];
+  const filled = pattern.filter((c) => c == "#").length;
+  const _records = parts[1].split(",").map(Number);
+  const records = [..._records, ..._records];
+  const count = records.sum() - filled;
+  const fills = pattern.map((_, i) => i).filter((i) => pattern[i] == "?");
+
+  return {
+    pattern,
+    records,
+    count,
+    fills,
+  };
+};
+
+const part2 = (strs) => {
+  const singles = strs.map(parseLine).map((o) => permute(o));
+
+  const doubles = strs.map(parseLine2).map((o, i) => {
+    const res = permute(o);
+    console.log(i, o.pattern.join(""), singles[i], res);
+    return res;
+  });
+
+  return doubles;
+};
+
+run(part2, strs);
