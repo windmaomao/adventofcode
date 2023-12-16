@@ -26,23 +26,27 @@ const collectStars = (strs) => {
     if (!cols[j]) missCols.push(j);
   }
 
-  for (let k = 0; k < res.length; k++) {
-    let [x, y] = res[k];
-    for (let i = 0; i < missRows.length; i++) {
-      if (res[k][0] > missRows[i]) x++;
-    }
-    for (let j = 0; j < missCols.length; j++) {
-      if (res[k][1] > missCols[j]) y++;
-    }
-    res[k] = [x, y];
-  }
-
-  return { stars: res, missRows, missCols };
+  return { res, missRows, missCols };
 };
 
 const collects = collectStars(strs);
 
-const part1 = ({ stars }) => {
+const expandStars = ({ res, missRows, missCols }, delta = 2) => {
+  const stars = [];
+  for (let k = 0; k < res.length; k++) {
+    let [x, y] = res[k];
+    for (let i = 0; i < missRows.length; i++) {
+      if (res[k][0] > missRows[i]) x += delta - 1;
+    }
+    for (let j = 0; j < missCols.length; j++) {
+      if (res[k][1] > missCols[j]) y += delta - 1;
+    }
+    stars.push([x, y]);
+  }
+  return stars;
+};
+
+const calcDists = (stars) => {
   let count = 0;
   for (let i = 0; i < stars.length; i++) {
     for (let j = i + 1; j < stars.length; j++) {
@@ -54,4 +58,16 @@ const part1 = ({ stars }) => {
   return count;
 };
 
+const part1 = (collected) => {
+  const expanded = expandStars(collected);
+  return calcDists(expanded);
+};
+
 run(part1, collects);
+
+const part2 = (collected) => {
+  const expanded = expandStars(collected, 1000000);
+  return calcDists(expanded);
+};
+
+run(part2, collects);
