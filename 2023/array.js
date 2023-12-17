@@ -42,3 +42,25 @@ Array.prototype.multiply = function (fn) {
 Array.prototype.matrix = function (m, n, v = 0) {
   return new Array(m).fill(0).map(() => new Array(n).fill(v));
 };
+
+// [].split("")
+Array.prototype.split = function (separator) {
+  let i = 0;
+  let res = [];
+  let current = [];
+
+  while (i < this.length) {
+    const str = this[i];
+    if (str === separator) {
+      res.push(current);
+      current = [];
+    } else {
+      current.push(str);
+    }
+    i++;
+  }
+
+  if (current.length > 0) res.push(current);
+
+  return res;
+};
