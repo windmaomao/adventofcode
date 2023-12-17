@@ -2,7 +2,7 @@ require("./array");
 const read = require("./read");
 const run = require("./run");
 const permute = require("./permute");
-const strs = read("12", "\n");
+const strs = read("12.b", "\n");
 
 const parseLine = (str) => {
   const parts = str.split(" ");
@@ -56,7 +56,7 @@ const part1 = (strs) => {
     .sum();
 };
 
-// run(part1, strs);
+run(part1, strs);
 
 const parseLine2 = (str) => {
   const parts = str.split(" ");
@@ -100,4 +100,4 @@ const part2 = (strs) => {
     .sum();
 };
 
-run(part2, strs);
+// run(part2, strs);

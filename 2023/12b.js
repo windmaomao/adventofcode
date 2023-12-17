@@ -1,7 +1,7 @@
 require("./array");
 const read = require("./read");
 const run = require("./run");
-const strs = read("12.a", "\n");
+const strs = read("12", "\n");
 
 const parseLine = (str) => {
   const parts = str.split(" ");
@@ -74,7 +74,8 @@ const permute = ({ records, fills, count, pattern }) => {
     return total;
   };
 
-  return find(pattern, 0);
+  const r = find(pattern, 0);
+  return r;
 };
 
 const part1 = (strs) => {
@@ -104,6 +105,24 @@ const parseLine2 = (str) => {
   };
 };
 
+const parseLine3 = (str) => {
+  const parts = str.split(" ");
+  const _pattern = parts[0].split("");
+  const pattern = [..._pattern, "?", ..._pattern, "?", ..._pattern];
+  const filled = pattern.filter((c) => c == "#").length;
+  const _records = parts[1].split(",").map(Number);
+  const records = [..._records, ..._records, ..._records];
+  const count = records.sum() - filled;
+  const fills = pattern.map((_, i) => i).filter((i) => pattern[i] == "?");
+
+  return {
+    pattern,
+    records,
+    count,
+    fills,
+  };
+};
+
 const part2 = (strs) => {
   const singles = strs.map(parseLine).map((o) => permute(o));
 
@@ -112,6 +131,12 @@ const part2 = (strs) => {
     console.log(i, o.pattern.join(""), singles[i], res);
     return res;
   });
+
+  // const triples = strs.map(parseLine3).map((o, i) => {
+  //   const res = permute(o);
+  //   console.log(i, o.pattern.join(""), singles[i], doubles[i], res);
+  //   return res;
+  // });
 
   return doubles;
 };
