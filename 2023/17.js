@@ -6,11 +6,12 @@ const strs = read("17", "\n");
 const lossMap = strs.map((str) => str.split("").map(Number));
 
 const dirs = [
-  [-1, 0],
-  [0, -1],
   [0, 1],
   [1, 0],
+  [0, -1],
+  [-1, 0],
 ];
+const reverseDirs = [2, 3, 0, 1];
 
 function findPath(mat) {
   const _k = (i, j, di, len) => [i, j, di, len].join(":");
@@ -31,23 +32,16 @@ function findPath(mat) {
     // reach the destination
     if (ux == m - 1 && uy == n - 1) break;
 
-    // can only go with the same direction once
-    if (
-      []
-        .new(ulen)
-        .map((_, i) => i + 1)
-        .some((di) => _k(ux, uy, udi, di) in mark)
-    )
-      continue;
-
     // visit the current node
     const u = _k(ux, uy, udi, ulen);
+    if (u in mark) continue;
+
     mark[u] = true;
 
     // try all possible directions
     dirs.forEach(([dx, dy], di) => {
       // can't go back
-      if (udi + di == 3) return;
+      if (di == reverseDirs[udi]) return;
 
       // same direction only three times
       const intact = di == udi;
