@@ -16,12 +16,11 @@ const branches = {
   "\\": [1, 0, 3, 2],
 };
 
-const part1 = (strs) => {
-  // beam is composed of pos i, j and dir id
-  let beams = [[0, 0, 0]];
+// start is [i, j, dir]
+const energize = (strs, start) => {
+  let beams = [start];
   let visited = {};
   let curr;
-  let kkk = 0;
 
   const addBeam = (i, j, dir) => {
     const ni = dirs[dir][0] + i;
@@ -32,9 +31,7 @@ const part1 = (strs) => {
   };
 
   while ((curr = beams.pop())) {
-    kkk++;
     const [i, j, dir] = curr;
-    // console.log(i, j, dir);
     const key = `${i},${j}`;
     visited[key] = visited[key] || [];
     const visitedDirs = visited[key];
@@ -75,4 +72,20 @@ const part1 = (strs) => {
   return Object.keys(visited).length;
 };
 
+const part1 = (strs) => energize(strs, [0, 0, 0]);
+
 run(part1, strs);
+
+const part2 = (strs) => {
+  let starts = [];
+  for (let i = 0; i < m; i++) {
+    starts.push([i, 0, 0], [i, n - 1, 2]);
+  }
+  for (let j = 0; j < n; j++) {
+    starts.push([0, j, 1], [m - 1, j, 3]);
+  }
+
+  return starts.map((start) => energize(strs, start)).max();
+};
+
+run(part2, strs);
