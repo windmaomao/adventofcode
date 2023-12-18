@@ -1,7 +1,7 @@
 require("./array");
 const read = require("./read");
 const run = require("./run");
-const strs = read("18", "\n");
+const strs = read("18.a", "\n");
 
 const parseDigs = (strs) => {
   return strs.map((str) => {
