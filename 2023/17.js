@@ -2,7 +2,7 @@ require("./array");
 const read = require("./read");
 const run = require("./run");
 const heapq = require("./heapq");
-const strs = read("17.a", "\n");
+const strs = read("17", "\n");
 const lossMap = strs.map((str) => str.split("").map(Number));
 
 const dirs = [
@@ -66,23 +66,31 @@ const part1 = (mat) => findPath(mat);
 // run(part1, lossMap);
 
 function findPath2(mat) {
+  const _k = (i, j, di, len) => [i, j, di, len].join(":");
   const m = strs.length;
   const n = strs[0].length;
 
+  const mark = {};
   let loss, ux, uy, udi, ulen;
   let k = 0;
 
   const heap = [[0, 0, 0, 0, 0, 0]];
 
-  while (heap.length && k < 5000) {
+  while (heap.length && k < 20115000) {
     k++;
     [loss, ux, uy, udi, ulen] = heapq.pop(heap);
-    console.log(loss, ")", ux, uy, udi, ulen);
+    // console.log(loss, ")", ux, uy, udi, ulen);
 
     // reach the destination
     if (ux == m - 1 && uy == n - 1) {
       if (ulen >= 4) break;
     }
+
+    // visit the current node
+    const u = _k(ux, uy, udi, ulen);
+    if (u in mark) continue;
+
+    mark[u] = true;
 
     // try all possible directions
     dirs.forEach(([dx, dy], di) => {
