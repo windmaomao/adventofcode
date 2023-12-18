@@ -13,20 +13,20 @@ const dirs = [
 ];
 
 function findPath(mat) {
-  const _k = (i, j) => [i, j].join(":");
+  const _k = (i, j, di) => [i, j, di].join(":");
   const m = strs.length;
   const n = strs[0].length;
 
   const mark = {};
-  let loss, ux, uy;
+  let loss, ux, uy, udi;
   let k = 0;
 
-  const heap = [[0, 0, 0]];
+  const heap = [[0, 0, 0, 0]];
 
   while (heap.length && k < 15000) {
     k++;
-    [loss, ux, uy] = heapq.pop(heap);
-    console.log(loss, ux, uy);
+    [loss, ux, uy, udi] = heapq.pop(heap);
+    console.log(loss, ux, uy, udi);
 
     if (ux == m - 1 && uy == n - 1) break;
 
@@ -44,10 +44,10 @@ function findPath(mat) {
       if (vy < 0 || vy > n - 1) return;
 
       // already visited
-      const v = _k(vx, vy);
+      const v = _k(vx, vy, di);
       if (v in mark) return;
 
-      heapq.push(heap, [loss + mat[vx][vy], vx, vy]);
+      heapq.push(heap, [loss + mat[vx][vy], vx, vy, di]);
     });
   }
 
