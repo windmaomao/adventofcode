@@ -28,7 +28,7 @@ function findPath(mat) {
     [loss, ux, uy] = heapq.pop(heap);
     console.log(loss, ux, uy);
 
-    if (ux == m && uy == n) break;
+    if (ux == m - 1 && uy == n - 1) break;
 
     const u = _k(ux, uy);
     if (u in mark) continue;
