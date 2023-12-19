@@ -64,3 +64,11 @@ Array.prototype.split = function (separator) {
 
   return res;
 };
+
+// [].log
+Array.prototype.log = function (title) {
+  console.log(title);
+  this.map((v) => {
+    console.log(v);
+  });
+};
