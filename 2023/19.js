@@ -1,7 +1,7 @@
 require("./array");
 const read = require("./read");
 const run = require("./run");
-const strs = read("19.a", "\n");
+const strs = read("19", "\n");
 
 const parseRules = (strs) => {
   const [workflows, items] = strs.split("");
@@ -138,57 +138,45 @@ const part2 = ({ parts, rules }) => {
     }, {}),
   ];
 
-  // console.log(updateValues(start[1], rules["in"][0], false));
-  const inRes = findNextRules(start[1], rules["in"]);
-  inRes.log("in");
-  const pxRes = findNextRules(inRes[0][1], rules["px"]);
-  pxRes.log("px");
-  const qkqRes = findNextRules(pxRes[0][1], rules["qkq"]);
-  qkqRes.log("qkq");
-  const crnRes = findNextRules(qkqRes[1][1], rules["crn"]);
-  crnRes.log("crn");
-  const rfgRes = findNextRules(pxRes[2][1], rules["rfg"]);
-  rfgRes.log("rfg");
-  const qqzRes = findNextRules(inRes[1][1], rules["qqz"]);
-  qqzRes.log("qqz");
-  const qsRes = findNextRules(qqzRes[0][1], rules["qs"]);
-  qsRes.log("qs");
-  const lnxRes = findNextRules(qsRes[1][1], rules["lnx"]);
-  lnxRes.log("lnx");
-  const hdjRes = findNextRules(qqzRes[1][1], rules["hdj"]);
-  hdjRes.log("hdj");
-  const pvRes = findNextRules(hdjRes[1][1], rules["pv"]);
-  pvRes.log("pv");
-  return;
-
   let heap = [start];
   let curr, currRule, currValues;
   let visited = {};
+  let res = [];
   let k = 0;
 
-  while ((curr = heap.pop()) && k < 1) {
+  while ((curr = heap.shift()) && k < 111127) {
     k++;
     [currRule, currValues] = curr;
 
     // accept or reject
     if (["A", "R"].indexOf(currRule) >= 0) {
-      console.log(currRule, JSON.stringify(curr));
-      break;
+      // console.log(currRule, currValues);
+      if (currRule == "A") res.push(currValues);
+      continue;
     }
 
     // can visit once
     const key = JSON.stringify(curr);
     if (key in visited) continue;
     visited[key] = true;
-    console.log(key);
+    // console.log(key);
 
     // go next rules
-    rules[currRule].forEach((seg) => {
-      console.log("p", seg);
-    });
+    findNextRules(currValues, rules[currRule]).forEach(
+      ([nextRule, nextValues]) => {
+        heap.push([nextRule, nextValues]);
+      }
+    );
   }
 
-  return Object.keys(visited).length;
+  console.log("k", k);
+  return res
+    .map((obj) =>
+      Object.values(obj)
+        .map(([i, j]) => j - i + 1)
+        .multiply()
+    )
+    .sum();
 };
 
 run(part2, parsed);
