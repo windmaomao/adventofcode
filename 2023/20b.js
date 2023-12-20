@@ -49,6 +49,7 @@ const pushButton = (network, log = true) => {
   let curr,
     pulses = [0, 0];
   let k = 0;
+  let done = false;
 
   while ((curr = heap.shift()) && k < 1111113) {
     k++;
@@ -57,7 +58,9 @@ const pushButton = (network, log = true) => {
     if (log) console.log(prevName, prevSignal ? "high" : "low", currName);
 
     // if unkown, stop
-    if (!(currName in network.nodes)) continue;
+    if (!(currName in network.nodes)) {
+      continue;
+    }
 
     const node = network.nodes[currName];
 
@@ -83,28 +86,16 @@ const pushButton = (network, log = true) => {
   }
 
   if (log) console.log("k", k);
-  return pulses;
+  return done;
 };
 
-const part1 = (network) => {
-  const res = [0, 0];
+const part2 = (network) => {
   for (let i = 0; i < 1000; i++) {
     const r = pushButton(network, false);
-    res[0] += r[0];
-    res[1] += r[1];
-
-    if (
-      Object.values(network.nodes).every((node) => {
-        if ("value" in node) return node.value == 0;
-        return node.values.values().every((v) => v == 0);
-      })
-    ) {
-      console.log("reset", i + 1);
-      break;
-    }
   }
-
-  return res;
+  return Object.values(network.nodes)
+    .filter((n) => typeof n.value == "number")
+    .map((n) => n.value);
 };
 
-run(part1, network);
+run(part2, network);
