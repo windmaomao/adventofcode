@@ -1,7 +1,7 @@
 require("./object");
 const read = require("./read");
 const run = require("./run");
-const strs = read("20.a", "\n");
+const strs = read("20.b", "\n");
 
 const parseNetwork = (strs) => {
   const edges = {};
@@ -14,91 +14,92 @@ const parseNetwork = (strs) => {
     } else {
       type = from.slice(0, 1);
       name = from.slice(1);
-      nodes[name] = { type };
+      nodes[name] = { name, type };
     }
     edges[name] = to.split(", ");
   }
   nodes.broadcaster = { type: "" };
 
-  const values = {};
   Object.keys(nodes).forEach((node) => {
     switch (nodes[node].type) {
       case "%":
-        values[node] = 0;
+        nodes[node].value = 0;
         break;
       case "&":
-        values[node] = {};
+        nodes[node].values = {};
         Object.keys(nodes).forEach((u) => {
           if (edges[u].includes(node)) {
-            values[node][u] = 0;
+            nodes[node].values[u] = 0;
           }
         });
         break;
     }
   });
 
-  return { edges, nodes, values };
+  return { edges, nodes };
 };
 
 const network = parseNetwork(strs);
+// console.log(network.nodes);
 
-const part1 = (network) => {
-  const initialValues = network.values;
-  const start = ["broadcaster", 0, "button", initialValues.clone()];
+const pushButton = (network, log = true) => {
+  const start = ["broadcaster", 0, "button"];
   const heap = [start];
 
-  let curr, output;
+  let curr,
+    pulses = [0, 0];
   let k = 0;
 
-  while ((curr = heap.shift()) && k < 8) {
+  while ((curr = heap.shift()) && k < 13) {
     k++;
-    const [node, prevSignal, prevNode, values] = curr;
-    console.log(prevNode, prevSignal ? "high" : "low", node, values);
+    const [currName, prevSignal, prevName] = curr;
+    pulses[prevSignal]++;
+    if (log) console.log(prevName, prevSignal ? "high" : "low", currName);
 
-    if (network.nodes[node].type == "%" && prevSignal) continue;
+    if (currName == "output") continue;
 
-    if (node == "output") {
-      output = prevSignal;
-      continue;
-    }
+    const node = network.nodes[currName];
 
-    const push = (a) => {
-      console.log("...", a[2], a[1] ? "high" : "low", a[0], a[3]);
-      heap.push(a);
-    };
+    if (node.type == "%" && prevSignal) continue;
 
-    //                         v
-    // prevNode -prevSignal-> node -signal-> nextNode
-    let signal;
-    switch (network.nodes[node].type) {
+    switch (node.type) {
       case "%":
-        signal = values[node];
+        node.value = 1 - node.value;
+        node.signal = node.value;
         break;
       case "&":
-        signal = values[node].values().every((v) => v) ? 0 : 1;
+        node.values[prevName] = prevSignal;
+        node.signal = node.values.values().every((v) => v) ? 0 : 1;
         break;
       default:
-        signal = prevSignal;
+        node.signal = prevSignal;
     }
-    network.edges[node].forEach((nextNode) => {
-      let nextValues = values.clone();
-      switch (network.nodes[nextNode].type) {
-        case "%":
-          if (!signal) {
-            nextValues[nextNode] = 1 - nextValues[nextNode];
-          }
-          break;
-        case "&":
-          nextValues[nextNode][node] = signal;
-          break;
-        case "output":
-          break;
-      }
-      push([nextNode, signal, node, nextValues]);
+    // console.log("...", JSON.stringify(node));
+
+    network.edges[currName].forEach((nextName) => {
+      heap.push([nextName, node.signal, currName]);
     });
   }
 
-  return k;
+  if (log) console.log("k", k);
+  return pulses;
+};
+
+const part1 = (network) => {
+  const res = [];
+  for (let i = 0; i < 4; i++) {
+    res.push(pushButton(network, false));
+
+    if (
+      Object.values(network.nodes).every((node) => {
+        if ("value" in node) return node.value == 0;
+        return node.values.values().every((v) => v == 0);
+      })
+    ) {
+      console.log("reset", i);
+    }
+  }
+  return res;
 };
 
 run(part1, network);
