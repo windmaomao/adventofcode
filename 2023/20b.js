@@ -42,7 +42,7 @@ const parseNetwork = (strs) => {
 const network = parseNetwork(strs);
 // console.log(network.nodes);
 
-const pushButton = (network, log = true) => {
+const pushButton = (network, final, log = false) => {
   const start = ["broadcaster", 0, "button"];
   const heap = [start];
 
@@ -57,12 +57,15 @@ const pushButton = (network, log = true) => {
     pulses[prevSignal]++;
     if (log) console.log(prevName, prevSignal ? "high" : "low", currName);
 
-    // if unkown, stop
-    if (!(currName in network.nodes)) {
-      continue;
-    }
+    if (!(currName in network.nodes)) continue;
 
     const node = network.nodes[currName];
+
+    if (currName == "kh" && node.values[final]) {
+      console.log(node.values);
+      done = true;
+      break;
+    }
 
     if (node.type == "%" && prevSignal) continue;
 
@@ -89,13 +92,19 @@ const pushButton = (network, log = true) => {
   return done;
 };
 
-const part2 = (network) => {
-  for (let i = 0; i < 1000; i++) {
-    const r = pushButton(network, false);
-  }
-  return Object.values(network.nodes)
-    .filter((n) => typeof n.value == "number")
-    .map((n) => n.value);
+const part2 = () => {
+  // perform lcm of all the numbers
+  return ["pv", "qh", "xm", "hz"].map((name) => {
+    const network = parseNetwork(strs);
+    let k = 0;
+    for (let i = 0; i < 20000; i++) {
+      if (pushButton(network, name)) {
+        k = i + 1;
+        break;
+      }
+    }
+    return k;
+  });
 };
 
-run(part2, network);
+run(part2);

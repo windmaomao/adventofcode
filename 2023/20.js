@@ -92,6 +92,7 @@ const part1 = (network) => {
     const r = pushButton(network, false);
     res[0] += r[0];
     res[1] += r[1];
+    console.log(res[0], res[1]);
 
     if (
       Object.values(network.nodes).every((node) => {
