@@ -19,7 +19,6 @@ const parseNetwork = (strs) => {
     edges[name] = to.split(", ");
   }
   nodes.broadcaster = { type: "" };
-  nodes.output = { type: "" };
 
   const values = {};
   Object.keys(nodes).forEach((node) => {
@@ -51,10 +50,12 @@ const part1 = (network) => {
   let curr, output;
   let k = 0;
 
-  while ((curr = heap.shift()) && k < 9) {
+  while ((curr = heap.shift()) && k < 8) {
     k++;
     const [node, prevSignal, prevNode, values] = curr;
     console.log(prevNode, prevSignal ? "high" : "low", node, values);
+
+    if (network.nodes[node].type == "%" && prevSignal) continue;
 
     if (node == "output") {
       output = prevSignal;
@@ -62,45 +63,42 @@ const part1 = (network) => {
     }
 
     const push = (a) => {
-      console.log("p", a[2], a[1], a[0]);
+      console.log("...", a[2], a[1] ? "high" : "low", a[0], a[3]);
       heap.push(a);
     };
 
-    // broadcast
-    if (network.nodes[node.type] == "") {
-      let signal = prevSignal;
-      network.edges[node].forEach((nextNode) => {
-        let nextValues = values.clone();
-        push([nextNode, signal, node, nextValues]);
-      });
-    } else {
-      //                         v
-      // prevNode -prevSignal-> node -signal-> nextNode
-      let signal;
-      if (network.nodes[node.type] == "%") {
+    //                         v
+    // prevNode -prevSignal-> node -signal-> nextNode
+    let signal;
+    switch (network.nodes[node].type) {
+      case "%":
         signal = values[node];
-      } else {
+        break;
+      case "&":
         signal = values[node].values().every((v) => v) ? 0 : 1;
-      }
-      network.edges[node].forEach((nextNode) => {
-        let nextValues = values.clone();
-        switch (network.nodes[nextNode].type) {
-          case "%":
-            if (signal) return;
-            nextValues[nextNode] = 1 - nextValues[nextNode];
-            break;
-          case "&":
-            nextValues[nextNode][node] = signal;
-            break;
-          case "output":
-            break;
-        }
-        push([nextNode, signal, node, nextValues]);
-      });
+        break;
+      default:
+        signal = prevSignal;
     }
+    network.edges[node].forEach((nextNode) => {
+      let nextValues = values.clone();
+      switch (network.nodes[nextNode].type) {
+        case "%":
+          if (!signal) {
+            nextValues[nextNode] = 1 - nextValues[nextNode];
+          }
+          break;
+        case "&":
+          nextValues[nextNode][node] = signal;
+          break;
+        case "output":
+          break;
+      }
+      push([nextNode, signal, node, nextValues]);
+    });
   }
 
-  return 0;
+  return k;
 };
 
 run(part1, network);
