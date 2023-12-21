@@ -1,10 +1,11 @@
 require("./array");
 const read = require("./read");
 const run = require("./run");
-const strs = read("21.a", "\n");
+const strs = read("21", "\n");
 
 const parseMap = (strs) => {
   const m = strs.length;
+  console.log(m);
   const n = strs[0].length;
   let start;
   let map = [];
@@ -41,7 +42,7 @@ const repeat = (j, n) => {
   return k < 0 ? k + n : k;
 };
 
-const part2 = (map, steps) => {
+const runTiles = (map, steps) => {
   let heap = [map.start];
   let k = 0;
 
@@ -71,8 +72,28 @@ const part2 = (map, steps) => {
     k++;
   }
 
-  // console.log(heap);
   return heap.length;
 };
 
-run(part2, map, 50);
+const part2 = (map) => {
+  const n = map.n;
+  const mid = (n - 1) / 2;
+  const values = [
+    runTiles(map, mid),
+    runTiles(map, mid + n),
+    runTiles(map, mid + 2 * n),
+  ];
+  // const values = [3676, 32808, 90974];
+  const x = (26501365 - mid) / n;
+
+  // Lagrange's Interpolation formula
+  // Given [0,v0], [1,v1], [2,v2]
+  // Find vx at x
+
+  let a = values[0] / 2 - values[1] + values[2] / 2;
+  let b = -3 * (values[0] / 2) + 2 * values[1] - values[2] / 2;
+  let c = values[0];
+  return a * x * x + b * x + c;
+};
+
+run(part2, map);
