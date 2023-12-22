@@ -1,7 +1,7 @@
 require("./object");
 const read = require("./read");
 const run = require("./run");
-const strs = read("22.a", "\n");
+const strs = read("22", "\n");
 const char = (i) => String.fromCharCode(65 + i);
 
 const parseBlocks = (strs) => {
@@ -18,7 +18,7 @@ const parseBlocks = (strs) => {
 
   // sort by z
   const sorted = blocks.values().sort((a, b) => a.z - b.z);
-  console.log(sorted);
+  // console.log(sorted);
 
   // find supports
   for (let i = 0; i < sorted.length; i++) {
@@ -27,7 +27,7 @@ const parseBlocks = (strs) => {
     let [ax1, ay1] = sorted[i].p1;
     let j = i - 1;
     let landed = false;
-    console.log(char(uname), uz, ax0, ay0, ax1, ay1);
+    // console.log(char(uname), uz, ax0, ay0, ax1, ay1);
 
     while (j >= 0) {
       let { name: vname, z: vz } = sorted[j];
@@ -44,9 +44,9 @@ const parseBlocks = (strs) => {
       }
 
       uz = vz + 1;
-      console.log("...", char(vname), uz, bx0, by0, bx1, by1);
+      // console.log("...", char(vname), uz, bx0, by0, bx1, by1);
       blocks[vname].supports.push(uname);
-      console.log(char(vname), "supports", char(uname));
+      // console.log(char(vname), "supports", char(uname));
       landed = true;
       j--;
     }
@@ -60,10 +60,20 @@ const parseBlocks = (strs) => {
 const blocks = parseBlocks(strs);
 
 const part1 = (blocks) => {
-  return blocks.values().map(({ name, supports }) => ({
-    name: char(name),
-    supports: supports.map(char),
-  }));
+  const list = blocks.values();
+
+  // find all supportedBy
+  list.forEach((block) => {
+    block.supportedBy = list
+      .filter((b) => b.supports.includes(block.name))
+      .map((b) => b.name);
+  });
+
+  // find whether can be disintegrated
+  return list.filter(({ supports }) => {
+    if (supports.length == 0) return true;
+    return supports.every((name) => blocks[name].supportedBy.length > 1);
+  }).length;
 };
 
 run(part1, blocks);
