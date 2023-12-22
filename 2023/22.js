@@ -1,7 +1,7 @@
 require("./object");
 const read = require("./read");
 const run = require("./run");
-const strs = read("22.a", "\n");
+const strs = read("22", "\n");
 const char = (i) => String.fromCharCode(65 + i);
 
 const parseBlocks = (strs) => {
@@ -25,31 +25,29 @@ const parseBlocks = (strs) => {
     let uzl = sorted[i].p0[2];
     let [ax0, ay0] = sorted[i].p0;
     let [ax1, ay1] = sorted[i].p1;
-    let j = i - 1;
+
     let landed = false;
+    const sorted2 = blocks
+      .values()
+      .filter((b) => b.p1[2] < uzl)
+      .sort((a, b) => b.p1[2] - a.p1[2]);
+
     console.log(uname, uzl, sorted[i].p0, sorted[i].p1);
 
-    while (j >= 0) {
-      let vname = sorted[j].name;
-      let vzh = sorted[j].p1[2];
-      if (landed && uzl != vzh + 1) {
-        j--;
-        continue;
-      }
+    for (let v of sorted2) {
+      let vname = v.name;
+      let vzh = v.p1[2];
+      if (landed && uzl != vzh + 1) continue;
 
-      let [bx0, by0] = sorted[j].p0;
-      let [bx1, by1] = sorted[j].p1;
-      if (ax0 > bx1 || ax1 < bx0 || ay0 > by1 || ay1 < by0) {
-        j--;
-        continue;
-      }
+      let [bx0, by0] = v.p0;
+      let [bx1, by1] = v.p1;
+      if (ax0 > bx1 || ax1 < bx0 || ay0 > by1 || ay1 < by0) continue;
 
       uzl = vzh + 1;
-      console.log("...", vname, vzh, sorted[j].p0, sorted[j].p1);
+      console.log("...", vname, vzh, v.p0, v.p1);
       blocks[vname].supports.push(uname);
       console.log("...p", vname, "supports", uname);
       landed = true;
-      j--;
     }
     if (!landed) uzl = 1;
 
