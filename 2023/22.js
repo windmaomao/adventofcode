@@ -1,7 +1,7 @@
 require("./object");
 const read = require("./read");
 const run = require("./run");
-const strs = read("22", "\n");
+const strs = read("22.a", "\n");
 const char = (i) => String.fromCharCode(65 + i);
 
 const parseBlocks = (strs) => {
@@ -12,26 +12,27 @@ const parseBlocks = (strs) => {
   strs.map((str, name) => {
     const parts = str.split("~");
     const [p0, p1] = parts.map(_pos);
-    let z = Math.min(p0[2], p1[2]);
-    blocks[name] = { name, p0, p1, z, supports: [] };
+    blocks[name] = { name, p0, p1, supports: [] };
   });
 
   // sort by z
-  const sorted = blocks.values().sort((a, b) => a.z - b.z);
+  const sorted = blocks.values().sort((a, b) => a.p0[2] - b.p0[2]);
   // console.log(sorted);
 
   // find supports
   for (let i = 0; i < sorted.length; i++) {
-    let { name: uname, z: uz } = sorted[i];
+    let uname = sorted[i].name;
+    let uzl = sorted[i].p0[2];
     let [ax0, ay0] = sorted[i].p0;
     let [ax1, ay1] = sorted[i].p1;
     let j = i - 1;
     let landed = false;
-    // console.log(char(uname), uz, ax0, ay0, ax1, ay1);
+    console.log(uname, uzl, sorted[i].p0, sorted[i].p1);
 
     while (j >= 0) {
-      let { name: vname, z: vz } = sorted[j];
-      if (landed && uz != vz + 1) {
+      let vname = sorted[j].name;
+      let vzh = sorted[j].p1[2];
+      if (landed && uzl != vzh + 1) {
         j--;
         continue;
       }
@@ -43,15 +44,19 @@ const parseBlocks = (strs) => {
         continue;
       }
 
-      uz = vz + 1;
-      // console.log("...", char(vname), uz, bx0, by0, bx1, by1);
+      uzl = vzh + 1;
+      console.log("...", vname, vzh, sorted[j].p0, sorted[j].p1);
       blocks[vname].supports.push(uname);
-      // console.log(char(vname), "supports", char(uname));
+      console.log("...p", vname, "supports", uname);
       landed = true;
       j--;
     }
+    if (!landed) uzl = 1;
 
-    blocks[uname].z = uz;
+    let dz = blocks[uname].p1[2] - blocks[uname].p0[2];
+    blocks[uname].p0[2] = uzl;
+    blocks[uname].p1[2] = uzl + dz;
+    console.log("...u", blocks[uname]);
   }
 
   return blocks;
@@ -70,10 +75,18 @@ const part1 = (blocks) => {
   });
 
   // find whether can be disintegrated
-  return list.filter(({ supports }) => {
+  return list.filter(({ name, supports, p0, p1 }) => {
+    console.log(name, supports, p0, p1);
     if (supports.length == 0) return true;
-    return supports.every((name) => blocks[name].supportedBy.length > 1);
+    const res = supports.every((vname) => {
+      console.log(".", vname, blocks[vname].supportedBy);
+      return blocks[vname].supportedBy.length > 1;
+    });
+    if (res) console.log(".s");
+    return res;
   }).length;
 };
 
 run(part1, blocks);
+
+// 538 too high
