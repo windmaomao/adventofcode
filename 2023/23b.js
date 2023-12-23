@@ -43,7 +43,7 @@ const findNodeEdges = (map, startId) => {
   // state: [[x, y], dist]
   const start = map.nodes[startId];
   let heap = [[start, 0]];
-  let edges = {};
+  let edges = [];
   let visited = {};
   let curr;
 
@@ -58,7 +58,8 @@ const findNodeEdges = (map, startId) => {
     if (udist != 0) {
       let npos = map.nodes.find(([nx, ny]) => nx == ux && ny == uy);
       if (npos) {
-        edges[npos] = udist;
+        let nid = map.nodes.indexOf(npos);
+        edges.push([nid, udist]);
         continue;
       }
     }
@@ -77,53 +78,27 @@ const findNodeEdges = (map, startId) => {
 };
 
 const part2 = (map) => {
-  const edges = {};
-  map.nodes.forEach((npos, i) => {
-    edges[npos] = findNodeEdges(map, i);
-  });
+  const edges = map.nodes.map((_, i) => findNodeEdges(map, i));
   console.log(edges);
-
   return;
-  // state: [x, y, dist, path, px, py]
-  const heap = [[...map.start, 0, [], -1, -1]];
+
+  // state: [path, dist]
+  const heap = [[[], dist]];
   let curr;
   let longest = 0;
-  let pathMap = {};
-  let k = 0;
 
   while ((curr = heap.pop())) {
-    k++;
-    let [ux, uy, udist, upath, px, py] = curr;
+    let [upath, udist] = curr;
+    let upos = upath.at(-1);
+    let [ux, uy] = upos;
+
     if (ux == map.end[0] && uy == map.end[1]) {
       longest = Math.max(longest, udist);
       console.log(udist, longest);
       continue;
     }
 
-    const pathKey = `${ux},${uy}|${upath.join("-")}`;
-    if (pathKey in pathMap) continue;
-    pathMap[pathKey] = true;
-    // console.log(upath.join("-"), ux, uy);
-
-    const nextPath = [...upath];
-    const nextNode = map.nodes[_key(ux, uy)];
-    if (nextNode != undefined) {
-      // can't visit the same node twice
-      if (nextPath.indexOf(nextNode) >= 0) continue;
-      nextPath.push(nextNode);
-    }
-
-    // const _dirs = map.map[ux][uy] in slopes ? [slopes[map.map[ux][uy]]] : dirs;
-    dirs.forEach(([dx, dy]) => {
-      const vx = ux + dx;
-      const vy = uy + dy;
-      if (vx < 0 || vx >= map.m || vy < 0 || vy >= map.n) return;
-      if (vx == px && vy == py) return; // no back
-      if (map.map[vx][vy] == "#") return; // no wall
-
-      // console.log("...", vx, vy);
-      heap.push([vx, vy, udist + 1, nextPath, ux, uy]);
-    });
+    Object.entries(edges[upos]).forEach();
   }
 
   return longest;
