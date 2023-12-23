@@ -27,7 +27,13 @@ const slopes = {
 
 const isVisited = (path, x, y) => path.some(([px, py]) => px == x && py == y);
 const getPathKey = (path) => {
-  return path.map(([x, y]) => `${y}`).join("");
+  return (
+    `${path.length}-` +
+    path
+      .slice(-1000)
+      .map(([x, y]) => `${y}`)
+      .join("")
+  );
 };
 
 const part1 = (map) => {
@@ -40,7 +46,7 @@ const part1 = (map) => {
     let [ux, uy] = path.at(-1);
     if (ux == map.end[0] && uy == map.end[1]) {
       longest = Math.max(longest, path.length - 1);
-      console.log(path.length - 1);
+      console.log(path.length - 1, longest);
       continue;
     }
 
@@ -66,3 +72,6 @@ const part1 = (map) => {
 };
 
 run(part1, parsedMap);
+
+// 2698 too low
+// 5478 too low
