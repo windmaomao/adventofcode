@@ -1,7 +1,6 @@
 const read = require("./read");
 const run = require("./run");
-const strs = read("23.a", "\n");
-const _key = (x, y) => `${x},${y}`;
+const strs = read("23", "\n");
 const dirs = [
   [-1, 0],
   [0, -1],
@@ -12,7 +11,7 @@ const dirs = [
 const parseMap = (map) => {
   const m = strs.length;
   const n = strs[0].length;
-  const start = [0, 0];
+  const start = [0, 1];
   const end = [m - 1, n - 2];
   const nodes = [start, end];
 
@@ -80,17 +79,19 @@ const findNodeEdges = (map, startId) => {
 const part2 = (map) => {
   const edges = map.nodes.map((_, i) => findNodeEdges(map, i));
   console.log(edges);
-  return;
 
-  // state: [path, dist]
-  const heap = [[[], dist]];
+  // state: [pathIds, dist]
+  const heap = [[[0], 0]];
   let curr;
   let longest = 0;
+  let k = 0;
 
-  while ((curr = heap.pop())) {
+  while ((curr = heap.pop()) && k < 200000000) {
+    k++;
     let [upath, udist] = curr;
-    let upos = upath.at(-1);
-    let [ux, uy] = upos;
+    let uid = upath.at(-1);
+    let [ux, uy] = map.nodes[uid];
+    // console.log(uid, upath.join("-"));
 
     if (ux == map.end[0] && uy == map.end[1]) {
       longest = Math.max(longest, udist);
@@ -98,15 +99,16 @@ const part2 = (map) => {
       continue;
     }
 
-    Object.entries(edges[upos]).forEach();
+    edges[uid]
+      .filter(([vid, _]) => upath.indexOf(vid) < 0)
+      .forEach(([vid, dd]) => {
+        let vdist = udist + dd;
+        // console.log("...", vid, vdist);
+        heap.push([[...upath, vid], vdist]);
+      });
   }
-
+  console.log("k", k);
   return longest;
 };
 
 run(part2, parsedMap);
-
-// 2698 too low
-// 5478 too low
-// 5634 not right
-// 5722 not right
