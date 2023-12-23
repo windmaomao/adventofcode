@@ -2,7 +2,7 @@ require("./object");
 require("./array");
 const read = require("./read");
 const run = require("./run");
-const strs = read("22.a", "\n");
+const strs = read("22", "\n");
 
 const parseBlocks = (strs) => {
   const _pos = (p) => p.split(",").map(Number);
@@ -62,44 +62,62 @@ const parseBlocks = (strs) => {
 
 const blocks = parseBlocks(strs);
 
-const countFalls = (start, blocks) => {
+const countFalls = (start, list, blocks) => {
+  console.log(start, ")");
   let deads = { [start]: true };
-  let tips = [start];
 
-  const canShake = (id, deadList) => {
+  const canFall = (id) => {
     const supportedBy = blocks
       .values()
       .filter((b) => b.supports.indexOf(id) >= 0);
-    if (supportedBy.length == 0) return true;
-    return supportedBy.every((b) => b.name in deadList);
+    if (supportedBy.length == 0) return false;
+    return supportedBy.every((b) => deads[b.name]);
   };
 
-  while (tips.length > 0) {
-    console.log(deads.keys(), tips);
-    let nextTips = [];
-    tips.forEach((tip) => {
-      blocks[tip].supports
-        .filter((id) => !(id in deads) && canShake(id, deads))
-        .forEach((id) => {
-          nextTips.push(id);
-        });
-    });
-    nextTips.forEach((id) => {
-      deads[id] = true;
-    });
-    tips = nextTips;
+  for (let c of list) {
+    if (deads[c]) continue;
+    if (canFall(c)) {
+      // console.log(c, "can fall");
+      deads[c] = true;
+    }
   }
 
   return deads.keys().length - 1;
 };
 
+const topologicalOrder = (blocks) => {
+  let list = blocks.values().map((b) => b.name);
+  let curr = list.filter((id) => blocks[id].supports.length == 0);
+  let res = [];
+
+  while (curr.length > 0) {
+    curr.forEach((c) => {
+      if (res.indexOf(c) >= 0) return;
+      res.push(c);
+    });
+
+    let next = [];
+    list
+      .filter((id) => blocks[id].supports.every((s) => res.indexOf(s) >= 0))
+      .forEach((c) => {
+        if (res.indexOf(c) >= 0) return;
+        if (next.indexOf(c) >= 0) return;
+        next.push(c);
+      });
+
+    curr = next;
+  }
+
+  return res.reverse();
+};
+
 const part2 = (blocks) => {
-  console.log(countFalls(0, blocks));
-  // return blocks
-  //   .values()
-  //   .map((v) => v.name)
-  //   .map((name) => countFalls(name, blocks))
-  //   .sum();
+  const list = topologicalOrder(blocks);
+  return blocks
+    .values()
+    .map((v) => v.name)
+    .map((name) => countFalls(name, list, blocks))
+    .sum();
 };
 
 run(part2, blocks);
