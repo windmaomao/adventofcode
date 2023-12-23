@@ -48,7 +48,7 @@ const part1 = (map) => {
       const vkey = _k(vx, vy);
       if (vkey in mark) return;
 
-      const nextDist = udist + 1;
+      const nextDist = udist - 1;
       if (nextDist < _d(vkey)) {
         dist[vkey] = nextDist;
         parent[vkey] = [ux, uy];
