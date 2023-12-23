@@ -1,6 +1,6 @@
 const read = require("./read");
 const run = require("./run");
-const strs = read("23", "\n");
+const strs = read("23.a", "\n");
 const _key = (x, y) => `${x},${y}`;
 const dirs = [
   [-1, 0],
@@ -47,45 +47,45 @@ const parseMap = (map) => {
 
 const parsedMap = parseMap(strs);
 
-const isVisited = (path, x, y) => path.some(([px, py]) => px == x && py == y);
-const getPathKey = (path, nodes) => {
-  const majorNodes = path
-    .filter(([x, y]) => _key(x, y) in nodes)
-    .map(([x, y]) => nodes[_key(x, y)]);
-  return _key(...path.at(-1)) + "|" + majorNodes.join(",");
-};
-
 const part1 = (map) => {
-  const heap = [[map.start]];
-  let path;
+  console.log(map.nodes);
+  // state: [x, y, dist, path, px, py]
+  const heap = [[...map.start, 0, [], -1, -1]];
+  let curr;
   let longest = 0;
   let pathMap = {};
   let k = 0;
 
-  while ((path = heap.pop())) {
+  while ((curr = heap.pop()) && k < 100000) {
     k++;
-    let [ux, uy] = path.at(-1);
+    let [ux, uy, udist, upath, px, py] = curr;
     if (ux == map.end[0] && uy == map.end[1]) {
-      longest = Math.max(longest, path.length - 1);
-      console.log(path.length - 1, longest);
+      longest = Math.max(longest, udist);
+      console.log(udist, longest);
       continue;
     }
 
-    const pathKey = getPathKey(path, map.nodes);
+    const pathKey = `${ux},${uy}|${upath.join("-")}`;
     if (pathKey in pathMap) continue;
     pathMap[pathKey] = true;
-    // console.log(pathKey);
+    console.log(pathKey);
 
-    // const _dirs = map.map[ux][uy] in slopes ? [slopes[map.map[ux][uy]]] : dirs;
-    dirs.forEach(([dx, dy]) => {
+    const nextPath = [...upath];
+    const nextNode = map.nodes[_key(ux, uy)];
+    if (nextNode != undefined) {
+      nextPath.push(nextNode);
+    }
+
+    const _dirs = map.map[ux][uy] in slopes ? [slopes[map.map[ux][uy]]] : dirs;
+    _dirs.forEach(([dx, dy]) => {
       const vx = ux + dx;
       const vy = uy + dy;
       if (vx < 0 || vx >= map.m || vy < 0 || vy >= map.n) return;
-      if (map.map[vx][vy] == "#") return;
-      if (isVisited(path, vx, vy)) return;
+      if (vx == px && vy == py) return; // no back
+      if (map.map[vx][vy] == "#") return; // no wall
 
       // console.log("...", vx, vy);
-      heap.push([...path, [vx, vy]]);
+      heap.push([vx, vy, udist + 1, nextPath, ux, uy]);
     });
   }
 
