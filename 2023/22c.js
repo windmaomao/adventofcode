@@ -63,54 +63,43 @@ const parseBlocks = (strs) => {
 const blocks = parseBlocks(strs);
 
 const countFalls = (start, blocks) => {
-  console.log(start, ")");
-  let res = {};
-  let heap = [[[start], start]];
-  let curr;
+  let deads = { [start]: true };
+  let tips = [start];
 
-  const canCut = (name, deads) => {
+  const canShake = (id, deadList) => {
     const supportedBy = blocks
       .values()
-      .filter((b) => b.supports.indexOf(name) >= 0);
+      .filter((b) => b.supports.indexOf(id) >= 0);
     if (supportedBy.length == 0) return true;
-    return supportedBy.every((b) => deads.indexOf(b.name) >= 0);
+    return supportedBy.every((b) => b.name in deadList);
   };
 
-  while ((curr = heap.shift())) {
-    let [deads, name] = curr;
-    console.log(deads, name);
-
-    const cuts = blocks[name].supports.filter((c) => {
-      return deads.indexOf(c) < 0 && canCut(c, deads);
+  while (tips.length > 0) {
+    console.log(deads.keys(), tips);
+    let nextTips = [];
+    tips.forEach((tip) => {
+      blocks[tip].supports
+        .filter((id) => !(id in deads) && canShake(id, deads))
+        .forEach((id) => {
+          nextTips.push(id);
+        });
     });
-    console.log("...c", cuts);
-
-    // reach one end
-    if (cuts.length == 0) {
-      deads.forEach((dead) => {
-        res[dead] = true;
-      });
-      continue;
-    }
-
-    let nextDeads = [...deads];
-    cuts.forEach((c) => {
-      if (nextDeads.indexOf(c) < 0) nextDeads.push(c);
+    nextTips.forEach((id) => {
+      deads[id] = true;
     });
-
-    cuts.forEach((c) => {
-      heap.push([nextDeads, c]);
-    });
+    tips = nextTips;
   }
 
-  return res.keys().length - 1;
+  return deads.keys().length - 1;
 };
 
 const part2 = (blocks) => {
-  return blocks
-    .keys()
-    .map((name) => countFalls(Number(name), blocks))
-    .sum();
+  console.log(countFalls(0, blocks));
+  // return blocks
+  //   .values()
+  //   .map((v) => v.name)
+  //   .map((name) => countFalls(name, blocks))
+  //   .sum();
 };
 
 run(part2, blocks);
