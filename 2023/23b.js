@@ -26,11 +26,15 @@ const slopes = {
 };
 
 const isVisited = (path, x, y) => path.some(([px, py]) => px == x && py == y);
+const getPathKey = (path) => {
+  return path.map(([x, y]) => `${y}`).join("");
+};
 
 const part1 = (map) => {
   const heap = [[map.start]];
   let path;
   let longest = 0;
+  let pathMap = {};
 
   while ((path = heap.pop())) {
     let [ux, uy] = path.at(-1);
@@ -40,10 +44,13 @@ const part1 = (map) => {
       continue;
     }
 
-    // console.log(ux, uy);
+    const pathKey = getPathKey(path);
+    if (pathKey in pathMap) continue;
+    pathMap[pathKey] = true;
+    // console.log(pathKey);
 
-    const _dirs = map.map[ux][uy] in slopes ? [slopes[map.map[ux][uy]]] : dirs;
-    _dirs.forEach(([dx, dy]) => {
+    // const _dirs = map.map[ux][uy] in slopes ? [slopes[map.map[ux][uy]]] : dirs;
+    dirs.forEach(([dx, dy]) => {
       const vx = ux + dx;
       const vy = uy + dy;
       if (vx < 0 || vx >= map.m || vy < 0 || vy >= map.n) return;
