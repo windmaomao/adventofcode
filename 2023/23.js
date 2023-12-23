@@ -19,6 +19,12 @@ const dirs = [
   [0, 1],
   [1, 0],
 ];
+const slopes = {
+  ">": [0, 1],
+  "<": [0, -1],
+  v: [1, 0],
+  "^": [-1, 0],
+};
 const part1 = (map) => {
   const _k = (i, j) => `${i}:${j}`;
 
@@ -38,8 +44,10 @@ const part1 = (map) => {
     if (ukey in mark) continue;
     mark[ukey] = true;
     const udist = _d(ukey);
+    console.log(priority, ")", ux, uy);
 
-    dirs.forEach(([dx, dy]) => {
+    const _dirs = map.map[ux][uy] in slopes ? [slopes[map.map[ux][uy]]] : dirs;
+    _dirs.forEach(([dx, dy]) => {
       const vx = ux + dx;
       const vy = uy + dy;
       if (vx < 0 || vx >= map.m || vy < 0 || vy >= map.n) return;
@@ -48,8 +56,9 @@ const part1 = (map) => {
       const vkey = _k(vx, vy);
       if (vkey in mark) return;
 
-      const nextDist = udist - 1;
+      const nextDist = udist + 1;
       if (nextDist < _d(vkey)) {
+        console.log("...p", nextDist, vx, vy);
         dist[vkey] = nextDist;
         parent[vkey] = [ux, uy];
         heapq.push(heap, [nextDist, vx, vy]);
