@@ -44,7 +44,7 @@ const part1 = (objs) => {
   // const box = [7, 27];
   const box = [200000000000000, 400000000000000];
   let n = objs.length;
-  let res = {};
+  let res = 0;
   for (let i = 0; i < n - 1; i++) {
     for (let j = i + 1; j < n; j++) {
       const c = tryCollide(objs[i], objs[j]);
@@ -54,18 +54,15 @@ const part1 = (objs) => {
         c.t.every((t) => t >= 0) &&
         c.at.every((p) => p >= box[0] && p <= box[1])
       ) {
-        const key = c.at.map((v) => Math.round(v)).join(",");
-        res[key] = c.at;
+        res++;
       }
     }
   }
   // console.log(res.values().sort((a, b) => a[0] - b[0]));
-  return res.keys().length;
+  return res;
 };
 
 run(part1, objs);
 // let i = 0,
 // j = 2;
 // console.log(objs[i][0], objs[j][0], tryCollide(objs[i], objs[j]));
-
-// 18651 too high
