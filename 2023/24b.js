@@ -1,3 +1,4 @@
+require("./array");
 const matrix = require("./matrix.js");
 const read = require("./read");
 const run = require("./run");
@@ -103,7 +104,7 @@ const part2 = (objs) => {
         if (res) {
           console.log("found!");
           console.log("v", u0, v0, w0);
-          console.log("pos", res);
+          console.log("pos", res, res.map(Math.round).sum());
           return;
         }
       }
@@ -119,3 +120,5 @@ run(part2, objs);
 
 // v 133 278 85
 // pos [ 200027938836082.03, 127127087242192.88, 219339468239369.75 ]
+
+// 546494494317645
