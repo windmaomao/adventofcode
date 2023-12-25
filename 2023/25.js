@@ -1,4 +1,5 @@
 require("./object");
+require("./array");
 const read = require("./read");
 const run = require("./run");
 const ka = require("./karger");
@@ -32,14 +33,30 @@ const parseGraph = (strs) => {
 const graph = parseGraph(strs);
 
 const part1 = ({ nodes, edges }) => {
+  // console.log(nodes, edges);
+
   const V = nodes.length;
   const E = edges.length;
   let g = new ka.Graph(V, E);
-  // g.edge = edges.map(([u, v]) => new ka.Edge(u, v));
+  g.edge = edges.map(([u, v]) => new ka.Edge(u, v));
 
-  // add edge 0-1
-  // graph.edge[0] = new Edge(0, 1);
-  return g;
+  let k = 0;
+  let res;
+  let components;
+  while (k < 100) {
+    k++;
+    let r = Math.random();
+    [res, components] = ka.kargerMinCut(g);
+    if (res == 3) break;
+  }
+
+  let list = {};
+  components.forEach((c) => {
+    if (!(c in list)) list[c] = 0;
+    list[c]++;
+  });
+
+  return list.values().multiply();
 };
 
 run(part1, graph);

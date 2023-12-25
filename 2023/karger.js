@@ -36,7 +36,8 @@ function kargerMinCut(graph) {
   let vertices = V;
 
   while (vertices > 2) {
-    let i = Math.floor(Math.random() * 10) % E;
+    // let i = Math.floor(Math.random() * 10) % E;
+    let i = Math.floor(Math.random() * (E - 1));
 
     let subset1 = find(subsets, edge[i].src);
     let subset2 = find(subsets, edge[i].dest);
@@ -44,7 +45,7 @@ function kargerMinCut(graph) {
     if (subset1 === subset2) {
       continue;
     } else {
-      console.log("Contracting edge " + edge[i].src + "-" + edge[i].dest);
+      // console.log("Contracting edge " + edge[i].src + "-" + edge[i].dest);
       vertices--;
       Union(subsets, subset1, subset2);
     }
@@ -58,7 +59,10 @@ function kargerMinCut(graph) {
       cutedges++;
     }
   }
-  return cutedges;
+
+  const components = new Array(V).fill(0).map((_, i) => find(subsets, i));
+
+  return [cutedges, components];
 }
 
 function find(subsets, i) {
