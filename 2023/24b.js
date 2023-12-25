@@ -1,7 +1,7 @@
 const matrix = require("./matrix.js");
 const read = require("./read");
 const run = require("./run");
-const strs = read("24.a", "\n");
+const strs = read("24", "\n");
 
 const parseObjs = (strs) => {
   return strs.map((str) => {
@@ -77,26 +77,29 @@ const tryShareOrigin = (u0, v0, w0, p1, p2, p3) => {
   const b = [[x1], [y1], [z1], [x2], [y2]];
   const x = matrix.matrixMultiply(ainv, b);
   const [[x0], [y0], [z0], [t1], [t2]] = x;
+  if (t1 < 0 || t2 < 0) return null;
 
-  const e6 = z2 + w2 * t2 - (z0 + w0 * t2);
-  const t3 = (x0 - x3) / (u3 - u0);
-  const e8 = y3 + v3 * t3 - (y0 + v0 * t3);
-  const e9 = z3 + w3 * t3 - (z0 + w0 * t3);
-  const errors = [e6, e8, e9];
+  const t3 = [
+    (x3 - x0) / (u0 - u3),
+    (y3 - y0) / (v0 - v3),
+    (z3 - z0) / (w0 - w3),
+  ];
+  const errors = [t3[0] - t3[1], t3[1] - t3[2], t3[2] - t3[0]];
+  // console.log(errors);
 
-  if (errors.some((v) => Math.abs(v) > 1e-3)) return null;
+  if (errors.some((v) => Math.abs(v) > 0.01)) return null;
 
   return [x0, y0, z0];
 };
 
 const part2 = (objs) => {
-  let bounds = 5;
+  let bounds = 400;
   let res;
   for (let u0 = -bounds; u0 <= bounds; u0++) {
     console.log(u0);
     for (let v0 = -bounds; v0 <= bounds; v0++) {
       for (let w0 = -bounds; w0 <= bounds; w0++) {
-        res = tryShareOrigin(u0, v0, w0, objs[0], objs[1], objs[2]);
+        res = tryShareOrigin(u0, v0, w0, objs[1], objs[2], objs[3]);
         if (res) {
           console.log("found!");
           console.log("v", u0, v0, w0);
@@ -109,3 +112,10 @@ const part2 = (objs) => {
 };
 
 run(part2, objs);
+
+// found!
+// v 133 278 85
+// pos [ 200027938836082, 127127087242193, 219339468239372 ]
+
+// v 133 278 85
+// pos [ 200027938836082.03, 127127087242192.88, 219339468239369.75 ]
