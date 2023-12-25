@@ -3,7 +3,7 @@ require("./array");
 const read = require("./read");
 const run = require("./run");
 const ka = require("./karger");
-const strs = read("25.a", "\n");
+const strs = read("25", "\n");
 
 const parseGraph = (strs) => {
   let nodes = [];
