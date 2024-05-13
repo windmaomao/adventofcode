@@ -5,16 +5,23 @@ enum Action {
 export { Action }
 
 type strOrNum = string | number
+type Log = {
+  action: string,
+  addr: string,
+  val: string
+}
 
-function log(action: Action, addr: string, v: strOrNum) {
+function log(
+  action: Action, addr: string, val: strOrNum
+): Log {
   return {
     action: `${action}`,
     addr,
-    v: `${v}`
+    val: `${val}`
   }
 }
 
-export { log }
+export { log, Log }
 
 const logger = {
   write: (addr: string, v: strOrNum) => log(Action.Write, addr, v),
