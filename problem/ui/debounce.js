@@ -1,25 +1,23 @@
-function debounce(fn, delay) {
-  let handle = null
-  
-  return function () {
-    if (handle) {
-      clearTimeout(handle)
+// 5/15/24 first time pass, man!
+function debounce(callback, delay, immediate) {
+  let handler;
+
+  function debounced() {
+    if (handler) {
+      clearTimeout(handler);
+    } else {
+      if (immediate) {
+        callback.apply(this, arguments);
+      }
     }
-    
-    handle = setTimeout(() => {
-      fn(...arguments)
-    }, delay)
+    handler = setTimeout(() => {
+      if (immediate) {
+        handler = null;
+      } else {
+        callback.apply(this, arguments);
+      }
+    }, delay);
   }
-}
 
-const fn = (x) => {
-  console.log(x)
+  return debounced;
 }
-
-console.log('start ...')
-const d = debounce(fn, 2000)
-d(1)
-d(1)
-d(3)
-d(1)
-d(5)
