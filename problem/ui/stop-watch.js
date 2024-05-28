@@ -1,70 +1,59 @@
-const start = document.getElementById('start-button')
-const stop = document.getElementById('stop-button')
-const reset = document.getElementById('reset-button')
-const timer = document.getElementById('timer')
-
-let started = false
-let count = 0
-let prevTime = null
-let intervalId = null
-
-function format(c) {
-	let tmp
-	const mils = c % 1000
-	tmp = (c - mils) / 1000
-	const secs = tmp % 60
-	tmp = (tmp - secs) / 60
-	const mins = tmp
-	
-	return [
-		`${mins}`.padStart(2, '0'),
-		`${secs}`.padStart(2, '0'),
-		`${mils}`.padStart(3, '0'),
-	].join(':')
-}
+// 5-27-24
+const timer = document.getElementById("timer");
+const start = document.getElementById("start-button");
+const stop = document.getElementById("stop-button");
+const reset = document.getElementById("reset-button");
+let lastTime;
+let watcher = 0;
+let running = false;
 
 function render() {
-  if (started) {
-    start.setAttribute('disabled', true)
-    stop.removeAttribute('disabled')
-  } else {
-    start.removeAttribute('disabled')
-    stop.setAttribute('disabled', true)
-  }
-  if (!started && count) {
-    reset.removeAttribute('disabled')
-  } else {
-    reset.setAttribute('disabled', true)
-  }
-
-  const now = Date.now()
-  if (started) {
-    count += now - prevTime
-    prevTime = now
-  }
-  timer.textContent = format(count)
+  const p0 = watcher % 1000;
+  const t = (watcher - p0) / 1000;
+  const p1 = t % 60;
+  const p2 = (t - p1) / 60;
+  const s0 = `${p0}`.padStart(3, "0");
+  const s1 = `${p1}`.padStart(2, "0");
+  const s2 = `${p2}`.padStart(2, "0");
+  timer.textContent = `${s2}:${s1}:${s0}`;
 }
 
-render()
+function onStep() {
+  if (!running) return;
+  const currentTime = Date.now();
+  watcher += currentTime - lastTime;
+  lastTime = currentTime;
+  render();
+  window.requestAnimationFrame(onStep);
+}
 
-start.addEventListener('click', e => {
-  e.preventDefault()
-  started = true
-  prevTime = Date.now()
-  intervalId = setInterval(render, 50)
-  render()
-})
+function onStart() {
+  start.toggleAttribute("disabled");
+  stop.toggleAttribute("disabled");
+  reset.setAttribute("disabled", "disabled");
+  lastTime = Date.now();
+  running = true;
+  window.requestAnimationFrame(onStep);
+}
 
-stop.addEventListener('click', e => {
-  e.preventDefault()
-  started = false
-  clearInterval(intervalId)
-  render()
-})
+function onStop() {
+  start.toggleAttribute("disabled");
+  stop.toggleAttribute("disabled");
+  reset.removeAttribute("disabled");
+  running = false;
+}
 
-reset.addEventListener('click', e => {
-  e.preventDefault()
-  started = false
-  count = 0
-  render()
-})
+function onReset() {
+  stop.setAttribute("disabled", true);
+  reset.setAttribute("disabled", true);
+  watcher = 0;
+  render();
+}
+
+function init() {
+  start.addEventListener("click", onStart);
+  stop.addEventListener("click", onStop);
+  reset.addEventListener("click", onReset);
+}
+
+init();
