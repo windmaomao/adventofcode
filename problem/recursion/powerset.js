@@ -1,21 +1,21 @@
-const powerset = (array) => {
-	const n = array.length
-	const res = []
-	
-	const visit = (curr, i) => {
-		if (i == n) return
-		
-		res.push(curr.map(j => array[j]))
-		
-		let k = i + 1
-		while (k < n) {
-			visit([...curr, k], k)
-			k++
-		}
-	}
-	
-	visit([], -1)
-	console.log(res)
+// 5/31/24
+function powerset(a) {
+  let n = a.length;
+  const res = [];
+
+  function collect(collected, i) {
+    if (i == n) {
+      res.push([...collected]);
+      return;
+    }
+
+    collect(collected, i + 1);
+    collect([...collected, a[i]], i + 1);
+  }
+
+  collect([], 0);
+  return res;
 }
 
-powerset([1,2,3])
+// Do not edit the line below.
+exports.powerset = powerset;
