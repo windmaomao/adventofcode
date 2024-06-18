@@ -22,7 +22,7 @@ function qselect(arr, k) {
     if (i >= j) return;
 
     const p = partition(i, j);
-    const l = p - i;
+    const l = p - i + 1;
     if (k == l) return;
     if (k < l) select(i, p - 1, k);
     if (k > l) select(p, j, k - l);
