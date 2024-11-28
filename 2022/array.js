@@ -37,3 +37,19 @@ Array.prototype.multiply = function (fn) {
     return this.reduce((acc, v, i, arr) => acc * fn(v, i, arr), 1);
   }
 };
+
+Array.prototype.split = function (separator = "") {
+  let arr = this;
+  let res = [],
+    tmp = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (separator == arr[i]) {
+      res.push(tmp);
+      tmp = [];
+    } else {
+      tmp.push(arr[i]);
+    }
+  }
+  if (tmp.length) res.push(tmp);
+  return res;
+};
