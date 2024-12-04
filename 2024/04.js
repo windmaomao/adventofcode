@@ -45,3 +45,50 @@ const part1 = (strs) =>
   getRowCols(strs).map(countXmas).sum()
 
 run(part1, strs)
+
+const part2 = (strs) => {
+  let count = 0
+  for (let i = 1; i < strs.length - 1; i++) {
+    const str = strs[i]
+    for (let j = 1; j < str.length - 1; j++) {
+      if (str[j] !== "A") continue
+      if (
+        strs[i - 1][j - 1] !== "M" &&
+        strs[i - 1][j - 1] !== "S"
+      )
+        continue
+      if (
+        strs[i - 1][j - 1] === "M" &&
+        strs[i + 1][j + 1] !== "S"
+      )
+        continue
+
+      if (
+        strs[i - 1][j - 1] === "S" &&
+        strs[i + 1][j + 1] !== "M"
+      )
+        continue
+
+      if (
+        strs[i - 1][j + 1] !== "M" &&
+        strs[i - 1][j + 1] !== "S"
+      )
+        continue
+      if (
+        strs[i - 1][j + 1] === "M" &&
+        strs[i + 1][j - 1] !== "S"
+      )
+        continue
+      if (
+        strs[i - 1][j + 1] === "S" &&
+        strs[i + 1][j - 1] !== "M"
+      )
+        continue
+
+      count++
+    }
+  }
+  return count
+}
+
+run(part2, strs)
