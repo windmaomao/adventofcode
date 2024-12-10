@@ -25,6 +25,9 @@ function numsInfo(nums) {
   return info
 }
 
+const avgSum = (p) =>
+  (((p.pos + p.pos + p.count - 1) * p.count) / 2) * p.id
+
 const part1 = (nums) => {
   const info = numsInfo(nums)
 
@@ -62,27 +65,51 @@ const part1 = (nums) => {
     }
   }
 
-  return res
-    .map(
-      (p) =>
-        (((p.pos + p.pos + p.count - 1) * p.count) / 2) *
-        p.id
-    )
-    .sum()
+  return res.map(avgSum).sum()
 }
 
 run(part1, nums)
 
-//
-// 12345
-// 0..111....22222
-// 0 * 0
-//  1 * 2
-//   2 * 2
-//    3 * 1
-//     4 * 1
-//      5 * 1
-//       6 * 2
-//        7 * 2
-//         8 * 2
-// 0..............
+const part2 = (nums) => {
+  const info = numsInfo(nums).map((p) => [p])
+
+  for (let j = nums.length - 1; j > 0; j -= 2) {
+    const q = info[j][0]
+    let found = false
+    for (let i = 0; i < j; i++) {
+      if (found) break
+      for (let k = 0; k < info[i].length; k++) {
+        if (found) break
+        const p = info[i][k]
+        if (p.id < 0 && p.count >= q.count) {
+          const newCount = p.count - q.count
+          const newPos = p.pos + q.count
+          p.id = q.id
+          p.count = q.count
+          if (newCount) {
+            info[i].push({
+              pos: newPos,
+              id: -1,
+              count: newCount,
+            })
+          }
+          q.id = -1
+          found = true
+        }
+      }
+    }
+  }
+
+  let sum = 0
+  for (let i = 0; i < info.length; i++) {
+    for (let k = 0; k < info[i].length; k++) {
+      const p = info[i][k]
+      if (p.id > 0) {
+        sum += avgSum(p)
+      }
+    }
+  }
+  return sum
+}
+
+run(part2, nums)
