@@ -53,7 +53,7 @@ const part1 = (strs) => {
   return Object.keys(visited).length
 }
 
-// run(part1, strs)
+run(part1, strs)
 
 const part2 = (strs) => {
   let pos = [...origin]
