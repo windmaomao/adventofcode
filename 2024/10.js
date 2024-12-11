@@ -55,3 +55,32 @@ const part1 = (strs) => {
 }
 
 run(part1, strs)
+
+function calcScore2(pos) {
+  let score = 0
+
+  function run(last, [x, y]) {
+    if (last === 9) {
+      score++
+      return
+    }
+
+    dirs.forEach(([dx, dy]) => {
+      const nx = x + dx
+      const ny = y + dy
+      if (nx < 0 || nx >= m || ny < 0 || ny >= n) return
+      if (strs[nx][ny] !== `${last + 1}`) return
+      run(last + 1, [nx, ny])
+    })
+  }
+
+  run(0, pos)
+  return score
+}
+
+const part2 = (strs) => {
+  const heads = trailheads(strs)
+  return heads.map(calcScore2).sum()
+}
+
+run(part2, strs)
