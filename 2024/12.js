@@ -2,7 +2,7 @@ require("./array")
 const read = require("./read")
 const run = require("./run")
 
-const map = read("12.b", "\n")
+const map = read("12", "\n")
 const m = map.length
 const n = map[0].length
 
@@ -82,7 +82,48 @@ const part1 = (map) => {
 
 run(part1, map)
 
-const rows = (arr) => {
+function findAreasWithSymbol(map) {
+  const visited = {}
+
+  function connected(start, symbol) {
+    const res = []
+
+    function move([i, j]) {
+      const k = `${i},${j}`
+
+      res.push([i, j])
+      visited[k] = true
+
+      dirs.forEach(([di, dj]) => {
+        const [ni, nj] = [i + di, j + dj]
+        if (ni < 0 || ni == m || nj < 0 || nj == n) return
+        const nk = `${ni},${nj}`
+        if (map[ni][nj] != symbol) return
+        if (visited[nk]) return
+        move([ni, nj])
+      })
+    }
+
+    move(start)
+    return res
+  }
+
+  const items = []
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      const k = `${i},${j}`
+      if (!visited[k])
+        items.push({
+          symbol: map[i][j],
+          arr: connected([i, j], map[i][j]),
+        })
+    }
+  }
+
+  return items
+}
+
+const rows = ({ symbol, arr }) => {
   const sides = {}
 
   for (let [i, j] of arr) {
@@ -95,19 +136,27 @@ const rows = (arr) => {
     })
   }
 
-  return Object.values(sides)
-    .map((o) => {
+  return Object.keys(sides)
+    .map((row) => {
+      const sideIndex = Number(row)
+      const o = sides[row]
       const list = Object.keys(o)
         .filter((k) => o[k])
         .map(Number)
 
+      const rowIndex = sideIndex >= m ? m - 1 : sideIndex
       let c = 0,
-        prev = -2
+        prev = -2,
+        prevSymbol = false
       for (let i = 0; i < list.length; i++) {
-        if (list[i] - 1 != prev) {
+        if (
+          list[i] - 1 != prev ||
+          (map[rowIndex][list[i]] == symbol) != prevSymbol
+        ) {
           c++
         }
         prev = list[i]
+        prevSymbol = map[rowIndex][list[i]] == symbol
       }
 
       return c
@@ -115,7 +164,7 @@ const rows = (arr) => {
     .sum()
 }
 
-const cols = (arr) => {
+const cols = ({ symbol, arr }) => {
   const sides = {}
 
   for (let [i, j] of arr) {
@@ -128,19 +177,27 @@ const cols = (arr) => {
     })
   }
 
-  return Object.values(sides)
-    .map((o) => {
+  return Object.keys(sides)
+    .map((col) => {
+      const sideIndex = Number(col)
+      const o = sides[col]
       const list = Object.keys(o)
         .filter((k) => o[k])
         .map(Number)
 
+      const colIndex = sideIndex >= n ? n - 1 : sideIndex
       let c = 0,
-        prev = -2
+        prev = -2,
+        prevSymbol = false
       for (let i = 0; i < list.length; i++) {
-        if (list[i] - 1 != prev) {
+        if (
+          list[i] - 1 != prev ||
+          (map[list[i]][colIndex] == symbol) != prevSymbol
+        ) {
           c++
         }
         prev = list[i]
+        prevSymbol = map[list[i]][colIndex] == symbol
       }
 
       return c
@@ -148,10 +205,11 @@ const cols = (arr) => {
     .sum()
 }
 
+const area2 = ({ symbol, arr }) => arr.length
 const part2 = (map) => {
-  const areas = findAreas(map)
+  const areas = findAreasWithSymbol(map)
   return areas
-    .map((arr) => (rows(arr) + cols(arr)) * area(arr))
+    .map((arr) => (rows(arr) + cols(arr)) * area2(arr))
     .sum()
 }
 
