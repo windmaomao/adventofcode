@@ -2,7 +2,7 @@ require("./array")
 const read = require("./read")
 const run = require("./run")
 
-const strs = read("06", "\n")
+const strs = read("06.a", "\n")
 
 function findOrigin(strs) {
   for (let i = 0; i < strs.length; i++) {
@@ -61,6 +61,7 @@ const part2 = (strs) => {
     x,
     y
   const visited = {},
+    turned = {},
     obstructs = {}
   let finished = false
 
@@ -75,6 +76,7 @@ const part2 = (strs) => {
     }
 
     if (strs[x][y] === "#") {
+      turned[`${pos}`] = true
       d++
       if (d === 4) d = 0
       continue
@@ -82,7 +84,8 @@ const part2 = (strs) => {
 
     nd = d + 1
     if (nd === 4) nd = 0
-    let done = false
+    let done = false,
+      first = true
     let nx = pos[0],
       ny = pos[1]
     while (!done) {
@@ -91,21 +94,22 @@ const part2 = (strs) => {
       if (
         !strs[nx] ||
         !strs[nx][ny] ||
-        strs[nx][ny] == "#"
+        visited[`${[nx, ny]}`] == (nd + 2) % 4
       ) {
         done = true
         continue
       }
-      if (visited[`${nx},${ny}`] === nd) {
+      if (turned[`${[nx, ny]}`] && !visited[`${[x, y]}`]) {
         obstructs[`${x},${y}`] = true
       }
+      first = false
     }
 
-    visited[`${x},${y}`] = d
     pos = [x, y]
+    visited[`${pos}`] = d
   }
 
-  return Object.keys(obstructs).length
+  return obstructs
 }
 
 run(part2, strs)
