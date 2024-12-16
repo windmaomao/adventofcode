@@ -89,3 +89,99 @@ const part1 = () => {
 }
 
 run(part1, strs)
+
+function transform() {
+  let origin2,
+    map2 = []
+  for (let i = 0; i < map.length; i++) {
+    let s = ""
+    for (let j = 0; j < map[0].length; j++) {
+      const c = map[i][j]
+      if (c == "#") s += "##"
+      if (c == "O") s += "[]"
+      if (c == ".") s += ".."
+      if (c == "@") {
+        origin2 = [i, s.length]
+        s += "@."
+      }
+    }
+    map2.push(s)
+  }
+
+  return { map2, origin2 }
+}
+
+const { map2, origin2 } = transform()
+
+function move2(m, o, d) {
+  let arr = [o]
+  let visited = []
+
+  while (arr.length) {
+    let [i, j] = arr.pop()
+    i += d[0]
+    j += d[1]
+
+    if (m[i][j] == "#") return o
+    if (m[i][j] == "]") {
+      if (d[0] == 0) {
+        if (d[1] == -1) arr.push([i, j - 1])
+        else arr.push([i, j])
+      } else {
+        arr.push([i, j - 1])
+        arr.push([i, j])
+      }
+      visited.push([i, j - 1])
+    } else if (m[i][j] == "[") {
+      if (d[0] == 0) {
+        if (d[1] == -1) arr.push([i, j])
+        else arr.push([i, j + 1])
+      } else {
+        arr.push([i, j])
+        arr.push([i, j + 1])
+      }
+      visited.push([i, j])
+    }
+  }
+
+  // console.log("visited", visited)
+  visited.reverse().forEach(([i, j]) => {
+    replace(m, [i, j], ".")
+    replace(m, [i, j + 1], ".")
+    const b = [i + d[0], j + d[1]]
+    replace(m, b, "[")
+    replace(m, [b[0], b[1] + 1], "]")
+  })
+
+  const o2 = [o[0] + d[0], o[1] + d[1]]
+  replace(m, o2, "@")
+  replace(m, o, ".")
+  return o2
+}
+
+const part2 = () => {
+  const m = [...map2]
+  let p = origin2
+
+  for (let i = 0; i < moves.length; i++) {
+    for (let j = 0; j < moves[i].length; j++) {
+      p = move2(m, p, dirs[moves[i][j]])
+    }
+  }
+
+  console.log(m)
+  let score = 0
+  for (let i = 0; i < m.length; i++) {
+    for (let j = 0; j < m[0].length; j++) {
+      if (m[i][j] == "[") {
+        score += 100 * i + j
+      }
+    }
+  }
+
+  return score
+}
+
+run(part2)
+
+// 1544460, too low
