@@ -3,7 +3,7 @@ require("./string")
 const read = require("./read")
 const run = require("./run")
 
-const strs = read("16.a", "\n")
+const strs = read("16", "\n")
 
 function mapInfo(strs) {
   let origin, target
@@ -33,18 +33,17 @@ const dirs = [
 ]
 const indexes = [0, 1, 2, 3]
 
-function findMaxPoints() {
+function findAllScores() {
   const arr = [[0, 0, origin, {}]]
   let current
   const res = []
   let step = 0
 
-  while ((current = arr.pop()) && step < 2000) {
+  while ((current = arr.pop()) && step < 20000000) {
     step++
-    const [score, dir, pos, visited] = current
+    const [score, dindex, pos, visited] = current
     if (pos[0] == target[0] && pos[1] == target[1]) {
-      res.push([score, visited])
-      console.log(score)
+      res.push(score)
       continue
     }
 
@@ -53,7 +52,7 @@ function findMaxPoints() {
       const np = pos.map((v, j) => v + dir[j])
       if (!visited[`${np}`] && map[np[0]][np[1]] != "#") {
         arr.push([
-          score + 1,
+          score + (i != dindex ? 1001 : 1),
           i,
           np,
           { ...visited, [`${pos}`]: true },
@@ -62,11 +61,9 @@ function findMaxPoints() {
     })
   }
 
-  return null
+  return res
 }
 
-const part1 = () => {
-  return findMaxPoints()
-}
+const part1 = () => findAllScores().min()
 
 run(part1, strs)
