@@ -76,16 +76,19 @@ const part1 = () => {
     }
   }
 
-  let score = 0
+  console.log(m)
+  let score = 0,
+    count = 0
   for (let i = 0; i < m.length; i++) {
     for (let j = 0; j < m[0].length; j++) {
       if (m[i][j] == "O") {
+        count++
         score += 100 * i + j
       }
     }
   }
 
-  return score
+  return [count, score]
 }
 
 run(part1, strs)
@@ -161,25 +164,34 @@ function move2(m, o, d) {
 
 const part2 = () => {
   const m = [...map2]
-  let p = origin2
+  let p = origin2,
+    k = 0,
+    count = 1
 
   for (let i = 0; i < moves.length; i++) {
     for (let j = 0; j < moves[i].length; j++) {
       p = move2(m, p, dirs[moves[i][j]])
+      k++
+      if (k === count) {
+        console.log(moves[i][j])
+        return m
+      }
     }
   }
 
   console.log(m)
-  let score = 0
+  let score = 0,
+    count2 = 0
   for (let i = 0; i < m.length; i++) {
     for (let j = 0; j < m[0].length; j++) {
       if (m[i][j] == "[") {
+        count2++
         score += 100 * i + j
       }
     }
   }
 
-  return score
+  return [count2, score]
 }
 
 run(part2)
