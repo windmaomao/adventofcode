@@ -3,7 +3,7 @@ require("./string");
 const read = require("./read");
 const run = require("./run");
 
-const strs = read("17", "\n");
+const strs = read("17.b", "\n");
 
 function getInfo(strs) {
   const nums = (str) => str.match(/\d+/g).map(Number);
@@ -14,9 +14,7 @@ function getInfo(strs) {
   return { a, b, c, codes: nums(strs[4]) };
 }
 
-function runProgram(strs) {
-  let { a, b, c, codes } = getInfo(strs);
-
+function runProgram({ a, b, c, codes }) {
   const combo = (j) => {
     switch (j) {
       case 4:
@@ -41,7 +39,7 @@ function runProgram(strs) {
         i += 2;
         break;
       case 1: // bxl
-        b = b ^ combo(v);
+        b = b ^ v;
         i += 2;
         break;
       case 2: // bst
@@ -76,11 +74,17 @@ function runProgram(strs) {
     // console.log(a, b, c, i, out);
   }
 
-  return { a, b, c, out };
+  return { a, b, c, out: out.join(",") };
 }
 
-const part1 = (strs) => runProgram(strs);
+const part1 = (strs) => runProgram(getInfo(strs));
 
 run(part1, strs);
 
-// 6,6,3,6,7,4,1,5,0
+const part2 = (strs) => {
+  let { a, b, c, codes } = getInfo(strs);
+  a = 117440;
+  return runProgram({ a, b, c, codes });
+};
+
+run(part2, strs);
