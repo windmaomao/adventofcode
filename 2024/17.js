@@ -36,7 +36,9 @@ function runProgram({ a, b, c, codes }) {
     const v = codes[i + 1];
     switch (op) {
       case 0: // adv
-        a = a >> combo(v);
+        for (let d = 0; d < combo(v); d++) {
+          a = Math.floor(a / 2);
+        }
         i += 2;
         break;
       case 1: // bxl
@@ -80,20 +82,20 @@ function runProgram({ a, b, c, codes }) {
 
 const part1 = (strs) => runProgram(getInfo(strs));
 
-run(part1, strs);
+// run(part1, strs);
 
 const part2 = (strs) => {
   let { b, c, codes } = getInfo(strs);
   let n = 0;
   let i = codes.length - 1,
     k = 0;
-  while (i >= 0 && k < 10) {
+  while (i >= 0 && k < 15) {
     n = n * 8;
     for (let j = 0; j < 8; j++) {
       const { out } = runProgram({ a: n + j, b, c, codes });
-      console.log(out);
-      if (out[0] == codes[i]) {
+      if (out[0] == codes[i] && out[1] == codes[i + 1]) {
         n = n + j;
+        console.log(n, out.join(","));
         break;
       }
     }
@@ -104,4 +106,12 @@ const part2 = (strs) => {
   return n;
 };
 
-run(part2, strs);
+// run(part2, strs);
+
+const part2b = (strs) => {
+  let { a, b, c, codes } = getInfo(strs);
+  a = ((945430726 * 8 + 6) * 8 + 1) * 8 + 0;
+  return runProgram({ a, b, c, codes }).out.join(",");
+};
+
+run(part2b, strs);
