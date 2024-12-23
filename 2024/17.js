@@ -3,7 +3,7 @@ require("./string");
 const read = require("./read");
 const run = require("./run");
 
-const strs = read("17.b", "\n");
+const strs = read("17", "\n");
 
 function getInfo(strs) {
   const nums = (str) => str.match(/\d+/g).map(Number);
@@ -31,6 +31,7 @@ function runProgram({ a, b, c, codes }) {
   let i = 0,
     out = [];
   while (i < codes.length) {
+    // console.log(a, b, c);
     const op = codes[i];
     const v = codes[i + 1];
     switch (op) {
@@ -74,7 +75,7 @@ function runProgram({ a, b, c, codes }) {
     // console.log(a, b, c, i, out);
   }
 
-  return { a, b, c, out: out.join(",") };
+  return { a, b, c, out };
 }
 
 const part1 = (strs) => runProgram(getInfo(strs));
@@ -82,9 +83,25 @@ const part1 = (strs) => runProgram(getInfo(strs));
 run(part1, strs);
 
 const part2 = (strs) => {
-  let { a, b, c, codes } = getInfo(strs);
-  a = 117440;
-  return runProgram({ a, b, c, codes });
+  let { b, c, codes } = getInfo(strs);
+  let n = 0;
+  let i = codes.length - 1,
+    k = 0;
+  while (i >= 0 && k < 10) {
+    n = n * 8;
+    for (let j = 0; j < 8; j++) {
+      const { out } = runProgram({ a: n + j, b, c, codes });
+      console.log(out);
+      if (out[0] == codes[i]) {
+        n = n + j;
+        break;
+      }
+    }
+    k++;
+    i--;
+  }
+
+  return n;
 };
 
 run(part2, strs);
