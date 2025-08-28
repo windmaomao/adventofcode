@@ -2,28 +2,18 @@ require("./array");
 const read = require("./read");
 const run = require("./run");
 
-const findAll = (strs) => {
-  let sum = 0,
-    res = [];
-  for (let str of strs) {
-    if (!str) {
-      res.push(sum);
-      sum = 0;
-    } else {
-      sum += Number(str);
-    }
-  }
-  return res;
-};
+const strs = read("01", "\n");
+const items = strs
+  .split("")
+  .map((arr) => arr.sum((v) => Number(v)));
 
-const part1 = (strs) => findAll(strs).max();
-const part2 = (strs) =>
-  findAll(strs)
+const part1 = (items) => items.max();
+
+const part2 = (items) =>
+  items
     .sort((a, b) => b - a)
     .take(3)
     .sum();
 
-const strs = read("01", "\n");
-strs.push("");
-run(part1, strs);
-run(part2, strs);
+run(part1, items);
+run(part2, items);
