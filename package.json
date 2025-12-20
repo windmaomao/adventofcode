@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "2015-purs": "watchexec -e purs -- spago test --main Test.Day01",
-    "start": "DEBUG=day*:* nodemon --exec babel-node 2019/index.js",
+    "start": "DEBUG=day*:* nodemon --exec babel-node 2025/01.js",
     "2018-rb": "nodemon --exec ruby 2018/rb/index.rb",
     "rb": "nodemon --exec ruby 2019/rb/index.rb",
     "test": "jest --watch"
@@ -21,7 +21,7 @@
     "@babel/register": "^7.9.0",
     "@types/react": "^19.1.12",
     "jest": "^25.5.4",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.22"
   },
   "dependencies": {
     "debug": "^4.1.1",
